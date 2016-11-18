@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import inscriptions.Inscriptions;
+
 public class InscriptionsTest {
 
 	@Test
@@ -53,7 +55,8 @@ public class InscriptionsTest {
 
 	@Test
 	public void testGetInscriptions() {
-		fail("Not yet implemented");
+		Inscriptions i = Inscriptions.getInscriptions();
+		assertNotNull(i);
 	}
 
 	@Test
