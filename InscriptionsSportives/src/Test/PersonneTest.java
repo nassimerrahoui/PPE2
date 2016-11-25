@@ -80,8 +80,13 @@ public class PersonneTest {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Equipe e = inscriptions.createEquipe("test");
+		Equipe b = inscriptions.createEquipe("test2");
 		e.add(testeur);
-		assertNotNull(testeur.getEquipes());
+		b.add(testeur);
+		
+		int size = inscriptions.getEquipes().size();
+		
+		assertEquals(size,inscriptions.getEquipes().size());
 		
 
 	}
