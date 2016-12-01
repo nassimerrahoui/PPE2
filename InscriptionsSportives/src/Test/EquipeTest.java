@@ -24,6 +24,7 @@ public class EquipeTest {
 		testeur.delete();
 		int after = inscriptions.getPersonnes().size();
 		assertEquals(before-1, after);
+		
 	}
 
 	@Test
@@ -41,7 +42,17 @@ public class EquipeTest {
 
 	@Test
 	public void testGetMembres() {
-		fail("Not yet implemented");
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
+		Personne testeur2 = inscriptions.createPersonne("test", "testeur", "azerty");
+		Equipe e = inscriptions.createEquipe("test");
+		e.add(testeur);
+		e.add(testeur2);
+		int size = e.getMembres().size();
+		if(e.getMembres().contains(testeur) && e.getMembres().contains(testeur2))
+		{
+		assertEquals(size,e.getMembres().size());
+		}
 	}
 
 	@Test

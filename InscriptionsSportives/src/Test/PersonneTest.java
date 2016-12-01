@@ -83,11 +83,11 @@ public class PersonneTest {
 		Equipe b = inscriptions.createEquipe("test2");
 		e.add(testeur);
 		b.add(testeur);
-		
 		int size = inscriptions.getEquipes().size();
-		
+		if(inscriptions.getEquipes().contains(e) && inscriptions.getEquipes().contains(b))
+		{
 		assertEquals(size,inscriptions.getEquipes().size());
-		
+		}
 
 	}
 	
