@@ -19,7 +19,7 @@ public class PersonneTest {
 		testCompet.add(testeur);
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		inscriptions.getPersonnes().contains(testeur);
+		assertTrue(inscriptions.getPersonnes().contains(testeur));
 		int before = inscriptions.getPersonnes().size();
 		testeur.delete();
 		int after = inscriptions.getPersonnes().size();
@@ -84,10 +84,10 @@ public class PersonneTest {
 		e.add(testeur);
 		b.add(testeur);
 		int size = inscriptions.getEquipes().size();
-		if(inscriptions.getEquipes().contains(e) && inscriptions.getEquipes().contains(b))
-		{
+		assertTrue(testeur.getEquipes().contains(e));
+		assertTrue(testeur.getEquipes().contains(b));
 		assertEquals(size,inscriptions.getEquipes().size());
-		}
+		
 
 	}
 	

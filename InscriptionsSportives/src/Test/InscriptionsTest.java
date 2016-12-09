@@ -2,56 +2,104 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
+import inscriptions.Competition;
+import inscriptions.Equipe;
 import inscriptions.Inscriptions;
+import inscriptions.Personne;
 
 public class InscriptionsTest {
 
 	@Test
 	public void testGetCompetitions() {
-		fail("Not yet implemented");
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("tes", LocalDate.now().plusDays(10), true);
+		Competition cc = i.createCompetition("tes", LocalDate.now().plusDays(10), true);
+		int size = i.getCompetitions().size();
+		assertTrue(i.getCompetitions().contains(c));
+		assertTrue(i.getCompetitions().contains(cc));
+		assertEquals(size, i.getCompetitions().size());
 	}
 
 	@Test
 	public void testGetCandidats() {
-		fail("Not yet implemented");
+		
+		Inscriptions i = Inscriptions.getInscriptions();
+		Personne p = i.createPersonne("test", "test", "test");
+		Personne pp = i.createPersonne("test", "test", "test");
+		Personne ppp = i.createPersonne("test", "test", "test");
+		Equipe e = i.createEquipe("testTeam");
+		e.add(pp);
+		e.add(ppp);
+		
+		int size = i.getCandidats().size();
+		assertTrue(i.getCandidats().contains(p));
+		assertTrue(i.getCandidats().contains(e));
+		assertEquals(size,i.getCandidats().size());
+		
 	}
 
 	@Test
 	public void testGetPersonnes() {
-		fail("Not yet implemented");
+		Inscriptions i = Inscriptions.getInscriptions();
+		Personne p = i.createPersonne("test","test", "test");
+		Personne pp = i.createPersonne("test", "test", "test");
+		int size = i.getPersonnes().size();
+		assertTrue(i.getPersonnes().contains(p));
+		assertTrue(i.getPersonnes().contains(pp));
+		assertEquals(size, i.getPersonnes().size());
+			
 	}
 
 	@Test
 	public void testGetEquipes() {
-		fail("Not yet implemented");
+		Inscriptions i = Inscriptions.getInscriptions();
+		Equipe e = i.createEquipe("testTeam");
+		Equipe ee = i.createEquipe("TestTeam2");
+		int size = i.getEquipes().size();
+		assertTrue(i.getEquipes().contains(e));
+		assertTrue(i.getEquipes().contains(ee));
+		assertEquals(size,i.getEquipes().size());
+
+
 	}
 
 	@Test
 	public void testCreateCompetition() {
-		fail("Not yet implemented");
+		
+		Inscriptions i = Inscriptions.getInscriptions();
+		int before = i.getCompetitions().size();
+		Competition c = i.createCompetition("test", LocalDate.now().plusDays(10), true);
+		int after = i.getCompetitions().size();
+		assertTrue(i.getCompetitions().contains(c));
+		assertEquals(before+1,after);
+
+
 	}
 
 	@Test
 	public void testCreatePersonne() {
-		fail("Not yet implemented");
+		
+		Inscriptions i = Inscriptions.getInscriptions();
+		Personne p = i.createPersonne("test","test", "test");
+		assertTrue(i.getCandidats().contains(p));
+
+
 	}
 
 	@Test
 	public void testCreateEquipe() {
-		fail("Not yet implemented");
+		
+		Inscriptions i = Inscriptions.getInscriptions();
+		Equipe e = i.createEquipe("test");
+		assertTrue(i.getCandidats().contains(e));
+		
 	}
 
-	@Test
-	public void testRemoveCompetition() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRemoveCandidat() {
-		fail("Not yet implemented");
-	}
+	
 
 	@Test
 	public void testGetInscriptions() {
@@ -59,29 +107,13 @@ public class InscriptionsTest {
 		assertNotNull(i);
 	}
 
-	@Test
-	public void testReinitialiser() {
-		fail("Not yet implemented");
-	}
 
-	@Test
-	public void testRecharger() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSauvegarder() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		assertNotNull(inscriptions.toString());
 	}
 
-	@Test
-	public void testMain() {
-		fail("Not yet implemented");
-	}
 
 }

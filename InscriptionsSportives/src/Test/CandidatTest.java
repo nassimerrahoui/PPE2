@@ -39,9 +39,11 @@ public class CandidatTest {
 		Competition CompetTest2 = inscriptions.createCompetition("Mondial de test", null, false);
 		CompetTest.add(testeur);
 		CompetTest2.add(testeur);
+		assertTrue(inscriptions.getCompetitions().contains(CompetTest));
+		assertTrue(inscriptions.getCompetitions().contains(CompetTest2));
 		int size = inscriptions.getCompetitions().size();
-		inscriptions.getCompetitions().contains(CompetTest) ;
-		inscriptions.getCompetitions().contains(CompetTest2);
+		assertTrue(inscriptions.getCompetitions().contains(CompetTest)) ;
+		assertTrue(inscriptions.getCompetitions().contains(CompetTest2));
 		
 		assertEquals(size,inscriptions.getCompetitions().size());
 	}
@@ -55,12 +57,13 @@ public class CandidatTest {
 		testCompet.add(testeur);
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		inscriptions.getPersonnes().contains(testeur);
+		assertTrue(inscriptions.getPersonnes().contains(testeur));
 		int before = inscriptions.getPersonnes().size();
 		testeur.delete();
 		int after = inscriptions.getPersonnes().size();
 		assertEquals(before-1, after);
 	}
+	
 
 	@Test
 	public void testCompareTo() {
@@ -86,5 +89,7 @@ public class CandidatTest {
 		
 		assertNotNull(boris.toString());
 	}
+	
+
 
 }

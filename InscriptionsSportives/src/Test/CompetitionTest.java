@@ -2,6 +2,8 @@ package Test;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
 import inscriptions.Competition;
@@ -29,12 +31,18 @@ public class CompetitionTest {
 
 	@Test
 	public void testInscriptionsOuvertes() {
-		fail("Not yet implemented");
+		
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), true);
+		boolean test = c.inscriptionsOuvertes();
+		assertEquals(test,c.inscriptionsOuvertes());
 	}
 
 	@Test
 	public void testGetDateCloture() {
-		fail("Not yet implemented");
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Competition test = inscriptions.createCompetition("test", LocalDate.now(), false);	
+		assertEquals(LocalDate.now(),test.getDateCloture());
 	}
 
 	@Test
@@ -48,58 +56,90 @@ public class CompetitionTest {
 
 	@Test
 	public void testSetDateCloture() {
-		fail("Not yet implemented");
+		LocalDate test = LocalDate.now().plusDays(10);
+		LocalDate test2 = LocalDate.now().plusDays(20);
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Competition c = inscriptions.createCompetition("test", test, true);
+		c.setDateCloture(test2);
+		assertEquals(test2,c.getDateCloture());
 	}
 
 	@Test
 	public void testGetCandidats() {
-		fail("Not yet implemented");
-		/*Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, true);
-		Personne p = inscriptions.createPersonne("test", "testeur", "mail.com");
-		Personne pp = inscriptions.createPersonne("test", "testeur", "mail.com");
-		c.add(p);
-		c.add(pp);
-		assertEquals(1,c.getCandidats().size());*/
+		
+		
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
+		Personne testeur2 = inscriptions.createPersonne("test", "testeur", "azerty");
+		Competition CompetTest = inscriptions.createCompetition("Mondial de test", null, false);
+		CompetTest.add(testeur);
+		CompetTest.add(testeur2);
+		
+		assertTrue(CompetTest.getCandidats().contains(testeur));
+		assertTrue(CompetTest.getCandidats().contains(testeur2));
+		int size = CompetTest.getCandidats().size();
+
+		assertEquals(size,CompetTest.getCandidats().size());
 	}
 
 	@Test
 	public void testAddPersonne() {
+		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, true);
-		Personne p = inscriptions.createPersonne("test", "testeur", "mail.com");
-		int size = c.getCandidats().size();
+		LocalDate date = LocalDate.now().plusDays(20);
+		Competition c = inscriptions.createCompetition("test", date, false);
+		Personne p = inscriptions.createPersonne("test", "prenom", "mail");
+		int sizeBefore = c.getCandidats().size();
 		c.add(p);
-		assertEquals(size+1,c.getCandidats().size());
+		int sizeAfter = c.getCandidats().size();
+		assertTrue(c.getCandidats().contains(p));
+		assertEquals(sizeBefore+1,sizeAfter);
+		
 	}
 
 	@Test
 	public void testAddEquipe() {
+		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, true);
-		Equipe e = inscriptions.createEquipe("tessst");
-		Personne p = inscriptions.createPersonne("test", "testeur", "mail.com");
+		LocalDate date = LocalDate.now().plusDays(20);
+		Competition c = inscriptions.createCompetition("test", date, true);
+		
+		Personne p = inscriptions.createPersonne("test", "prenom", "mail");
+		Personne pp = inscriptions.createPersonne("test", "prenom", "mail");
+		Personne ppp = inscriptions.createPersonne("test", "prenom", "mail");
+		Equipe e = inscriptions.createEquipe("testTeam");
+		Equipe ee = inscriptions.createEquipe("testTeam");
+
 		e.add(p);
+		e.add(pp);
+		ee.add(ppp);
+		
 		c.add(e);
-		int size = c.getCandidats().size();
-		c.add(p);
-		assertEquals(size+1,c.getCandidats().size());
+		c.add(ee);
+		int sizeBefore = inscriptions.getCandidats().size();
+		Equipe eee = inscriptions.createEquipe("testTeam2");
+		Personne test = inscriptions.createPersonne("test", "test", "test@mail");
+		eee.add(test);
+		c.add(eee);
+		assertTrue(inscriptions.getCandidats().contains(eee));
+		int sizeAfter = inscriptions.getCandidats().size();
+		assertEquals(sizeBefore+1,sizeAfter);
+
 	}
 
 	@Test
 	public void testRemove() {
-		fail("Not yet implemented");
-		/*Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, true);
-		Personne p = inscriptions.createPersonne("test", "testeur", "mail.com");
-		Personne pp = inscriptions.createPersonne("test", "testeur", "mail.com");
+		Inscriptions i = Inscriptions.getInscriptions();
+		LocalDate date = LocalDate.now().plusDays(20);
+		Competition c = i.createCompetition("test", date,false);
+		Personne p = i.createPersonne("nom", "prenom", "mail");
+		Personne pp = i.createPersonne("nom", "prenom", "mail");
 		c.add(p);
 		c.add(pp);
-		int before = c.getCandidats().size();
-		c.remove(pp);
-		int after = c.getCandidats().size();
-		assertEquals(before-1,after);*/
-		
+		int sizeBefore = c.getCandidats().size();
+		c.remove(p);
+		int sizeAfter = c.getCandidats().size();
+		assertEquals(sizeBefore-1,sizeAfter);
 	}
 
 	@Test

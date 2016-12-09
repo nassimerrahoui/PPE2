@@ -15,15 +15,15 @@ public class EquipeTest {
 	public void testDelete() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Competition testCompet = inscriptions.createCompetition("testCompet", null, false);
-		testCompet.add(testeur);
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		inscriptions.getPersonnes().contains(testeur);
-		int before = inscriptions.getPersonnes().size();
+		
+		assertTrue(inscriptions.getPersonnes().contains(testeur));
+		
 		testeur.delete();
-		int after = inscriptions.getPersonnes().size();
-		assertEquals(before-1, after);
+		assertTrue(!e.getMembres().contains(testeur));
+		assertTrue(!inscriptions.getPersonnes().contains(testeur));
+		assertTrue(!inscriptions.getCandidats().contains(testeur));
 		
 	}
 
@@ -49,10 +49,12 @@ public class EquipeTest {
 		e.add(testeur);
 		e.add(testeur2);
 		int size = e.getMembres().size();
-		if(e.getMembres().contains(testeur) && e.getMembres().contains(testeur2))
-		{
+		assertTrue(e.getMembres().contains(testeur));
+		assertTrue(e.getMembres().contains(testeur2));
+		
+	
 		assertEquals(size,e.getMembres().size());
-		}
+		
 	}
 
 	@Test
@@ -68,7 +70,7 @@ public class EquipeTest {
 		e.add(testeur);
 		int before = e.getMembres().size();
 		e.add(testeur2);
-		e.getMembres().contains(testeur2);
+		assertTrue(e.getMembres().contains(testeur2));
 		int after = e.getMembres().size();
 		assertEquals(before+1, after);
 		
@@ -79,19 +81,13 @@ public class EquipeTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Personne testeur2 = inscriptions.createPersonne("test2", "testeur2", "azerty2");
-		Competition testCompet = inscriptions.createCompetition("testCompet", null, false);
-		testCompet.add(testeur);
-		testCompet.add(testeur2);
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		e.add(testeur2);
 		
-		e.getMembres().contains(testeur);
-		int before = e.getMembres().size();
+		
+		assertTrue(e.getMembres().contains(testeur));
 		testeur.delete();
-		int after = e.getMembres().size();
-		assertEquals(before-1, after);
+		assertTrue(!e.getMembres().contains(testeur));
 	}
 
 }

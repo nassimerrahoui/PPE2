@@ -251,6 +251,8 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		lesManouches.delete();
 		System.out.println(inscriptions);
+		System.out.println(flechettes.getDateCloture());
+
 		try
 		{
 			inscriptions.sauvegarder();
