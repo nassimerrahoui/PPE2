@@ -3,7 +3,6 @@ package Test;
 import static org.junit.Assert.*;  
 
 import org.junit.Test;
-import inscriptions.Competition;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 import inscriptions.Equipe;
@@ -15,15 +14,8 @@ public class PersonneTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Competition testCompet = inscriptions.createCompetition("testCompet", null, false);
-		testCompet.add(testeur);
-		Equipe e = inscriptions.createEquipe("test");
-		e.add(testeur);
-		assertTrue(inscriptions.getPersonnes().contains(testeur));
-		int before = inscriptions.getPersonnes().size();
 		testeur.delete();
-		int after = inscriptions.getPersonnes().size();
-		assertEquals(before-1, after);
+		assertTrue(!inscriptions.getCandidats().contains(testeur));
 	}
 
 	@Test
@@ -64,10 +56,6 @@ public class PersonneTest {
 	public void testToString() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("testeur", "Dent de plomb", "azerty");
-		Competition flechettes = inscriptions.createCompetition("Mondial de flechettes", null, false);
-		flechettes.add(testeur);
-		Equipe TestTeam = inscriptions.createEquipe("TestTeam");
-		TestTeam.add(testeur);
 		assertNotNull(testeur.toString());
 
 				
