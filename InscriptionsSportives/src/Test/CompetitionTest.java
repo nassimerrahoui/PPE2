@@ -17,14 +17,14 @@ public class CompetitionTest {
 	@Test
 	public void testGetNom() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition test = inscriptions.createCompetition("test", null, false);	
-		assertEquals("test",test.getNom());
+		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);	
+		assertEquals("testCompet",test.getNom());
 	}
 
 	@Test
 	public void testSetNom() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition test = inscriptions.createCompetition("test", null, false);	
+		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);	
 		test.setNom("NewName");
 		assertEquals("NewName",test.getNom());
 	}
@@ -34,8 +34,7 @@ public class CompetitionTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), true);
-		boolean test = c.inscriptionsOuvertes();
-		assertEquals(test,c.inscriptionsOuvertes());
+		assertEquals(true,c.inscriptionsOuvertes());
 	}
 
 	@Test
@@ -49,7 +48,7 @@ public class CompetitionTest {
 	public void testEstEnEquipe() {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition test = inscriptions.createCompetition("test", null, true);	
+		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), true);	
 		assertEquals(true,test.estEnEquipe());
 		
 	}
@@ -67,19 +66,18 @@ public class CompetitionTest {
 	@Test
 	public void testGetCandidats() {
 		
-		
-		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Personne testeur2 = inscriptions.createPersonne("test", "testeur", "azerty");
-		Competition CompetTest = inscriptions.createCompetition("Mondial de test", null, false);
-		CompetTest.add(testeur);
-		CompetTest.add(testeur2);
-		
-		assertTrue(CompetTest.getCandidats().contains(testeur));
-		assertTrue(CompetTest.getCandidats().contains(testeur2));
-		int size = CompetTest.getCandidats().size();
 
-		assertEquals(size,CompetTest.getCandidats().size());
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
+		Personne p = i.createPersonne("test", "test", "test");
+		Personne pp = i.createPersonne("test", "test", "test");
+		c.add(p);
+		c.add(pp);
+		assertTrue(c.getCandidats().contains(p));
+		assertTrue(c.getCandidats().contains(pp));
+		
+		
+		
 	}
 
 	@Test
@@ -145,7 +143,7 @@ public class CompetitionTest {
 	@Test
 	public void testDelete() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, false);
+		Competition c = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 		int size = inscriptions.getCompetitions().size();
 		c.delete();
 		assertEquals(size-1,inscriptions.getCompetitions().size());
@@ -154,8 +152,8 @@ public class CompetitionTest {
 	@Test
 	public void testCompareTo() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition c = inscriptions.createCompetition("test", null, false);
-		Competition cc = inscriptions.createCompetition("test", null, false);
+		Competition c = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
+		Competition cc = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 
 		assertEquals(0,c.compareTo(cc));
 	}
@@ -164,7 +162,7 @@ public class CompetitionTest {
 	public void testToString() {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition test = inscriptions.createCompetition("Mondial de flechettes", null, false);
+		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 		assertNotNull(test.toString());
 	}
 

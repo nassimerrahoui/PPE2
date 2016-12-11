@@ -59,17 +59,13 @@ public class Competition implements Comparable<Competition>, Serializable {
 		// TODO retourner vrai si et seulement si la date système est
 		// antérieure à la date de clôture.
 		
-		/* ESSAI TODO
-		 int comp = today.compareTo(dateCloture); if(comp > 0 ) { return
-		 false; } else { return true; }
-		----------------------------------
-		if(dateCloture.isBefore(today))
+		
+		if(today.isBefore(dateCloture))
 		return true;
 		else{
 			return false;
 		}
-		*/
-		return true;
+		
 
 		
 
@@ -108,11 +104,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 		// des inscriptions.
 		// Il est possible de la reculer mais pas de l'avancer.
 
-		/*
-		 * boolean open = inscriptionsOuvertes();
-		 * 
-		 * if(open == true){ this.dateCloture = dateCloture; }
-		 */
+		if(dateCloture.isAfter(this.dateCloture))
 		this.dateCloture = dateCloture;
 	}
 
@@ -137,12 +129,8 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public boolean add(Personne personne) {
 		// TODO vérifier que la date de clôture n'est pas pass�
-		/*TODO 
-		 * boolean open = inscriptionsOuvertes(); if(open == true){
-		 * 
-		 * if (enEquipe) throw new RuntimeException(); personne.add(this);
-		 * return candidats.add(personne); } else return false;
-		 */
+
+		if(this.dateCloture.isAfter(today))
 		if (enEquipe)
 			throw new RuntimeException();
 		personne.add(this);
@@ -160,12 +148,12 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public boolean add(Equipe equipe) {
 		// TODO vérifier que la date de clôture n'est pas passée
-		/*
-		 * boolean open = inscriptionsOuvertes(); if(open == true){ if
-		 * (!enEquipe) throw new RuntimeException(); equipe.add(this); return
-		 * candidats.add(equipe); } else return false;
-		 */
-		return true;
+
+		if(this.dateCloture.isAfter(today))
+		if (!enEquipe)
+			throw new RuntimeException();
+		equipe.add(this);
+		return candidats.add(equipe);
 	}
 
 	/**
