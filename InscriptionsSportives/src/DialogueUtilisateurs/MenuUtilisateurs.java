@@ -32,7 +32,8 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	{
 		Menu menuPersonne = new Menu ("Menu Personne","p");
 		menuPersonne.ajoute(getOptionAjoutPersonne(inscriptions));
-//		menuPersonne.ajoute(getOptionSupprPersonne());
+		menuPersonne.ajoute(getOptionSupprPersonne(inscriptions));
+		menuPersonne.ajoute(getMenuListePersonnes(inscriptions));
 		menuPersonne.ajouteRevenir("r");
         menuPersonne.setRetourAuto(true);
 		return menuPersonne;
@@ -46,18 +47,27 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			@Override
 			public List<Personne> getListe(inscriptions)
 			{
-				
-				return inscriptions;
+				return Personne;
 			}
 
 			@Override
 			public void elementSelectionne(int indice, Personne element)
 			{
-				// TODO Auto-generated method stub
-				
+				Menu menu = getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
+				menu.start();
 			}
 		});
-		
+	}
+	
+	static Menu getMenuSelectionPersonnes(Inscriptions inscriptions, Personne personne)
+	{
+		Menu menuSelectionPersonnes = new Menu ("Menu Selection Personnes","s");
+		menuSelectionPersonnes.ajoute(getOptionAjoutEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionModifPersonne(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(inscriptions));
+		menuSelectionPersonnes.ajouteRevenir("r");
+		return menuSelectionPersonnes;
 	}
 	
 	static Menu getMenuEquipe(Inscriptions inscriptions)

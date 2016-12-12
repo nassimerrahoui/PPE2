@@ -2,6 +2,7 @@ package DialogueUtilisateurs;
 
 import java.time.LocalDate;
 
+import inscriptions.Candidat;
 import inscriptions.Inscriptions;
 import utilitaires.ligneDeCommande.Action;
 import utilitaires.ligneDeCommande.Option;
@@ -15,15 +16,22 @@ public class OptionUtilisateurs
 		return ajoutPersonne;
 	}
 	
-//	static Option getOptionSupprPersonne()
-//	{
-//		
-//	}
+	static Option getOptionSupprPersonne(Inscriptions inscriptions)
+	{
+		Option SupprPersonne = new Option("Supprimer une Personne","s",getActionSupprPersonne(inscriptions));
+		return SupprPersonne;
+	}
 	
 	static Option getOptionAjoutEquipe(Inscriptions inscriptions)
 	{
 		Option ajoutEquipe = new Option("Ajouter une Equipe","a",getActionAjoutEquipe(inscriptions));
 		return ajoutEquipe;
+	}
+	
+	static Option getOptionSupprEquipe(Inscriptions inscriptions)
+	{
+		Option SupprEquipe = new Option("Supprimer une Equipee","s",getActionSupprEquipe(inscriptions));
+		return SupprEquipe;
 	}
 	
 	static Option getOptionAjoutCompetition()
@@ -48,17 +56,17 @@ public class OptionUtilisateurs
 				};
 	}
 	
-//	static Action getActionSupprPersonne ()
-//	{
-//		return new Action ()
-//				{
-//					@Override
-//					public void optionSelectionnee()
-//					{
-//						
-//					}
-//				};
-//	}
+	static Action getActionSupprPersonne (final Inscriptions inscriptions)
+	{
+		return new Action ()
+				{
+					@Override
+					public void optionSelectionnee()
+					{
+						Personne.remove();
+					}
+				};
+	}
 	
 	static Action getActionAjoutEquipe(final Inscriptions inscriptions)
 	{
@@ -69,8 +77,18 @@ public class OptionUtilisateurs
 					{
 						String nom = utilitaires.EntreesSorties.getString("Saisissez le nom de L'Equipe:");
 								inscriptions.createEquipe(nom);
-								
-						
+					}
+				};
+	}
+	
+	static Action getActionSupprEquipe (final Inscriptions inscriptions)
+	{
+		return new Action ()
+				{
+					@Override
+					public void optionSelectionnee()
+					{
+						Equipe.remove();
 					}
 				};
 	}
@@ -86,12 +104,13 @@ public class OptionUtilisateurs
 						int jour = utilitaires.EntreesSorties.getInt("Saisissez un jour :"),
 								mois = utilitaires.EntreesSorties.getInt("Saisissez un moi :"),
 								annee = utilitaires.EntreesSorties.getInt("Saisissez une Année:");
-						LocalDate dateCloture = utilitaires.EntreesSorties.getInt("La date de cloture de la compétition est le :"+jour+"/"+mois+"/"+annee+"");
-						Boolean enEquipe = utilitaires.EntreesSorties.getInt("La compétition ce déroule en Equipe :");
+						LocalDate dateCloture ;
+						Boolean enEquipe ;
 								inscriptions.createCompetition(nom, dateCloture, enEquipe);
-
 					}
 				};
 	}
+	
+	
 
 }
