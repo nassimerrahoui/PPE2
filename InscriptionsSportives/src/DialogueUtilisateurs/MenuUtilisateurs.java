@@ -2,6 +2,8 @@ package DialogueUtilisateurs;
 
 import java.util.List;
 
+import inscriptions.Competition;
+import inscriptions.Equipe;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
 import utilitaires.ligneDeCommande.ActionListe;
@@ -32,7 +34,6 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	{
 		Menu menuPersonne = new Menu ("Menu Personne","p");
 		menuPersonne.ajoute(getOptionAjoutPersonne(inscriptions));
-		menuPersonne.ajoute(getOptionSupprPersonne(inscriptions));
 		menuPersonne.ajoute(getMenuListePersonnes(inscriptions));
 		menuPersonne.ajouteRevenir("r");
         menuPersonne.setRetourAuto(true);
@@ -62,10 +63,10 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	static Menu getMenuSelectionPersonnes(Inscriptions inscriptions, Personne personne)
 	{
 		Menu menuSelectionPersonnes = new Menu ("Menu Selection Personnes","s");
-		menuSelectionPersonnes.ajoute(getOptionAjoutEquipe(inscriptions));
-		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
 		menuSelectionPersonnes.ajoute(getOptionModifPersonne(inscriptions));
 		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionAjoutEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
 	}
@@ -74,17 +75,79 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	{
 		Menu menuEquipe = new Menu ("Menu Equipe","e");
 		menuEquipe.ajoute(getOptionAjoutEquipe(inscriptions));
+		menuEquipe.ajoute(getMenuListeEquipes(inscriptions));
 		menuEquipe.ajouteRevenir("r");
         menuEquipe.setRetourAuto(true);
 		return menuEquipe;
+	}
+	
+	static Menu getMenuListeEquipes(Inscriptions inscriptions)
+	{
+		Liste<Equipe> menu = new Liste<>("Liste des Equipes","l", new ActionListe<Equipe>()
+		{
+
+			@Override
+			public List<Equipe> getListe(inscriptions)
+			{
+				return getEquipes();
+			}
+
+			@Override
+			public void elementSelectionne(int indice, Equipe element)
+			{
+				Menu menu = getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
+				menu.start();
+			}
+		});
+	}
+	
+	static Menu getMenuSelectionEquipes(Inscriptions inscriptions, Equipe equipe)
+	{
+		Menu menuSelectionPersonnes = new Menu ("Menu Selection Equipes","s");
+		menuSelectionPersonnes.ajoute(getOptionModifEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
+		menuSelectionPersonnes.ajouteRevenir("r");
+		return menuSelectionPersonnes;
 	}
 	
 	static Menu getMenuCompetition(Inscriptions inscriptions)
 	{
 		Menu menuCompetition = new Menu ("Menu Compétition","c");
 		menuCompetition.ajoute(getOptionAjoutCompetition(inscriptions));
+		menuCompetition.ajoute(getMenuListeCompetitions(inscriptions));
 		menuCompetition.ajouteRevenir("r");
         menuCompetition.setRetourAuto(true);
 		return menuCompetition;
 	}
+	
+	static Menu getMenuListeCompetitions(Inscriptions inscriptions)
+	{
+		Liste<Competition> menu = new Liste<>("Liste des Equipes","l", new ActionListe<Competition>()
+		{
+
+			@Override
+			public List<Competition> getListe(inscriptions)
+			{
+				return getCompetitions();
+			}
+
+			@Override
+			public void elementSelectionne(int indice, Competition element)
+			{
+				Menu menu = getMenuSelectionCompetitions(Inscriptions.getInscriptions(), element);
+				menu.start();
+			}
+
+		});
+	}
+	
+	static Menu getMenuSelectionCompetitions(Inscriptions inscriptions, Competition competition)
+	{
+		Menu menuSelectionCompetitions = new Menu ("Menu Selection Competitions","s");
+		menuSelectionCompetitions.ajoute(getOptionModifCompetition(inscriptions));
+		menuSelectionCompetitions.ajoute(getOptionSupprCompetition(inscriptions));
+		menuSelectionCompetitions.ajouteRevenir("r");
+		return menuSelectionCompetitions;
+	}
+	
 }

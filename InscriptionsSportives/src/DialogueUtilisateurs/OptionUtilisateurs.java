@@ -3,7 +3,9 @@ package DialogueUtilisateurs;
 import java.time.LocalDate;
 
 import inscriptions.Candidat;
+import inscriptions.Equipe;
 import inscriptions.Inscriptions;
+import inscriptions.Personne;
 import utilitaires.ligneDeCommande.Action;
 import utilitaires.ligneDeCommande.Option;
 
@@ -22,6 +24,12 @@ public class OptionUtilisateurs
 		return SupprPersonne;
 	}
 	
+	static Option getOptionModifPersonne(Inscriptions inscriptions)
+	{
+		Option ModifPersonne = new Option("Modifier une Personne","m",getActionModifPersonne(inscriptions));
+		return ModifPersonne;
+	}
+	
 	static Option getOptionAjoutEquipe(Inscriptions inscriptions)
 	{
 		Option ajoutEquipe = new Option("Ajouter une Equipe","a",getActionAjoutEquipe(inscriptions));
@@ -34,12 +42,17 @@ public class OptionUtilisateurs
 		return SupprEquipe;
 	}
 	
-	static Option getOptionAjoutCompetition()
+	static Option getOptionModifEquipe(Inscriptions inscriptions)
 	{
-		Option ajoutCompetition = new Option("Ajouter une Compétition","a",getActionAjoutCompetition());
-		return ajoutCompetition;
+		Option ModifEquipe = new Option("Modifier une Equipe","m",getActionModifEquipe(inscriptions));
+		return ModifEquipe;
 	}
 	
+	static Option getOptionAjoutCompetition()
+	{
+		Option ajoutCompetition = new Option("Ajouter une Compétition","a",getActionAjoutCompetition(inscriptions));
+		return ajoutCompetition;
+	}
 
 	static Action getActionAjoutPersonne(final Inscriptions inscriptions)
 	{
@@ -64,6 +77,18 @@ public class OptionUtilisateurs
 					public void optionSelectionnee()
 					{
 						Personne.remove();
+					}
+				};
+	}
+	
+	static Action getActionModifPersonne (final Inscriptions inscriptions)
+	{
+		return new Action ()
+				{
+					@Override
+					public void optionSelectionnee()
+					{
+						Personne.modif();
 					}
 				};
 	}
@@ -93,6 +118,18 @@ public class OptionUtilisateurs
 				};
 	}
 	
+	static Action getActionModifEquipe (final Inscriptions inscriptions)
+	{
+		return new Action ()
+				{
+					@Override
+					public void optionSelectionnee()
+					{
+						String nouveauNom = utilitaires.EntreesSorties.getString("Veuillez saisir le nouveau nom de l'équipe ");
+					}
+				};
+	}
+	
 	static Action getActionAjoutCompetition(final Inscriptions inscriptions)
 	{
 		return new Action()
@@ -110,7 +147,6 @@ public class OptionUtilisateurs
 					}
 				};
 	}
-	
 	
 
 }
