@@ -10,7 +10,6 @@ import inscriptions.Personne;
 import utilitaires.ligneDeCommande.ActionListe;
 import utilitaires.ligneDeCommande.Liste;
 import utilitaires.ligneDeCommande.Menu;
-import utilitaires.ligneDeCommande.Option;
 
 public class MenuUtilisateurs extends OptionUtilisateurs
 {

@@ -1,7 +1,6 @@
 package DialogueUtilisateurs;
 
 import java.time.LocalDate;
-import inscriptions.Candidat;
 import inscriptions.Competition;
 import inscriptions.Equipe;
 import inscriptions.Inscriptions;
