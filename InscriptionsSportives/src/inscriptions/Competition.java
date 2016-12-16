@@ -1,7 +1,7 @@
 package inscriptions;
-
 import java.io.Serializable;
 import java.util.Collections;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
@@ -60,10 +60,10 @@ public class Competition implements Comparable<Competition>, Serializable {
 		// antérieure à la date de clôture.
 		
 		
-		if(today.isBefore(dateCloture))
-		return true;
+		if(today.isAfter(dateCloture))
+		return false;
 		else{
-			return false;
+			return true;
 		}
 		
 
@@ -127,14 +127,15 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 * @return
 	 */
 
-	public boolean add(Personne personne) {
+	public boolean add(Personne personne)  {
 		// TODO vérifier que la date de clôture n'est pas pass�
-
 		if(this.dateCloture.isAfter(today))
 		if (enEquipe)
 			throw new RuntimeException();
 		personne.add(this);
 		return candidats.add(personne);
+		
+		
 	}
 
 	/**
@@ -148,7 +149,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public boolean add(Equipe equipe) {
 		// TODO vérifier que la date de clôture n'est pas passée
-
+		
 		if(this.dateCloture.isAfter(today))
 		if (!enEquipe)
 			throw new RuntimeException();
@@ -187,4 +188,33 @@ public class Competition implements Comparable<Competition>, Serializable {
 	public String toString() {
 		return getNom();
 	}
-}
+
+	
+public class addCloseException extends RuntimeException {
+		
+		LocalDate date,dateCloture ;
+		String nom,prenom,libelleCompet;
+		public addCloseException(Candidat c)
+	
+		{
+			date = LocalDate.now();
+			nom= c.getNom();
+			dateCloture = Competition.this.dateCloture;
+			libelleCompet = Competition.this.getNom();
+		}
+		
+
+		@Override
+		public String toString() 
+		{
+			
+			return super.toString();
+		
+		}
+		
+			
+	}	
+	}
+	
+
+

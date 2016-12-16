@@ -240,11 +240,13 @@ public class Inscriptions implements Serializable
 	
 	public static void main(String[] args)
 	{
+	
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", null, false);
+		LocalDate date = LocalDate.of(2015, 12, 31);
+		Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", date, false);
 		Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 
 				boris = inscriptions.createPersonne("Boris", "le Hachoir", "ytreza");
-		flechettes.add(tony);
+
 		Equipe lesManouches = inscriptions.createEquipe("Les Manouches");
 		lesManouches.add(boris);
 		lesManouches.add(tony);
@@ -261,5 +263,7 @@ public class Inscriptions implements Serializable
 		{
 			System.out.println("Sauvegarde impossible." + e);
 		}
+		
+
+		}
 	}
-}

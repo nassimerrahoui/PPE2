@@ -34,9 +34,15 @@ public class CompetitionTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), true);
-		assertEquals(true,c.inscriptionsOuvertes());
+		assertTrue(c.inscriptionsOuvertes());
 	}
-
+	
+	public void testInscriptionsOuvertesFalse() {
+		
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Competition c = inscriptions.createCompetition("test", LocalDate.now(),true);
+		assertFalse(c.inscriptionsOuvertes());
+	}
 	@Test
 	public void testGetDateCloture() {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
@@ -164,6 +170,16 @@ public class CompetitionTest {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 		assertNotNull(test.toString());
+	}
+	
+	@Test
+	public void testExceptionAddPers()
+	{
+		LocalDate date = LocalDate.of(2015, 12, 12);
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition t = i.createCompetition("test", date, true);
+		Personne p = i.createPersonne("test", "test", "test");
+
 	}
 
 }
