@@ -1,5 +1,6 @@
 package DialogueUtilisateurs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import inscriptions.Competition;
@@ -44,31 +45,42 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	{
 		Liste<Personne> menu = new Liste<>("Liste des Personnes","l", new ActionListe<Personne>()
 		{
-
 			@Override
-			public List<Personne> getListe(inscriptions)
+			public List<Personne> getListe()
 			{
-				return Personne;
+				return new ArrayList<>(inscriptions.getPersonnes());
 			}
 
 			@Override
 			public void elementSelectionne(int indice, Personne element)
 			{
 				Menu menu = getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
+				System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice);
 				menu.start();
 			}
 		});
+		menu.ajouteRevenir("r");
+		return menu;
 	}
 	
 	static Menu getMenuSelectionPersonnes(Inscriptions inscriptions, Personne personne)
 	{
 		Menu menuSelectionPersonnes = new Menu ("Menu Selection Personnes","s");
-		menuSelectionPersonnes.ajoute(getOptionModifPersonne(inscriptions));
-		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(inscriptions));
-		menuSelectionPersonnes.ajoute(getOptionAjoutEquipe(inscriptions));
-		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionModifPersonne(personne));
+		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(personne));
+//		menuSelectionPersonnes.ajoute(getMenuGestionEquipes());
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
+	}
+	
+	static Menu getMenuGestionPersonnes(Inscriptions inscriptions, Personne personne)
+	{
+		Menu menuGestionPersonnes = new Menu ("Menu gestion Personnes","g");
+		menuGestionPersonnes.ajoute(getOptionAjoutPersonne(inscriptions));
+		menuGestionPersonnes.ajoute(getOptionModifPersonne(personne));
+		menuGestionPersonnes.ajoute(getOptionSupprPersonne(personne));
+		menuGestionPersonnes.ajouteRevenir("r");
+		return menuGestionPersonnes;
 	}
 	
 	static Menu getMenuEquipe(Inscriptions inscriptions)
@@ -87,9 +99,9 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		{
 
 			@Override
-			public List<Equipe> getListe(inscriptions)
+			public List<Equipe> getListe()
 			{
-				return getEquipes();
+				return new ArrayList<>(inscriptions.getEquipes());
 			}
 
 			@Override
@@ -99,15 +111,27 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 				menu.start();
 			}
 		});
+		menu.ajouteRevenir("r");
+		return menu;
 	}
 	
 	static Menu getMenuSelectionEquipes(Inscriptions inscriptions, Equipe equipe)
 	{
 		Menu menuSelectionPersonnes = new Menu ("Menu Selection Equipes","s");
-		menuSelectionPersonnes.ajoute(getOptionModifEquipe(inscriptions));
-		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(inscriptions));
+		menuSelectionPersonnes.ajoute(getOptionModifEquipe(equipe));
+		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(equipe));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
+	}
+	
+	static Menu getMenuGestionEquipes(Inscriptions inscriptions, Equipe equipe)
+	{
+		Menu menuGestionEquipes = new Menu ("Menu gestion Equipes","g");
+		menuGestionEquipes.ajoute(getOptionAjoutEquipe(inscriptions));
+		menuGestionEquipes.ajoute(getOptionModifEquipe(equipe));
+		menuGestionEquipes.ajoute(getOptionSupprEquipe(equipe));
+		menuGestionEquipes.ajouteRevenir("r");
+		return menuGestionEquipes;
 	}
 	
 	static Menu getMenuCompetition(Inscriptions inscriptions)
@@ -122,13 +146,13 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuListeCompetitions(Inscriptions inscriptions)
 	{
-		Liste<Competition> menu = new Liste<>("Liste des Equipes","l", new ActionListe<Competition>()
+		Liste<Competition> menu = new Liste<>("Liste des Competitions","l", new ActionListe<Competition>()
 		{
 
 			@Override
-			public List<Competition> getListe(inscriptions)
+			public List<Competition> getListe()
 			{
-				return getCompetitions();
+				return new ArrayList<>(inscriptions.getCompetitions());
 			}
 
 			@Override
@@ -139,15 +163,27 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			}
 
 		});
+		menu.ajouteRevenir("r");
+		return menu;
 	}
 	
 	static Menu getMenuSelectionCompetitions(Inscriptions inscriptions, Competition competition)
 	{
 		Menu menuSelectionCompetitions = new Menu ("Menu Selection Competitions","s");
-		menuSelectionCompetitions.ajoute(getOptionModifCompetition(inscriptions));
-		menuSelectionCompetitions.ajoute(getOptionSupprCompetition(inscriptions));
+		menuSelectionCompetitions.ajoute(getOptionModifCompetition(competition));
+		menuSelectionCompetitions.ajoute(getOptionSupprCompetition(competition));
 		menuSelectionCompetitions.ajouteRevenir("r");
 		return menuSelectionCompetitions;
+	}
+	
+	static Menu getMenuGestionCompetitions(Inscriptions inscriptions, Competition competition)
+	{
+		Menu menuGestionCompetitions = new Menu ("Menu gestion Equipes","g");
+		menuGestionCompetitions.ajoute(getOptionAjoutCompetition(inscriptions));
+		menuGestionCompetitions.ajoute(getOptionModifCompetition(competition));
+		menuGestionCompetitions.ajoute(getOptionSupprCompetition(competition));
+		menuGestionCompetitions.ajouteRevenir("r");
+		return menuGestionCompetitions;
 	}
 	
 }
