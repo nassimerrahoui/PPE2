@@ -54,7 +54,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			public void elementSelectionne(int indice, Personne element)
 			{
 				Menu menu = getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
-				System.out.println("Vous avez sélectionné "+ element+ ", qui a l'indice " + indice);
+				System.out.println("Vous avez sélectionné "+ element+"");
 				menu.start();
 			}
 		});
@@ -67,7 +67,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		Menu menuSelectionPersonnes = new Menu ("Menu Selection Personnes","s");
 		menuSelectionPersonnes.ajoute(getOptionModifPersonne(personne));
 		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(personne));
-//		menuSelectionPersonnes.ajoute(getMenuGestionEquipes());
+		menuSelectionPersonnes.ajoute(getMenuGestionPersonneEquipes(inscriptions, personne));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
 	}
@@ -80,6 +80,26 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuGestionPersonnes.ajoute(getOptionSupprPersonne(personne));
 		menuGestionPersonnes.ajouteRevenir("r");
 		return menuGestionPersonnes;
+	}
+	
+
+	static Menu getMenuGestionPersonneEquipes(Inscriptions inscriptions, Personne personne)
+	{
+		Menu menuGestionPersonneEquipes = new Menu ("Menu gestion des Equipes de la personne","g");
+		menuGestionPersonneEquipes.ajoute(getOptionAjoutPersonneEquipe(personne, inscriptions));
+		menuGestionPersonneEquipes.ajoute(getOptionSupprPersonneEquipe(personne, inscriptions));
+		menuGestionPersonneEquipes.ajouteRevenir("r");
+		return menuGestionPersonneEquipes;
+	}
+	
+
+	static Menu getMenuGestionPersonneCompetitions(Inscriptions inscriptions, Personne personne)
+	{
+		Menu menuGestioPersonneCompetitions = new Menu ("Menu gestion Personne dans une Compétition","g");
+		menuGestioPersonneCompetitions.ajoute(getOptionAjoutPersonneCompetition(personne, inscriptions));
+		menuGestioPersonneCompetitions.ajoute(getOptionSupprPersonneCompetition(personne, inscriptions));
+		menuGestioPersonneCompetitions.ajouteRevenir("r");
+		return menuGestioPersonneCompetitions;
 	}
 	
 	static Menu getMenuEquipe(Inscriptions inscriptions)
@@ -107,6 +127,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			public void elementSelectionne(int indice, Equipe element)
 			{
 				Menu menu = getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
+				System.out.println("Vous avez sélectionné "+ element+ "");
 				menu.start();
 			}
 		});
@@ -121,16 +142,6 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(equipe));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
-	}
-	
-	static Menu getMenuGestionEquipes(Inscriptions inscriptions, Equipe equipe)
-	{
-		Menu menuGestionEquipes = new Menu ("Menu gestion Equipes","g");
-		menuGestionEquipes.ajoute(getOptionAjoutEquipe(inscriptions));
-		menuGestionEquipes.ajoute(getOptionModifEquipe(equipe));
-		menuGestionEquipes.ajoute(getOptionSupprEquipe(equipe));
-		menuGestionEquipes.ajouteRevenir("r");
-		return menuGestionEquipes;
 	}
 	
 	static Menu getMenuCompetition(Inscriptions inscriptions)
@@ -173,16 +184,6 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuSelectionCompetitions.ajoute(getOptionSupprCompetition(competition));
 		menuSelectionCompetitions.ajouteRevenir("r");
 		return menuSelectionCompetitions;
-	}
-	
-	static Menu getMenuGestionCompetitions(Inscriptions inscriptions, Competition competition)
-	{
-		Menu menuGestionCompetitions = new Menu ("Menu gestion Equipes","g");
-		menuGestionCompetitions.ajoute(getOptionAjoutCompetition(inscriptions));
-		menuGestionCompetitions.ajoute(getOptionModifCompetition(competition));
-		menuGestionCompetitions.ajoute(getOptionSupprCompetition(competition));
-		menuGestionCompetitions.ajouteRevenir("r");
-		return menuGestionCompetitions;
 	}
 	
 }
