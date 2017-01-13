@@ -36,7 +36,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuPersonne.ajoute(getOptionAjoutPersonne(inscriptions));
 		menuPersonne.ajoute(getMenuListePersonnes(inscriptions));
 		menuPersonne.ajouteRevenir("r");
-        menuPersonne.setRetourAuto(true);
+        menuPersonne.setRetourAuto(false);
 		return menuPersonne;
 	}
 	
@@ -108,7 +108,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuEquipe.ajoute(getOptionAjoutEquipe(inscriptions));
 		menuEquipe.ajoute(getMenuListeEquipes(inscriptions));
 		menuEquipe.ajouteRevenir("r");
-        menuEquipe.setRetourAuto(true);
+        menuEquipe.setRetourAuto(false);
 		return menuEquipe;
 	}
 	

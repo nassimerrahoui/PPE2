@@ -60,11 +60,8 @@ public class Competition implements Comparable<Competition>, Serializable {
 		// ant√©rieure √† la date de cl√¥ture.
 		
 		
-		if(today.isAfter(dateCloture))
-		return false;
-		else{
-			return true;
-		}
+		return (today.isBefore(dateCloture));
+		
 		
 
 		
@@ -103,6 +100,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 		// TODO vÈrifier que l'on avance pas la date.Modifie la date de cloture
 		// des inscriptions.
 		// Il est possible de la reculer mais pas de l'avancer.
+		//TODO ajouter exceptions dans le cas ou Áa ne passe pas
 
 		if(dateCloture.isAfter(this.dateCloture))
 		this.dateCloture = dateCloture;

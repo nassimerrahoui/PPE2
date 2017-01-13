@@ -1,11 +1,17 @@
 package Test;
 
-import static org.junit.Assert.*;  
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.time.LocalDate;
 
 import org.junit.Test;
+
+import inscriptions.Competition;
+import inscriptions.Equipe;
 import inscriptions.Inscriptions;
 import inscriptions.Personne;
-import inscriptions.Equipe;
 
 public class PersonneTest {
 	
@@ -14,8 +20,12 @@ public class PersonneTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
+		Competition c= inscriptions.createCompetition("test", LocalDate.of(2016,12,31),false);
+		c.add(testeur);
 		testeur.delete();
 		assertTrue(!inscriptions.getCandidats().contains(testeur));
+		assertTrue(!c.getCandidats().contains(testeur));
+		
 	}
 
 	@Test
