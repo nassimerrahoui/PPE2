@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import inscriptions.Competition;
-import inscriptions.Equipe;
-import inscriptions.Inscriptions;
-import inscriptions.Personne;
+import Metier.Competition;
+import Metier.Equipe;
+import Metier.Inscriptions;
+import Metier.Personne;
 import utilitaires.ligneDeCommande.Action;
 import utilitaires.ligneDeCommande.ActionListe;
 import utilitaires.ligneDeCommande.Liste;

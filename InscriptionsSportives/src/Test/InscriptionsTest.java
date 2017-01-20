@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import inscriptions.Competition;
-import inscriptions.Equipe;
-import inscriptions.Inscriptions;
-import inscriptions.Personne;
+import Metier.Competition;
+import Metier.Equipe;
+import Metier.Inscriptions;
+import Metier.Personne;
 
 public class InscriptionsTest {
 

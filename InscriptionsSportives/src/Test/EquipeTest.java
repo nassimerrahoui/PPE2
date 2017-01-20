@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import inscriptions.Equipe;
-import inscriptions.Inscriptions;
-import inscriptions.Personne;
+import Metier.Equipe;
+import Metier.Inscriptions;
+import Metier.Personne;
 
 public class EquipeTest {
 

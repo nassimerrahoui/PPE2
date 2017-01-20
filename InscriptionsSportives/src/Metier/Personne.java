@@ -1,4 +1,4 @@
-package inscriptions;
+package Metier;
 
 import java.util.Collections;
 import java.util.Set;
