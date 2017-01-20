@@ -1,12 +1,12 @@
-package DialogueUtilisateurs;
+package dialogueUtilisateurs;
 //Changement pour commit 13/01/2017
 import java.util.ArrayList;
 import java.util.List;
 
-import Metier.Competition;
-import Metier.Equipe;
-import Metier.Inscriptions;
-import Metier.Personne;
+import metier.Competition;
+import metier.Equipe;
+import metier.Inscriptions;
+import metier.Personne;
 import utilitaires.ligneDeCommande.ActionListe;
 import utilitaires.ligneDeCommande.Liste;
 import utilitaires.ligneDeCommande.Menu;

@@ -1,4 +1,4 @@
-package Metier;
+package metier;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import persistance.lectureBase;
 
 /**
  * Point d'entrée dans l'application, un seul objet de type Inscription
@@ -254,6 +256,7 @@ public class Inscriptions implements Serializable
 		lesManouches.delete();
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
+		System.out.println(lectureBase.afficher());
 
 		try
 		{
@@ -263,7 +266,5 @@ public class Inscriptions implements Serializable
 		{
 			System.out.println("Sauvegarde impossible." + e);
 		}
-		
-
 		}
 	}

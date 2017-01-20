@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,10 +8,10 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import Metier.Competition;
-import Metier.Equipe;
-import Metier.Inscriptions;
-import Metier.Personne;
+import metier.Competition;
+import metier.Equipe;
+import metier.Inscriptions;
+import metier.Personne;
 
 public class PersonneTest {
 	

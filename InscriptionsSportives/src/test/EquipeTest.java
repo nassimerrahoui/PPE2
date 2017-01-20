@@ -1,13 +1,13 @@
-package Test;
+package test;
 
 import static org.junit.Assert.*;
 
 
 import org.junit.Test;
 
-import Metier.Equipe;
-import Metier.Inscriptions;
-import Metier.Personne;
+import metier.Equipe;
+import metier.Inscriptions;
+import metier.Personne;
 
 public class EquipeTest {
 

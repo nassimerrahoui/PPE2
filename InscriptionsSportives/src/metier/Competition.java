@@ -1,4 +1,4 @@
-package Metier;
+package metier;
 import java.io.Serializable;
 import java.util.Collections;
 import java.io.IOException;
