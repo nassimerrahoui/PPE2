@@ -38,7 +38,7 @@ public class lectureBase
 		{
 			e.printStackTrace();
 		}
-		/*finallys
+		/*finally
 		{
 			try
 			{
