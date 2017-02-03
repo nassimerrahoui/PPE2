@@ -198,6 +198,13 @@ public class OptionUtilisateurs
 							{
 								element.add(personne);	
 							}
+
+							@Override
+							public Option getOption(Equipe element)
+							{
+								// TODO Auto-generated method stub
+								return null;
+							}
 						});
 					}
 				};
@@ -222,6 +229,13 @@ public class OptionUtilisateurs
 							public void elementSelectionne(int indice, Equipe element)
 							{
 								element.remove(personne);	
+							}
+
+							@Override
+							public Option getOption(Equipe element)
+							{
+								// TODO Auto-generated method stub
+								return null;
 							}
 						});
 					}
@@ -310,6 +324,13 @@ public class OptionUtilisateurs
 								element.add(personne);
 							}
 
+							@Override
+							public Option getOption(Competition element)
+							{
+								// TODO Auto-generated method stub
+								return null;
+							}
+
 						});
 					}
 				};
@@ -335,6 +356,13 @@ public class OptionUtilisateurs
 							public void elementSelectionne(int indice, Competition element)
 							{
 								element.remove(personne);
+							}
+
+							@Override
+							public Option getOption(Competition element)
+							{
+								// TODO Auto-generated method stub
+								return null;
 							}
 
 						});

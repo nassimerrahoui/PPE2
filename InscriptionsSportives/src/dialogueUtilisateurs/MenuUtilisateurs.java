@@ -10,6 +10,7 @@ import metier.Personne;
 import utilitaires.ligneDeCommande.ActionListe;
 import utilitaires.ligneDeCommande.Liste;
 import utilitaires.ligneDeCommande.Menu;
+import utilitaires.ligneDeCommande.Option;
 
 public class MenuUtilisateurs extends OptionUtilisateurs
 {
@@ -52,10 +53,12 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 			@Override
 			public void elementSelectionne(int indice, Personne element)
+			{}
+
+			@Override
+			public Option getOption(Personne element)
 			{
-				Menu menu = getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
-				System.out.println("Vous avez sélectionné "+ element+"");
-				menu.start();
+				return getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
 			}
 		});
 		menu.ajouteRevenir("r");
@@ -64,7 +67,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuSelectionPersonnes(Inscriptions inscriptions, Personne personne)
 	{
-		Menu menuSelectionPersonnes = new Menu ("Menu Selection Personnes","s");
+		Menu menuSelectionPersonnes = new Menu (personne.getPrenom()+ " "+personne.getNom(),"s");
 		menuSelectionPersonnes.ajoute(getOptionModifPersonne(personne));
 		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(personne));
 		menuSelectionPersonnes.ajoute(getMenuGestionPersonneEquipes(inscriptions, personne));
@@ -125,10 +128,12 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 			@Override
 			public void elementSelectionne(int indice, Equipe element)
+			{}
+			
+			@Override
+			public Option getOption(Equipe element)
 			{
-				Menu menu = getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
-				System.out.println("Vous avez sélectionné "+ element+ "");
-				menu.start();
+				return getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
 			}
 		});
 		menu.ajouteRevenir("r");
@@ -137,7 +142,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuSelectionEquipes(Inscriptions inscriptions, Equipe equipe)
 	{
-		Menu menuSelectionPersonnes = new Menu ("Menu Selection Equipes","s");
+		Menu menuSelectionPersonnes = new Menu (equipe.getNom()+ "","s");
 		menuSelectionPersonnes.ajoute(getOptionModifEquipe(equipe));
 		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(equipe));
 		menuSelectionPersonnes.ajouteRevenir("r");
@@ -167,9 +172,12 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 			@Override
 			public void elementSelectionne(int indice, Competition element)
+			{}
+			
+			@Override
+			public Option getOption(Competition element)
 			{
-				Menu menu = getMenuSelectionCompetitions(Inscriptions.getInscriptions(), element);
-				menu.start();
+				return getMenuSelectionCompetitions(Inscriptions.getInscriptions(), element);
 			}
 
 		});
@@ -179,7 +187,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuSelectionCompetitions(Inscriptions inscriptions, Competition competition)
 	{
-		Menu menuSelectionCompetitions = new Menu ("Menu Selection Competitions","s");
+		Menu menuSelectionCompetitions = new Menu (competition.getNom()+""+" se terminant le "+competition.getDateCloture(),"s");
 		menuSelectionCompetitions.ajoute(getOptionModifCompetition(competition));
 		menuSelectionCompetitions.ajoute(getOptionSupprCompetition(competition));
 		menuSelectionCompetitions.ajouteRevenir("r");
