@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import persistance.appartenir;
 import persistance.lectureBase;
 
 /**
@@ -256,7 +257,10 @@ public class Inscriptions implements Serializable
 		lesManouches.delete();
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
-		System.out.println(lectureBase.afficher());
+		lectureBase CO = new lectureBase();
+		System.out.println(CO.bddConnexion());
+		appartenir AP = new appartenir();
+		System.out.println(AP.addMembre(8,5));
 
 		try
 		{

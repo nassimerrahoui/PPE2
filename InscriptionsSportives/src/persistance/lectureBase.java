@@ -9,23 +9,30 @@ import com.mysql.jdbc.Statement;
 
 public class lectureBase 
 {
-	public static String afficher()
-	{
-	String url = "jdbc:mysql://localhost/sport";
-	String login = "root";
-	String passwd = "";
-	Connection cn = null;
-	Statement st = null;
-	//ResultSet rs = null;
-	String message = "";
+	String url;
+	String login;
+	String passwd;
+	Connection cn;
+	Statement st;
+	String message;
 	
+	public lectureBase()
+	{
+		url = "jdbc:mysql://localhost/sport";
+		login = "root";
+		passwd = "";
+		cn = null;
+		st = null;
+		message = "";
+	}
+	
+	public String bddConnexion()
+	{
 		try	
 		{
 			Class.forName("com.mysql.jdbc.Driver");
 			cn = (Connection) DriverManager.getConnection(url, login, passwd);
 			st = (Statement) cn.createStatement();
-			/*String sql = "SELECT * FROM salarie";
-			rs = st.executeQuery(sql);*/
 			message = "Vous êtes connecté";
 		}
 		
@@ -38,18 +45,6 @@ public class lectureBase
 		{
 			e.printStackTrace();
 		}
-		/*finally
-		{
-			try
-			{
-				cn.close();
-				st.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}*/
 		return message;
 	}
 	

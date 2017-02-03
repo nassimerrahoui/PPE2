@@ -11,6 +11,7 @@ public class lectureBaseTest {
 	@Test
 	public void testAfficher() 
 	{
-		assertEquals("Vous êtes connecté",lectureBase.afficher());
+		lectureBase CO = new lectureBase();
+		assertEquals("Vous êtes connecté",CO.bddConnexion());
 	}
 }
