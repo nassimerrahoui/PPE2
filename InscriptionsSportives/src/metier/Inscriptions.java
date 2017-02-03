@@ -257,10 +257,10 @@ public class Inscriptions implements Serializable
 		lesManouches.delete();
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
-		lectureBase CO = new lectureBase();
-		System.out.println(CO.bddConnexion());
-		appartenir AP = new appartenir();
-		System.out.println(AP.addMembre(8,5));
+		//lectureBase CO = new lectureBase();
+		//System.out.println(CO.bddConnexion());
+		//appartenir AP = new appartenir();
+		//System.out.println(AP.addMembre(8,5));
 
 		try
 		{
