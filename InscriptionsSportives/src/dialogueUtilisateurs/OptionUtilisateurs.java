@@ -178,35 +178,48 @@ public class OptionUtilisateurs
 				};
 	}
 	
-	static Action getActionAjoutPersonneEquipe (final Personne personne, Inscriptions inscriptions)
+	static Liste getListeEquipe (final List equipes)
 	{
-		return new Action ()
+		Liste liste = new Liste<>("Selectionnez une Equipe",getActionListeAjoutPersonneEquipe(equipes, null, null));
+		return liste;
+	}
+	
+	static ActionListe getActionListeAjoutPersonneEquipe (final List equipes, Personne personne, Inscriptions inscriptions)
+	{
+		return new ActionListe()
 				{
-					@Override
-					public void optionSelectionnee()
-					{
-						Liste<Equipe> menu = new Liste<>("Selectionnez une Equipe","s", new ActionListe<Equipe>()
-						{
-							@Override
-							public List<Equipe> getListe()
-							{
-								return new ArrayList<>(inscriptions.getEquipes());
-							}
-
-							@Override
+							public List getListe()
+			                {
+			                        return equipes;
+			                }
+							
 							public void elementSelectionne(int indice, Equipe element)
+							{}
+
+							public Option getOption(Equipe element)
 							{
-								element.add(personne);	
+								return new Option("Afficher "+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
+								{
+									public void optionSelectionnee()
+									{
+										element.add(personne);
+									}
+								});
 							}
 
 							@Override
-							public Option getOption(Equipe element)
+							public void elementSelectionne(int indice, Object element)
+							{
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public Option getOption(Object element)
 							{
 								// TODO Auto-generated method stub
 								return null;
 							}
-						});
-					}
 				};
 	}
 	
