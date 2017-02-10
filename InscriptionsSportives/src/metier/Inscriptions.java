@@ -256,8 +256,7 @@ public class Inscriptions implements Serializable
 		lesManouches.delete();
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
-		System.out.println(lectureBase.afficher());
-
+		System.out.println(lectureBase.afficher());	
 		try
 		{
 			inscriptions.sauvegarder();
@@ -266,5 +265,6 @@ public class Inscriptions implements Serializable
 		{
 			System.out.println("Sauvegarde impossible." + e);
 		}
+		
 		}
 	}

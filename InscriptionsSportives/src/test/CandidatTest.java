@@ -38,8 +38,15 @@ public class CandidatTest {
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Competition CompetTest = inscriptions.createCompetition("Mondial de test", LocalDate.now().plusDays(20), false);
 		Competition CompetTest2 = inscriptions.createCompetition("Mondial de test", LocalDate.now().plusDays(20), false);
-		CompetTest.add(testeur);
-		CompetTest2.add(testeur);
+		try{
+			CompetTest.add(testeur);
+			CompetTest2.add(testeur);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+
 		assertTrue(testeur.getCompetitions().contains(CompetTest));
 		assertTrue(testeur.getCompetitions().contains(CompetTest2));
 		
@@ -64,9 +71,12 @@ public class CandidatTest {
 		Personne b = inscriptions.createPersonne("test", "testeur", "mail.com");
 		
 		assertEquals(0,a.compareTo(b));
-		//TODO > Tester quand c'est !=
 		
-
+		//Teste  quand c'est !=
+		Inscriptions i = Inscriptions.getInscriptions();
+		Personne aa = i.createPersonne("test", "testeur", "mail.com");
+		Personne bb = i.createPersonne("testrf", "testeur", "mail.com");
+		assertNotEquals(0,aa.compareTo(bb));
 	}
 
 	@Test

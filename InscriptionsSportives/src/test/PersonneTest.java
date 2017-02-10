@@ -20,8 +20,14 @@ public class PersonneTest {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Competition c= inscriptions.createCompetition("test", LocalDate.of(2016,12,31),false);
-		c.add(testeur);
+		Competition c= inscriptions.createCompetition("test", LocalDate.now().plusDays(10),false);
+		try{
+			c.add(testeur); 
+		}
+		catch (Exception ex){
+			
+			System.out.println(ex);
+		}
 		testeur.delete();
 		assertTrue(!inscriptions.getCandidats().contains(testeur));
 		assertTrue(!c.getCandidats().contains(testeur));
