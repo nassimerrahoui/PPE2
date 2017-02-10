@@ -155,7 +155,6 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuCompetition.ajoute(getOptionAjoutCompetition(inscriptions));
 		menuCompetition.ajoute(getMenuListeCompetitions(inscriptions));
 		menuCompetition.ajouteRevenir("r");
-        menuCompetition.setRetourAuto(true);
 		return menuCompetition;
 	}
 	
