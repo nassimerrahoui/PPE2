@@ -1,15 +1,22 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 
 import org.junit.Test;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
+import metier.Competition.setDateClotureException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
+
 
 public class CompetitionTest {
 
@@ -65,24 +72,32 @@ public class CompetitionTest {
 		LocalDate test2 = LocalDate.now().plusDays(20);
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", test, true);
+		try{
 		c.setDateCloture(test2);
+		}
+		catch (Exception e){
+			
+			System.out.println(e);
+		}
 		assertEquals(test2,c.getDateCloture());
 	}
 
 	@Test
 	public void testGetCandidats() {
 		
-
-		Inscriptions i = Inscriptions.getInscriptions();
-		Competition c = i.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
-		Personne p = i.createPersonne("test", "test", "test");
-		Personne pp = i.createPersonne("test", "test", "test");
-		c.add(p);
-		c.add(pp);
-		assertTrue(c.getCandidats().contains(p));
-		assertTrue(c.getCandidats().contains(pp));
-		
-		
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), false);
+		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
+		Personne testeur2 = inscriptions.createPersonne("test", "testeur", "azerty");
+		try {
+			c.add(testeur);
+			c.add(testeur2);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		assertTrue(c.getCandidats().contains(testeur));
 		
 	}
 
@@ -92,13 +107,21 @@ public class CompetitionTest {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		LocalDate date = LocalDate.now().plusDays(20);
 		Competition c = inscriptions.createCompetition("test", date, false);
-		Personne p = inscriptions.createPersonne("test", "prenom", "mail");
-		int sizeBefore = c.getCandidats().size();
-		c.add(p);
-		int sizeAfter = c.getCandidats().size();
-		assertTrue(c.getCandidats().contains(p));
-		assertEquals(sizeBefore+1,sizeAfter);
 		
+		Personne p = inscriptions.createPersonne("test", "prenom", "mail");
+		Personne pp = inscriptions.createPersonne("test", "prenom", "mail");
+
+		try{
+		c.add(p);
+		c.add(pp);
+		}
+		catch (Exception a){
+			
+			System.out.println(a);
+		}
+		
+		assertTrue(c.getCandidats().contains(p));
+		assertTrue(c.getCandidats().contains(pp));
 	}
 
 	@Test
@@ -117,18 +140,16 @@ public class CompetitionTest {
 		e.add(p);
 		e.add(pp);
 		ee.add(ppp);
-		
+		try{
 		c.add(e);
 		c.add(ee);
-		int sizeBefore = inscriptions.getCandidats().size();
-		Equipe eee = inscriptions.createEquipe("testTeam2");
-		Personne test = inscriptions.createPersonne("test", "test", "test@mail");
-		eee.add(test);
-		c.add(eee);
-		assertTrue(inscriptions.getCandidats().contains(eee));
-		int sizeAfter = inscriptions.getCandidats().size();
-		assertEquals(sizeBefore+1,sizeAfter);
-
+		}
+		catch (Exception a){
+			
+			System.out.println(a);
+		}
+		assertTrue(c.getCandidats().contains(e));
+		assertTrue(c.getCandidats().contains(ee));
 	}
 
 	@Test
@@ -138,12 +159,17 @@ public class CompetitionTest {
 		Competition c = i.createCompetition("test", date,false);
 		Personne p = i.createPersonne("nom", "prenom", "mail");
 		Personne pp = i.createPersonne("nom", "prenom", "mail");
-		c.add(p);
-		c.add(pp);
-		int sizeBefore = c.getCandidats().size();
+		try{
+			c.add(p);
+			c.add(pp);
+		}
+		catch (Exception ex){
+			
+			System.out.println(ex);
+		}
+
 		c.remove(p);
-		int sizeAfter = c.getCandidats().size();
-		assertEquals(sizeBefore-1,sizeAfter);
+		assertTrue(!c.getCandidats().contains(p));
 	}
 
 	@Test
@@ -172,14 +198,52 @@ public class CompetitionTest {
 		assertNotNull(test.toString());
 	}
 	
-	@Test
-	public void testExceptionAddPers()
+	@Test(expected = enEquipeException.class)  
+	public void testEnEquipeExceptionPers() throws addCloseException, metier.Competition.enEquipeException
 	{
-		LocalDate date = LocalDate.of(2015, 12, 12);
 		Inscriptions i = Inscriptions.getInscriptions();
-		Competition t = i.createCompetition("test", date, true);
+		Competition c = i.createCompetition("CompetTest",LocalDate.now().plusDays(10),true);
 		Personne p = i.createPersonne("test", "test", "test");
+		c.add(p);
+	}
 
+	@Test(expected = addCloseException.class)  
+	public void testAddCloseExceptionPers() throws addCloseException, metier.Competition.enEquipeException
+	{
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("CompetTest",LocalDate.now().minusDays(10),false);
+		Personne p = i.createPersonne("test", "test", "test");
+		c.add(p);
+	}
+	
+	@Test(expected = enEquipeException.class)  
+	public void testEnEquipeExceptionEqu() throws addCloseException, metier.Competition.enEquipeException
+	{
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("CompetTest",LocalDate.now().plusDays(10),false);
+		Equipe e = i.createEquipe("testTeam");
+		Personne p = i.createPersonne("test", "test", "test");
+		e.add(p);
+		c.add(e);
+	}
+	
+	@Test(expected = addCloseException.class)  
+	public void testAddCloseExceptionEqu() throws addCloseException, metier.Competition.enEquipeException
+	{
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("CompetTest",LocalDate.now().minusDays(10),true);
+		Equipe e = i.createEquipe("testTeam");
+		Personne p = i.createPersonne("test", "test", "test");
+		e.add(p);
+		c.add(e);
+	}
+	
+	@Test(expected = setDateClotureException.class)
+	public void testSetDateClotureException() throws setDateClotureException
+	{
+		Inscriptions i = Inscriptions.getInscriptions();
+		Competition c = i.createCompetition("CompetTest",LocalDate.now().plusDays(10),true);
+		c.setDateCloture(LocalDate.now().minusDays(10));
 	}
 
 }

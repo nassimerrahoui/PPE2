@@ -71,13 +71,8 @@ public class InscriptionsTest {
 	public void testCreateCompetition() {
 		
 		Inscriptions i = Inscriptions.getInscriptions();
-		int before = i.getCompetitions().size();
 		Competition c = i.createCompetition("test", LocalDate.now().plusDays(10), true);
-		int after = i.getCompetitions().size();
 		assertTrue(i.getCompetitions().contains(c));
-		assertEquals(before+1,after);
-
-
 	}
 
 	@Test

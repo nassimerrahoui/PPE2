@@ -96,15 +96,18 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 * @param dateCloture
 	 */
 
-	public void setDateCloture(LocalDate dateCloture) {
+	public void setDateCloture(LocalDate dateCloture) throws setDateClotureException {
 		// TODO vérifier que l'on avance pas la date.Modifie la date de cloture
 		// des inscriptions.
 		// Il est possible de la reculer mais pas de l'avancer.
 		//TODO ajouter exceptions dans le cas ou ça ne passe pas
-
-		if(dateCloture.isAfter(this.dateCloture))
-		this.dateCloture = dateCloture;
+		
+		if(dateCloture.isBefore(this.dateCloture))
+			throw new setDateClotureException(dateCloture);
+			this.dateCloture = dateCloture;
+		
 	}
+
 
 	/**
 	 * Retourne l'ensemble des candidats inscrits.
@@ -125,15 +128,17 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 * @return
 	 */
 
-	public boolean add(Personne personne)  {
-		// TODO vÃ©rifier que la date de clÃ´ture n'est pas passé
-		if(this.dateCloture.isAfter(today))
-		if (enEquipe)
-			throw new RuntimeException();
-		personne.add(this);
+	public boolean add(Personne personne) throws addCloseException,enEquipeException {
+		// TODO vÃ©rifier que la date de clÃ´ture n'est pas passÃ©e
+		
+			if(this.dateCloture.isBefore(today))
+				throw new addCloseException(personne);
+			if (enEquipe)
+				throw new enEquipeException(personne);
+			
+				personne.add(this);
+		
 		return candidats.add(personne);
-		
-		
 	}
 
 	/**
@@ -145,13 +150,16 @@ public class Competition implements Comparable<Competition>, Serializable {
 	 * @return
 	 */
 
-	public boolean add(Equipe equipe) {
+	public boolean add(Equipe equipe) throws addCloseException,enEquipeException {
 		// TODO vÃ©rifier que la date de clÃ´ture n'est pas passÃ©e
 		
-		if(this.dateCloture.isAfter(today))
-		if (!enEquipe)
-			throw new RuntimeException();
-		equipe.add(this);
+			if(this.dateCloture.isBefore(today))
+				throw new addCloseException(equipe);
+			if (!enEquipe)
+				throw new enEquipeException(equipe);
+			
+				equipe.add(this);
+		
 		return candidats.add(equipe);
 	}
 
@@ -188,31 +196,108 @@ public class Competition implements Comparable<Competition>, Serializable {
 	}
 
 	
-public class addCloseException extends RuntimeException {
+public class enEquipeException extends Exception {
 		
 		LocalDate date,dateCloture ;
-		String nom,prenom,libelleCompet;
-		public addCloseException(Candidat c)
-	
-		{
+		String nom,libelleCompet,typeCompet,typePers;
+		
+	public enEquipeException(Personne p){
 			date = LocalDate.now();
-			nom= c.getNom();
+			nom= p.getNom();
 			dateCloture = Competition.this.dateCloture;
 			libelleCompet = Competition.this.getNom();
+			typePers="personne";
+			typeCompet = "collective";		
 		}
 		
-
+	public enEquipeException(Equipe e){
+			date = LocalDate.now();
+			nom= e.getNom();
+			dateCloture = Competition.this.dateCloture;
+			libelleCompet = Competition.this.getNom();
+			typePers="equipe";
+			typeCompet = "individuelle";
+			
+			
+		}
+		
 		@Override
-		public String toString() 
+		public String toString()
 		{
-			
-			return super.toString();
-		
+			String result = super.toString();
+			result += " ERREUR! Vous tentez d'inscrire le candidat :" + this.nom + "\n"+
+					" de type:" + this.typePers + "\n"+
+					" le:" + this.date + "\n"+
+					" a la compétition: "+ this.libelleCompet + "\n"+
+					" alors que cette competition est de type :" + this.typeCompet;
+			return result;
 		}
 		
-			
-	}	
+		
+		
 	}
 	
+	public class setDateClotureException extends Exception{
+		
+		String libelleCompet,type;
+		LocalDate dateCloture, dateSet;
+		
+		public setDateClotureException(LocalDate dateSet)
+		{
+			this.libelleCompet = Competition.this.getNom();
+			this.dateSet = dateSet;
+			this.dateCloture = Competition.this.dateCloture;
+		}
+		
+		@Override
+		public String toString()
+		{
+			String res = super.toString();
+			res += "Impossible de changer la date de clôture de la competition :"+this.libelleCompet +"\n" +
+			"à une date antérieur à celle de la date de clôture initiale. \n"+
+			"Date saisie :" + this.dateSet + "\n"+
+			"Date de clôture initial :"+ this.dateCloture; 
+			return res;
+		}
+		
+	}
+		
+	public class addCloseException extends Exception {
+			
+			LocalDate date,dateCloture ;
+			String nom,libelleCompet,typeCompet;
+			
+			public addCloseException(Candidat c)
+			{
+				date = LocalDate.now();
+				nom= c.getNom();
+				dateCloture = Competition.this.dateCloture;
+				libelleCompet = Competition.this.getNom();
+				if (!enEquipe)
+				{
+					typeCompet = "individuelle";  
+				}
+				else
+				{
+					typeCompet = "collective";
+				}
+			}
+			
 
-
+			@Override
+			public String toString() 
+			{
+				String result = super.toString();
+				result += " ERREUR! Vous tentez d'inscrire le candidat :" + this.nom + "\n"+
+						" le:" + this.date + "\n"+
+						" a la compétition: "+ this.libelleCompet + "\n"+
+						"de type: " + this.typeCompet +"\n"+
+						" alors que la date de clôture de celle-ci est dépassée"+"\n"+
+						"date clôture : "+this.dateCloture;
+				return result;
+			
+			}
+			
+			
+		}	
+		}
