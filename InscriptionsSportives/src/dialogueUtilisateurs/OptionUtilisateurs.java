@@ -254,19 +254,19 @@ public class OptionUtilisateurs
 								mois = utilitaires.EntreesSorties.getInt("Saisissez un mois :"),
 								annee = utilitaires.EntreesSorties.getInt("Saisissez une Année:");
 						LocalDate dateCloture = LocalDate.of (annee,mois,jour);
-						String equipe = utilitaires.EntreesSorties.getString("est il en equipe: o:oui n:non");
+						String equipe = utilitaires.EntreesSorties.getString("est il en equipe: o:oui	n:non");
 						
 						Boolean enEquipe;
-						if (equipe == "n") {
-								enEquipe = false;
+						if (equipe.equals("n")) {
+							enEquipe = false;
 						}
-						else if (equipe == "o"){
+						else if (equipe.equals("o")){
 							enEquipe = true;
 						}
 						else{
 							enEquipe = null;
 						}
-								inscriptions.createCompetition(nom, dateCloture, enEquipe);
+								inscriptions.createCompetition(nom, dateCloture,enEquipe);
 					}
 				};
 	}
