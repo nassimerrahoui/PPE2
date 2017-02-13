@@ -11,7 +11,7 @@ import com.mysql.jdbc.Statement;
 public class appartenir
 {	
 	lectureBase CO;
-	ResultSet rs;
+	String message;
 	
 	public String addMembre(int idPersonne, int idEquipe)
 	{
@@ -22,15 +22,15 @@ public class appartenir
 			CO.bddConnexion();
 			java.sql.CallableStatement cs = CO.cn.prepareCall("{call addMembre("+idPersonne+","+idEquipe+")}"); 
 		    cs.execute();
-			CO.message = "Membre ajouté";
+			message = "Membre ajouté";
 		}
 		
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			CO.message = "Erreur d'ajout de membre";
+			message = "Erreur d'ajout de membre";
 		}
-		return CO.message;
+		return message;
 		
 	}
 
