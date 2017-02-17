@@ -1,18 +1,20 @@
 package dialogueUtilisateurs;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+
+import commandLine.*;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
+import metier.Competition.setDateClotureException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
-import utilitaires.ligneDeCommande.Action;
-import utilitaires.ligneDeCommande.ActionListe;
-import utilitaires.ligneDeCommande.Liste;
-import utilitaires.ligneDeCommande.Menu;
-import utilitaires.ligneDeCommande.Option;
 
 public class OptionUtilisateurs
 {
@@ -35,18 +37,19 @@ public class OptionUtilisateurs
 		return ModifPersonne;
 	}
 	
-
 	static Option getOptionAjoutPersonneEquipe(Personne personne, Inscriptions inscriptions)
 	{
-		Option ajoutpEquipe = new Option ("Ajouter une Personne a une Equipe","ape",getActionAjoutPersonneEquipe(personne, inscriptions));
+		Liste<Equipe> ajoutpEquipe = new Liste<> ("Ajouter une Personne a une Equipe","ape",getActionListeAjoutPersonneEquipe(personne, inscriptions));
 		return ajoutpEquipe;
 	}
 	
 	static Option getOptionSupprPersonneEquipe(Personne personne, Inscriptions inscriptions)
+
 	{
-		Option supprpEquipe = new Option ("Supprimer une Personne d'une Equipe","spe",getActionAjoutPersonneEquipe(personne, inscriptions));
+		Liste<Equipe> supprpEquipe = new Liste<> ("Supprimer une Personne d'une Equipe","spe",getActionListeSupprPersonneEquipe(personne, inscriptions));
 		return supprpEquipe;
 	}
+	
 	
 	static Option getOptionAjoutEquipe(Inscriptions inscriptions)
 	{
@@ -61,10 +64,12 @@ public class OptionUtilisateurs
 	}
 	
 	static Option getOptionModifEquipe(Equipe equipe)
+
 	{
 		Option ModifEquipe = new Option("Modifier une Equipe","me",getActionModifEquipe(equipe));
 		return ModifEquipe;
 	}
+	
 	
 	static Option getOptionAjoutCompetition(Inscriptions inscriptions)
 	{
@@ -86,26 +91,41 @@ public class OptionUtilisateurs
 	
 	static Option getOptionAjoutPersonneCompetition(Personne personne, Inscriptions inscriptions)
 	{
-		Option ajoutpCompetition = new Option ("Ajouter une Equipe a une Competition","aec",getActionAjoutPersonneCompetition(personne, inscriptions));
+		Liste<Competition> ajoutpCompetition = new Liste<> ("Ajouter une Personne a une Competition","apc",getActionListeAjoutPersonneCompetition(personne, inscriptions));
 		return ajoutpCompetition;
 	}
 	
 	static Option getOptionSupprPersonneCompetition(Personne personne, Inscriptions inscriptions)
 	{
-		Option supprpCompetition = new Option ("Supprimer une Equipe d'une Competition","sec",getActionSupprPersonneCompetition(personne, inscriptions));
+		Liste<Competition> supprpCompetition = new Liste<> ("Supprimer une Personne d'une Competition","spc",getActionListeSupprPersonneCompetition(personne, inscriptions));
 		return supprpCompetition;
+	}
+	
+	static Option getOptionAjoutEquipeCompetition(Equipe equipe, Inscriptions inscriptions)
+	{
+		Liste<Competition> ajouteECompetition = new Liste<> ("Ajouter une Equipe a une Competition","aec",getActionListeAjoutEquipeCompetition(equipe, inscriptions));
+		return ajouteECompetition;
+	}
+	
+	static Option getOptionSupprEquipeCompetition(Equipe equipe, Inscriptions inscriptions)
+	{
+		Liste<Competition> supprECompetition = new Liste<> ("Supprimer une Equipe d'une Competition","sec",getActionListeSupprEquipeCompetition(equipe, inscriptions));
+		return supprECompetition;
 	}
 
 	static Action getActionAjoutPersonne(final Inscriptions inscriptions)
+
 	{
 		return new Action()
+
 				{
 					@Override
 					public void optionSelectionnee()
+
 					{
-						String nom = utilitaires.EntreesSorties.getString("Saisissez votre Nom : "),
-								prenom = utilitaires.EntreesSorties.getString("Saisissez votre Prenom :"),
-								mail = utilitaires.EntreesSorties.getString("Saisissez votre Mail : ");
+						String nom = commandLine.util.InOut.getString("Saisissez votre Nom : "),
+								prenom = commandLine.util.InOut.getString("Saisissez votre Prenom :"),
+								mail = commandLine.util.InOut.getString("Saisissez votre Mail : ");
 						inscriptions.createPersonne(nom,prenom,mail);
 					}
 				};
@@ -124,21 +144,23 @@ public class OptionUtilisateurs
 	}
 	
 	static Action getActionModifPersonne (final Personne personne)
+
 	{
 		return new Action ()
 				{
 					@Override
 					public void optionSelectionnee()
 					{
-						String nouveauNom = utilitaires.EntreesSorties.getString("Saisissez un nouveau Nom: "),
-								nouveauPrenom = utilitaires.EntreesSorties.getString("Saisissez un nouveau Prénom: "),
-								nouveauMail = utilitaires.EntreesSorties.getString("Saisissez un nouveau Mail : ");
+						String nouveauNom = commandLine.util.InOut.getString("Saisissez un nouveau Nom: "),
+								nouveauPrenom = commandLine.util.InOut.getString("Saisissez un nouveau Prénom: "),
+								nouveauMail = commandLine.util.InOut.getString("Saisissez un nouveau Mail : ");
 						personne.setNom(nouveauNom);
 						personne.setPrenom(nouveauPrenom);
 						personne.setMail(nouveauMail);
 					}
 				};
 	}
+	
 	
 	static Action getActionAjoutEquipe(final Inscriptions inscriptions)
 	{
@@ -147,7 +169,7 @@ public class OptionUtilisateurs
 					@Override
 					public void optionSelectionnee()
 					{
-						String nom = utilitaires.EntreesSorties.getString("Saisissez le nom de L'Equipe:");
+						String nom = commandLine.util.InOut.getString("Saisissez le nom de L'Equipe:");
 								inscriptions.createEquipe(nom);
 					}
 				};
@@ -172,102 +194,84 @@ public class OptionUtilisateurs
 					@Override
 					public void optionSelectionnee()
 					{
-						String nouveauNom = utilitaires.EntreesSorties.getString("Saisissez un nouveau nom d'équipe ");
+						String nouveauNom = commandLine.util.InOut.getString("Saisissez un nouveau nom d'équipe ");
 						equipe.setNom(nouveauNom);
 					}
 				};
 	}
-	
-	static Liste getListeEquipe (final List equipes)
+
+	static ActionListe<Equipe> getActionListeAjoutPersonneEquipe (Personne personne, Inscriptions inscriptions)
 	{
-		Liste liste = new Liste<>("Selectionnez une Equipe",getActionListeAjoutPersonneEquipe(equipes, null, null));
-		return liste;
-	}
-	
-	static ActionListe getActionListeAjoutPersonneEquipe (final List equipes, Personne personne, Inscriptions inscriptions)
-	{
-		return new ActionListe()
+		return new ActionListe<Equipe>()
 				{
-							public List getListe()
+							public List<Equipe> getListe()
 			                {
-			                        return equipes;
+			                        return new ArrayList<>(inscriptions.getEquipes());
 			                }
 							
 							public void elementSelectionne(int indice, Equipe element)
-							{}
+							{
+								element.add(personne);
+							}
 
 							public Option getOption(Equipe element)
 							{
-								return new Option("Afficher "+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
-								{
-									public void optionSelectionnee()
-									{
-										element.add(personne);
-									}
-								});
-							}
-
-							@Override
-							public void elementSelectionne(int indice, Object element)
-							{
-								// TODO Auto-generated method stub
-								
-							}
-
-							@Override
-							public Option getOption(Object element)
-							{
-								// TODO Auto-generated method stub
+//								return new Option(""+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
+//								{
+//									public void optionSelectionnee()
+//									{
+//									}
+//								});
 								return null;
 							}
 				};
 	}
 	
-	static Action getActionSupprPersonneEquipe (final Personne personne, Inscriptions inscriptions)
+	static ActionListe<Equipe> getActionListeSupprPersonneEquipe (Personne personne, Inscriptions inscriptions)
+
 	{
-		return new Action ()
+		return new ActionListe<Equipe> ()
+
 				{
-					@Override
-					public void optionSelectionnee()
-					{ 
-						Liste<Equipe> menu = new Liste<>("Selectionnez une Equipe","s", new ActionListe<Equipe>()
-						{
-							@Override
 							public List<Equipe> getListe()
 							{
-								return new ArrayList<>(inscriptions.getEquipes());
+									return new ArrayList<>(inscriptions.getEquipes());
 							}
-
-							@Override
+							
 							public void elementSelectionne(int indice, Equipe element)
 							{
-								element.remove(personne);	
+								element.remove(personne);
 							}
-
-							@Override
+							
 							public Option getOption(Equipe element)
 							{
-								// TODO Auto-generated method stub
+//								return new Option (""+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
+//								{
+//									public void optionSelectionnee()
+//									{
+//									}	
+//								});
 								return null;
 							}
-						});
-					}
 				};
 	}
 	
+	
 	static Action getActionAjoutCompetition(final Inscriptions inscriptions)
+
 	{
 		return new Action()
+
 				{
 					@Override
 					public void optionSelectionnee()
 					{
-						String nom = utilitaires.EntreesSorties.getString("Saisissez le nom de la Compétition :");
-						int jour = utilitaires.EntreesSorties.getInt("Saisissez un jour :"),
-								mois = utilitaires.EntreesSorties.getInt("Saisissez un mois :"),
-								annee = utilitaires.EntreesSorties.getInt("Saisissez une Année:");
+						String nom = commandLine.util.InOut.getString("Saisissez le nom de la Compétition :");
+						int jour = commandLine.util.InOut.getInt("Saisissez un jour :"),
+								mois = commandLine.util.InOut.getInt("Saisissez un mois :"),
+								annee = commandLine.util.InOut.getInt("Saisissez une Année:");
 						LocalDate dateCloture = LocalDate.of (annee,mois,jour);
-						String equipe = utilitaires.EntreesSorties.getString("est il en equipe: o:oui	n:non");
+						String equipe = commandLine.util.InOut.getString("est il en equipe: o:oui	n:non");
 						
 						Boolean enEquipe;
 						if (equipe.equals("n")) {
@@ -303,85 +307,144 @@ public class OptionUtilisateurs
 					@Override
 					public void optionSelectionnee()
 					{
-						String nouveauNom = utilitaires.EntreesSorties.getString("Saisissez un nouveau nom: ");
-						int jour = utilitaires.EntreesSorties.getInt("Saisissez un nouveau jour :"),
-								mois = utilitaires.EntreesSorties.getInt("Saisissez un nouveau mois :"),
-								annee = utilitaires.EntreesSorties.getInt("Saisissez une nouvelle Année:");
+						String nouveauNom = commandLine.util.InOut.getString("Saisissez un nouveau nom: ");
+						int jour = commandLine.util.InOut.getInt("Saisissez un nouveau jour :"),
+								mois = commandLine.util.InOut.getInt("Saisissez un nouveau mois :"),
+								annee = commandLine.util.InOut.getInt("Saisissez une nouvelle Année:");
 						LocalDate nouvelledateCloture = LocalDate.of (annee,mois,jour);
 						
 						competition.setNom(nouveauNom);
-						competition.setDateCloture(nouvelledateCloture);
+						try
+						{
+							competition.setDateCloture(nouvelledateCloture);
+						} 
+						catch (setDateClotureException e)
+						{
+							System.out.println(e);
+						}
 					}
 				};
 	}
 	
-	static Action getActionAjoutPersonneCompetition (final Personne personne, Inscriptions inscriptions)
+	static ActionListe<Competition> getActionListeAjoutPersonneCompetition (Personne personne, Inscriptions inscriptions)
 	{
-		return new Action ()
+		return new ActionListe<Competition> ()
 				{
-					@Override
-					public void optionSelectionnee()
-					{
-						Liste<Competition> menu = new Liste<>("Liste des Competitions","l", new ActionListe<Competition>()
-						{
-
-							@Override
 							public List<Competition> getListe()
 							{
 								return new ArrayList<>(inscriptions.getCompetitions());
 							}
 
-							@Override
 							public void elementSelectionne(int indice, Competition element)
 							{
-								element.add(personne);
+								try
+								{
+									element.add(personne);
+								} 
+								catch (addCloseException e)
+								{
+									System.out.println(e);
+								} 
+								catch (enEquipeException e)
+								{
+									System.out.println(e);
+								}
 							}
 
-							@Override
 							public Option getOption(Competition element)
 							{
-								// TODO Auto-generated method stub
+//								return new Option(""+new ArrayList<>(inscriptions.getCompetitions()), null, new Action()
+//								{
+//									public void optionSelectionnee()
+//									{
+//									}
+//								});
 								return null;
 							}
-
-						});
-					}
-				};
+					};
 	}
 	
-	static Action getActionSupprPersonneCompetition (final Personne personne, Inscriptions inscriptions)
+	static ActionListe<Competition> getActionListeSupprPersonneCompetition (Personne personne, Inscriptions inscriptions)
 	{
-		return new Action ()
+		return new ActionListe<Competition> ()
 				{
-					@Override
-					public void optionSelectionnee()
-					{
-						Liste<Competition> menu = new Liste<>("Liste des Competitions","l", new ActionListe<Competition>()
-						{
-
-							@Override
 							public List<Competition> getListe()
 							{
 								return new ArrayList<>(inscriptions.getCompetitions());
 							}
 
-							@Override
 							public void elementSelectionne(int indice, Competition element)
 							{
 								element.remove(personne);
 							}
 
-							@Override
 							public Option getOption(Competition element)
 							{
-								// TODO Auto-generated method stub
+//								return new Option(""+new ArrayList<>(inscriptions.getCompetitions()), null, new Action()
+//								{
+//									public void optionSelectionnee()
+//									{
+//											
+//									}
+//								});
 								return null;
 							}
-
-						});
+					};
+	}
+	
+	static ActionListe<Competition> getActionListeAjoutEquipeCompetition (Equipe equipe, Inscriptions inscriptions)
+	{
+		return new ActionListe<Competition>()
+				{
+					public List<Competition> getListe()
+					{
+						return new ArrayList<>(inscriptions.getCompetitions());
+					}
+					
+					public void elementSelectionne(int indice, Competition element)
+					{
+						try
+						{
+							element.add(equipe);
+						}
+						catch (addCloseException e)
+						{
+							System.out.println(e);
+						} 
+						catch (enEquipeException e)
+						{
+							System.out.println(e);
+						}
+					}
+					public Option getOption (Competition element)
+					{
+						return null;
 					}
 				};
 	}
 	
-
+	static ActionListe<Competition> getActionListeSupprEquipeCompetition(Equipe equipe, Inscriptions inscriptions)
+	{
+		return new ActionListe<Competition>()
+		{	
+			@Override
+			public List<Competition> getListe()
+			{
+				return new ArrayList<>(inscriptions.getCompetitions());
+			}
+			
+			@Override
+			public void elementSelectionne(int indice, Competition element)
+			{
+				element.remove(equipe);
+			}
+			
+			@Override
+			public Option getOption(Competition element)
+			{
+				return null;
+			}
+		};
+	}
+	
 }

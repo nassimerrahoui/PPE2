@@ -1,5 +1,5 @@
 package dialogueUtilisateurs;
-//Changement pour commit 13/01/2017
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +7,7 @@ import metier.Competition;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
-import utilitaires.ligneDeCommande.ActionListe;
-import utilitaires.ligneDeCommande.Liste;
-import utilitaires.ligneDeCommande.Menu;
-import utilitaires.ligneDeCommande.Option;
+import commandLine.*;
 
 public class MenuUtilisateurs extends OptionUtilisateurs
 {
@@ -43,7 +40,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuListePersonnes(Inscriptions inscriptions)
 	{
-		Liste<Personne> menu = new Liste<>("Liste des Personnes","l", new ActionListe<Personne>()
+		Liste<Personne> menu = new Liste<>("Selectionez une Personne","l", new ActionListe<Personne>()
 		{
 			@Override
 			public List<Personne> getListe()
@@ -71,6 +68,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		menuSelectionPersonnes.ajoute(getOptionModifPersonne(personne));
 		menuSelectionPersonnes.ajoute(getOptionSupprPersonne(personne));
 		menuSelectionPersonnes.ajoute(getMenuGestionPersonneEquipes(inscriptions, personne));
+		menuSelectionPersonnes.ajoute(getMenuGestionPersonneCompetitions(inscriptions, personne));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
 	}
@@ -88,7 +86,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 	static Menu getMenuGestionPersonneEquipes(Inscriptions inscriptions, Personne personne)
 	{
-		Menu menuGestionPersonneEquipes = new Menu ("Menu gestion des Equipes de la personne","g");
+		Menu menuGestionPersonneEquipes = new Menu ("Menu gestion des Equipes de la personne","ge");
 		menuGestionPersonneEquipes.ajoute(getOptionAjoutPersonneEquipe(personne, inscriptions));
 		menuGestionPersonneEquipes.ajoute(getOptionSupprPersonneEquipe(personne, inscriptions));
 		menuGestionPersonneEquipes.ajouteRevenir("r");
@@ -98,7 +96,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 	static Menu getMenuGestionPersonneCompetitions(Inscriptions inscriptions, Personne personne)
 	{
-		Menu menuGestioPersonneCompetitions = new Menu ("Menu gestion Personne dans une Compétition","g");
+		Menu menuGestioPersonneCompetitions = new Menu ("Menu gestion Competitions de la personne","gc");
 		menuGestioPersonneCompetitions.ajoute(getOptionAjoutPersonneCompetition(personne, inscriptions));
 		menuGestioPersonneCompetitions.ajoute(getOptionSupprPersonneCompetition(personne, inscriptions));
 		menuGestioPersonneCompetitions.ajouteRevenir("r");
@@ -117,7 +115,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuListeEquipes(Inscriptions inscriptions)
 	{
-		Liste<Equipe> menu = new Liste<>("Liste des Equipes","l", new ActionListe<Equipe>()
+		Liste<Equipe> menu = new Liste<>("Selectionnez une Equipe","l", new ActionListe<Equipe>()
 		{
 
 			@Override
@@ -145,8 +143,18 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		Menu menuSelectionPersonnes = new Menu (equipe.getNom()+ "","s");
 		menuSelectionPersonnes.ajoute(getOptionModifEquipe(equipe));
 		menuSelectionPersonnes.ajoute(getOptionSupprEquipe(equipe));
+		menuSelectionPersonnes.ajoute(getMenuGestionEquipeCompetitions(inscriptions, equipe));
 		menuSelectionPersonnes.ajouteRevenir("r");
 		return menuSelectionPersonnes;
+	}
+	
+	static Menu getMenuGestionEquipeCompetitions(Inscriptions inscriptions, Equipe equipe)
+	{
+		Menu menuGestioPersonneCompetitions = new Menu ("Menu gestion Equipe dans une Compétition","g");
+		menuGestioPersonneCompetitions.ajoute(getOptionAjoutEquipeCompetition(equipe, inscriptions));
+		menuGestioPersonneCompetitions.ajoute(getOptionSupprEquipeCompetition(equipe, inscriptions));
+		menuGestioPersonneCompetitions.ajouteRevenir("r");
+		return menuGestioPersonneCompetitions;
 	}
 	
 	static Menu getMenuCompetition(Inscriptions inscriptions)
@@ -160,7 +168,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuListeCompetitions(Inscriptions inscriptions)
 	{
-		Liste<Competition> menu = new Liste<>("Liste des Competitions","l", new ActionListe<Competition>()
+		Liste<Competition> menu = new Liste<>("Selectionnez une Competition","l", new ActionListe<Competition>()
 		{
 
 			@Override
