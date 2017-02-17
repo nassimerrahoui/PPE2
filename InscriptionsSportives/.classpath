@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/CoursJava"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="/CoursJava/lib/commandLine.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

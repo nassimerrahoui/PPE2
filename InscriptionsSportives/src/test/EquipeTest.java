@@ -59,14 +59,15 @@ public class EquipeTest {
 	public void testAddPersonne() {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
-		Personne testeur2 = inscriptions.createPersonne("test2", "testeur2", "azerty2");
+		Personne testeur = inscriptions.createPersonne("testeur", "testeur", "azerty");
+		Personne testeur2 = inscriptions.createPersonne("testeur2", "testeur2", "azerty2");
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
 		e.add(testeur2);
 		assertTrue(e.getMembres().contains(testeur2));
 		assertTrue(e.getMembres().contains(testeur));
-		
+		assertTrue(testeur.getEquipes().contains(e));
+		assertTrue(testeur2.getEquipes().contains(e));
 	}
 
 	@Test
