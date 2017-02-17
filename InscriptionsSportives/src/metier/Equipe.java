@@ -30,7 +30,7 @@ public class Equipe extends Candidat
 	}
 	
 	/**
-	 * Ajoute une personne dans l'équipe.
+	 * Ajoute une personne dans l'equipe.
 	 * @param membre
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class Equipe extends Candidat
 	}
 
 	/**
-	 * Supprime une personne de l'équipe. 
+	 * Supprime une personne de l'equipe. 
 	 * @param membre
 	 * @return
 	 */
@@ -57,6 +57,8 @@ public class Equipe extends Candidat
 	public void delete()
 	{
 		super.delete();
+		for (Personne p : membres)
+			this.remove(p);
 	}
 	
 	@Override

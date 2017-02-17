@@ -63,7 +63,7 @@ public class Personne extends Candidat
 	}
 
 	/**
-	 * Retoure les équipes dont cette personne fait partie.
+	 * Retourne les equipes dont cette personne fait partie.
 	 * @return
 	 */
 	

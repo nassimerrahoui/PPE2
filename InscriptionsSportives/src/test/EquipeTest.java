@@ -17,10 +17,8 @@ public class EquipeTest {
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		
-		assertTrue(inscriptions.getPersonnes().contains(testeur));
-		
-		testeur.delete();
+		assertTrue(e.getMembres().contains(testeur));
+		e.delete();
 		assertTrue(!e.getMembres().contains(testeur));
 		assertTrue(!inscriptions.getPersonnes().contains(testeur));
 		assertTrue(!inscriptions.getCandidats().contains(testeur));
@@ -76,10 +74,8 @@ public class EquipeTest {
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Equipe e = inscriptions.createEquipe("test");
 		e.add(testeur);
-		
-		
 		assertTrue(e.getMembres().contains(testeur));
-		testeur.delete();
+		e.delete();
 		assertTrue(!e.getMembres().contains(testeur));
 	}
 
