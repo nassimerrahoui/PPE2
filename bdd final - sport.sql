@@ -1,0 +1,611 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
+--
+-- Client :  127.0.0.1
+-- Généré le :  Sam 25 Février 2017 à 17:00
+-- Version du serveur :  5.7.14
+-- Version de PHP :  5.6.25
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `sport`
+--
+
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE  PROCEDURE `addMembreEquipe` (IN `idPersonne` INT, IN `idEquipe` INT)  BEGIN
+    INSERT INTO appartenir (id_personne, id_equipe) VALUES (idPersonne, idEquipe);
+END$$
+
+CREATE  PROCEDURE `createCompetition` (IN `Competition` VARCHAR(100), IN `Cloture` DATE, IN `Ouverture` DATE, IN `EnEquipe` BOOLEAN)  INSERT INTO competition (nom_competition, dateCloture, dateOuverture, estEnEquipe) VALUES (Competition, Cloture, Ouverture, EnEquipe)$$
+
+CREATE  PROCEDURE `createEquipe` (IN `pCandidat` VARCHAR(50))  BEGIN
+
+    INSERT INTO candidat (nom_candidat) VALUES (pCandidat); 
+
+END$$
+
+CREATE  PROCEDURE `createPersonne` (IN `pCandidat` VARCHAR(50), IN `pPrenom` VARCHAR(50), IN `pMail` VARCHAR(50))  BEGIN
+
+    INSERT INTO candidat (nom_candidat) VALUES (pCandidat); 
+    SET @last_id_in_candidat = LAST_INSERT_ID();
+    INSERT INTO personne (prenom_personne,mail,id_candidat) VALUES (pPrenom, pMail, @last_id_in_candidat);
+    
+END$$
+
+CREATE  PROCEDURE `deleteCandidat` (IN `idCandidat` INT)  BEGIN	
+    DECLARE perso boolean;
+    
+    SELECT COUNT(personne.id_candidat) INTO perso 
+    FROM personne, candidat
+    WHERE candidat.id_candidat = personne.id_candidat
+    AND personne.id_candidat = idCandidat;
+    
+    IF perso = 1 THEN
+        DELETE
+    	FROM personne
+    	WHERE personne.id_candidat = idCandidat;
+        
+        DELETE
+    	FROM candidat
+    	WHERE candidat.id_candidat = idCandidat;
+        
+    ELSE
+    	DELETE
+    	FROM candidat
+    	WHERE candidat.id_candidat = idCandidat;
+        
+    END IF;
+END$$
+
+CREATE  PROCEDURE `deleteCompetition` (IN `pID` INT)  BEGIN
+	DELETE FROM competition WHERE competition.id_competition = pID;
+END$$
+
+CREATE  PROCEDURE `getCandidatCarac` (IN `pID` INT)  READS SQL DATA
+BEGIN	
+    DECLARE perso boolean;
+    
+    SELECT COUNT(personne.id_candidat) INTO perso 
+    FROM personne, candidat
+    WHERE candidat.id_candidat = personne.id_candidat
+    AND personne.id_candidat = pID;
+    
+    IF perso = 1 THEN
+        SELECT nom_candidat, prenom_personne, mail 
+        FROM candidat, personne
+        WHERE personne.id_candidat = candidat.id_candidat
+        AND candidat.id_candidat = pID;
+    ELSE
+    	SELECT nom_candidat
+        FROM candidat
+        WHERE candidat.id_candidat = pID; 
+    END IF;
+END$$
+
+CREATE  PROCEDURE `getCandidatCompetition` (IN `idCompetition` INT)  BEGIN
+
+	DECLARE P1 boolean;
+    
+    SELECT COUNT(competition.id_competition) INTO P1
+    FROM competition
+    WHERE competition.id_competition = idCompetition
+    AND competition.estEnEquipe = 1;
+    
+    IF P1 = 0 THEN
+        SELECT candidat.nom_candidat, personne.prenom_personne, 			personne.mail
+        FROM inscrire, candidat, personne
+        WHERE inscrire.id_candidat = candidat.id_candidat
+        AND inscrire.id_competition = idCompetition
+        AND personne.id_candidat = inscrire.id_candidat;
+    
+    ELSE
+    	SELECT candidat.nom_candidat
+        FROM candidat, inscrire
+        WHERE inscrire.id_candidat = candidat.id_candidat
+        AND inscrire.id_competition = idCompetition;
+    END IF;
+    
+END$$
+
+CREATE  PROCEDURE `getCandidats` ()  NO SQL
+BEGIN
+    SELECT nom_candidat, "Equipe" as prenom_personne,
+    "Contacter un des membres" as mail
+    FROM candidat, personne
+    WHERE candidat.id_candidat NOT IN (
+        SELECT personne.id_candidat
+        FROM personne )
+    GROUP BY candidat.id_candidat
+    
+    UNION
+    
+    SELECT nom_candidat, personne.prenom_personne,
+    personne.mail
+    FROM candidat, personne
+    WHERE candidat.id_candidat = personne.id_candidat;
+END$$
+
+CREATE  PROCEDURE `getCompetitionCarac` (IN `idCompetition` INT)  BEGIN
+
+	DECLARE result VARCHAR(50);
+	DECLARE isOnTeam boolean;
+
+	SELECT competition.nom_competition, competition.dateCloture, competition.dateOuverture
+    FROM competition
+    WHERE competition.id_competition = idCompetition;
+    
+    SELECT competition.estEnEquipe INTO isOnTeam
+    FROM competition
+    WHERE competition.id_competition = idCompetition;
+    
+    IF isOnTeam = 1 THEN
+    	SET result = 'Compétition en equipe';
+    ELSE
+    	SET result = 'Compétition individuelle';
+    END IF;
+	
+	SELECT result;
+	
+END$$
+
+CREATE  PROCEDURE `getEquipeOfPersonne` (IN `idPersonne` INT)  BEGIN
+
+	DECLARE nomPersonne VARCHAR(50);
+    DECLARE prenomPersonne VARCHAR(50);
+	
+    SELECT candidat.nom_candidat, personne.prenom_personne
+    INTO nomPersonne, prenomPersonne
+    FROM candidat, personne, appartenir
+    WHERE personne.id_candidat = candidat.id_candidat
+    AND candidat.id_candidat = appartenir.id_personne
+    AND appartenir.id_personne = idPersonne
+    GROUP BY candidat.id_candidat;
+
+    SELECT
+    nomPersonne, prenomPersonne, candidat.nom_candidat
+    FROM candidat, appartenir 
+    WHERE candidat.id_candidat = appartenir.id_equipe
+    AND appartenir.id_personne = idPersonne;
+END$$
+
+CREATE  PROCEDURE `getEquipes` ()  BEGIN
+    SELECT nom_candidat
+    FROM candidat
+    WHERE candidat.id_candidat NOT IN (
+        SELECT personne.id_candidat
+        FROM personne )
+    GROUP BY candidat.id_candidat;
+END$$
+
+CREATE  PROCEDURE `getInscriptionCandidat` (IN `idCandidat` INT)  BEGIN
+    SELECT nom_competition, dateOuverture, dateCloture
+    FROM competition, candidat, inscrire
+    WHERE competition.id_competition = inscrire.id_competition
+    AND inscrire.id_candidat = candidat.id_candidat
+    AND candidat.id_candidat = idCandidat;
+END$$
+
+CREATE  PROCEDURE `getMembreEquipe` (IN `idEquipe` INT)  BEGIN
+
+	DECLARE nameTeam VARCHAR(50);
+	
+    SELECT candidat.nom_candidat INTO nameTeam
+    FROM candidat,appartenir
+    WHERE candidat.id_candidat = appartenir.id_equipe
+    AND appartenir.id_equipe = idEquipe
+    GROUP BY candidat.id_candidat;
+
+    SELECT
+    nameTeam, candidat.nom_candidat, personne.prenom_personne,
+    personne.mail
+    FROM candidat, personne, appartenir 
+    WHERE personne.id_candidat = candidat.id_candidat
+    AND candidat.id_candidat = appartenir.id_personne
+    AND appartenir.id_equipe = idEquipe;
+END$$
+
+CREATE  PROCEDURE `getPersonnes` ()  BEGIN
+    SELECT nom_candidat, personne.prenom_personne, 
+    personne.mail
+    FROM candidat, personne
+    WHERE candidat.id_candidat = personne.id_candidat;
+END$$
+
+CREATE  PROCEDURE `inscriptionCandidat` (IN `idCandidat` INT, IN `idCompetition` INT)  BEGIN
+
+    DECLARE P2 BOOLEAN;
+    DECLARE P3 BOOLEAN;
+    
+    SELECT COUNT(candidat.id_candidat) into P2
+    FROM candidat
+    WHERE candidat.id_candidat = idCandidat;
+    
+    SELECT COUNT(competition.id_competition) into P3
+    FROM competition
+    WHERE competition.id_competition = idCompetition;   
+
+	IF (P2 = 1 AND P3 = 1) THEN
+
+	INSERT INTO inscrire (id_candidat, id_competition) VALUES (idCandidat, idCompetition);
+   
+   	END IF;
+END$$
+
+CREATE  PROCEDURE `removeCandidatCompetition` (IN `idCompetition` INT, IN `idCandidat` INT)  BEGIN
+    DELETE
+    FROM inscrire
+    WHERE id_competition=idCompetition
+    AND id_candidat=idCandidat;
+END$$
+
+CREATE  PROCEDURE `removePersonneEquipe` (IN `idEquipe` INT, IN `idPersonne` INT)  MODIFIES SQL DATA
+BEGIN
+    DELETE 
+    FROM appartenir
+    WHERE id_equipe=idEquipe
+    AND id_personne=idPersonne;
+END$$
+
+CREATE  PROCEDURE `setCandidatCarac` (IN `pID` INT, IN `nomCandidat` VARCHAR(50), IN `prenomPersonne` VARCHAR(50), IN `email` VARCHAR(30))  BEGIN	
+    DECLARE perso boolean;
+    
+    SELECT COUNT(personne.id_candidat) INTO perso 
+    FROM personne, candidat
+    WHERE candidat.id_candidat = personne.id_candidat
+    AND personne.id_candidat = pID;
+    
+    IF perso = 1 THEN
+        UPDATE candidat SET nom_candidat = nomCandidat
+        WHERE id_candidat = pID;
+        UPDATE personne SET prenom_personne = prenomPersonne
+        WHERE id_candidat = pID;
+        UPDATE personne SET mail = email
+        WHERE id_candidat = pID;
+    ELSE
+    	UPDATE candidat SET nom_candidat = nomCandidat WHERE id_candidat = pID; 
+    END IF;
+END$$
+
+CREATE  PROCEDURE `setCompetitionCarac` (IN `Competition` VARCHAR(50), IN `Ouverture` DATE, IN `Cloture` DATE, IN `EnEquipe` BOOLEAN, IN `pID` INT)  BEGIN
+
+UPDATE competition SET nom_competition = @Competition, dateOuverture = @Ouverture, dateCloture = @Cloture, estEnEquipe = @EnEquipe WHERE id_competition = @pID;
+
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `appartenir`
+--
+
+CREATE TABLE `appartenir` (
+  `id_equipe` int(11) NOT NULL,
+  `id_personne` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `appartenir`
+--
+
+INSERT INTO `appartenir` (`id_equipe`, `id_personne`) VALUES
+(18, 15),
+(18, 16),
+(19, 16),
+(20, 16),
+(18, 17);
+
+--
+-- Déclencheurs `appartenir`
+--
+DELIMITER $$
+CREATE TRIGGER `before_Insert_appartenir` BEFORE INSERT ON `appartenir` FOR EACH ROW BEGIN
+	DECLARE P1 boolean;
+
+    SELECT COUNT(personne.id_candidat) INTO P1 FROM personne 
+    WHERE personne.id_candidat=NEW.id_personne;
+    
+    IF (P1 <> 1) THEN 
+    	SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Vous ne pouvez pas ajouter une equipe en tant que membre d'une autre equipe ou d'une personne";
+    END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `candidat`
+--
+
+CREATE TABLE `candidat` (
+  `id_candidat` int(11) NOT NULL,
+  `nom_candidat` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `candidat`
+--
+
+INSERT INTO `candidat` (`id_candidat`, `nom_candidat`) VALUES
+(8, 'TeamR'),
+(9, 'TeamWhite'),
+(11, 'TestParam'),
+(13, 'TeamThorin'),
+(15, 'Joueur2'),
+(16, 'Shingeki'),
+(17, 'Joueur4'),
+(18, 'TeamExploration'),
+(19, 'TeamEscadron'),
+(20, 'TeamValor');
+
+--
+-- Déclencheurs `candidat`
+--
+DELIMITER $$
+CREATE TRIGGER `before_Insert_candidat` BEFORE INSERT ON `candidat` FOR EACH ROW BEGIN
+   IF NEW.nom_candidat = ""
+   THEN 
+   SET NEW.nom_candidat = NULL;
+   END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_Update_candidat` BEFORE UPDATE ON `candidat` FOR EACH ROW BEGIN	
+    IF NEW.nom_candidat = "" THEN
+   		SET NEW.nom_candidat = OLD.nom_candidat;
+    END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `competition`
+--
+
+CREATE TABLE `competition` (
+  `id_competition` int(11) NOT NULL,
+  `nom_competition` varchar(50) NOT NULL,
+  `dateCloture` date NOT NULL,
+  `dateOuverture` date DEFAULT NULL,
+  `estEnEquipe` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `competition`
+--
+
+INSERT INTO `competition` (`id_competition`, `nom_competition`, `dateCloture`, `dateOuverture`, `estEnEquipe`) VALUES
+(1, 'Test', '2017-01-29', '2017-01-10', 1),
+(3, 'Solo', '2017-06-29', '2017-02-17', 0),
+(4, 'Solo2', '2017-07-14', '2017-02-13', 0),
+(6, 'TeamWorldCup', '2017-10-30', '2017-02-23', 1);
+
+--
+-- Déclencheurs `competition`
+--
+DELIMITER $$
+CREATE TRIGGER `before_Insert_competition` BEFORE INSERT ON `competition` FOR EACH ROW BEGIN
+   IF (NEW.dateOuverture = '')
+   THEN 
+   SET NEW.dateOuverture = CURRENT_DATE;
+   END IF;
+   
+   IF (NEW.dateOuverture > NEW.dateCloture)
+   THEN 
+   SIGNAL SQLSTATE '45000'
+   SET MESSAGE_TEXT = 'Date Cloture doit être après la Date Ouverture';
+   END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `before_Update_competition` BEFORE UPDATE ON `competition` FOR EACH ROW BEGIN
+	DECLARE P1 boolean;
+
+    SELECT COUNT(competition.id_competition) INTO P1 FROM competition 
+    WHERE OLD.dateCloture < NEW.dateCloture;
+    
+    IF (P1 <> 1) THEN 
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date Cloture incorrect';
+    END IF;
+    
+    IF (NEW.dateOuverture = '')
+	THEN 
+	SET NEW.dateOuverture = OLD.dateOuverture;
+ 	END IF;
+    
+    IF (NEW.dateOuverture > NEW.dateCloture)
+	THEN 
+ 	SIGNAL SQLSTATE '45000'
+ 	SET MESSAGE_TEXT = 'Date Cloture doit être après la Date Ouverture';
+ 	END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `inscrire`
+--
+
+CREATE TABLE `inscrire` (
+  `id_candidat` int(11) NOT NULL,
+  `id_competition` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `inscrire`
+--
+
+INSERT INTO `inscrire` (`id_candidat`, `id_competition`) VALUES
+(8, 6),
+(9, 6),
+(13, 6);
+
+--
+-- Déclencheurs `inscrire`
+--
+DELIMITER $$
+CREATE TRIGGER `before_Insert_inscrire` BEFORE INSERT ON `inscrire` FOR EACH ROW BEGIN
+	DECLARE P1 boolean;
+    DECLARE P2 int;
+    DECLARE P3 date;
+
+	SELECT competition.estEnEquipe INTO P1 FROM competition 
+    WHERE competition.id_competition=NEW.id_competition;
+    SELECT COUNT(personne.id_candidat) INTO P2 FROM personne 
+    WHERE personne.id_candidat=NEW.id_candidat;
+    SELECT competition.dateCloture INTO P3 
+    FROM competition
+    WHERE competition.id_competition=NEW.id_competition;
+    
+    IF (P3 < CURRENT_DATE) THEN
+    	SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date de clôture dépassé';
+    ELSE IF (P1 = P2) THEN 
+    	SIGNAL SQLSTATE '45001'
+        SET MESSAGE_TEXT = 'Inscription impossible';
+    END IF;
+    END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `personne`
+--
+
+CREATE TABLE `personne` (
+  `prenom_personne` varchar(50) DEFAULT NULL,
+  `mail` varchar(30) DEFAULT NULL,
+  `id_candidat` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `personne`
+--
+
+INSERT INTO `personne` (`prenom_personne`, `mail`, `id_candidat`) VALUES
+('Eren', 'mail2@mail.fr', 15),
+('Rivaille', 'rivaille@mail.com', 16),
+('Erwin', 'mail4@mail.fr', 17);
+
+--
+-- Déclencheurs `personne`
+--
+DELIMITER $$
+CREATE TRIGGER `before_Update_personne` BEFORE UPDATE ON `personne` FOR EACH ROW BEGIN	
+    IF NEW.prenom_personne = "" THEN
+   		SET NEW.prenom_personne = OLD.prenom_personne;
+    END IF;
+    
+    IF NEW.mail = "" THEN
+   		SET NEW.mail = OLD.mail;
+    END IF;
+END
+$$
+DELIMITER ;
+
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `appartenir`
+--
+ALTER TABLE `appartenir`
+  ADD PRIMARY KEY (`id_equipe`,`id_personne`),
+  ADD KEY `FK_appartenir_id_personne` (`id_personne`);
+
+--
+-- Index pour la table `candidat`
+--
+ALTER TABLE `candidat`
+  ADD PRIMARY KEY (`id_candidat`);
+
+--
+-- Index pour la table `competition`
+--
+ALTER TABLE `competition`
+  ADD PRIMARY KEY (`id_competition`);
+
+--
+-- Index pour la table `inscrire`
+--
+ALTER TABLE `inscrire`
+  ADD PRIMARY KEY (`id_candidat`,`id_competition`),
+  ADD KEY `FK_inscrire_id_competition` (`id_competition`);
+
+--
+-- Index pour la table `personne`
+--
+ALTER TABLE `personne`
+  ADD PRIMARY KEY (`id_candidat`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `candidat`
+--
+ALTER TABLE `candidat`
+  MODIFY `id_candidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT pour la table `competition`
+--
+ALTER TABLE `competition`
+  MODIFY `id_competition` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `appartenir`
+--
+ALTER TABLE `appartenir`
+  ADD CONSTRAINT `FK_appartenir_id_equipe` FOREIGN KEY (`id_equipe`) REFERENCES `candidat` (`id_candidat`),
+  ADD CONSTRAINT `FK_appartenir_id_personne` FOREIGN KEY (`id_personne`) REFERENCES `candidat` (`id_candidat`),
+  ADD CONSTRAINT `appartenir_ibfk_1` FOREIGN KEY (`id_equipe`) REFERENCES `candidat` (`id_candidat`),
+  ADD CONSTRAINT `appartenir_ibfk_2` FOREIGN KEY (`id_personne`) REFERENCES `candidat` (`id_candidat`);
+
+--
+-- Contraintes pour la table `inscrire`
+--
+ALTER TABLE `inscrire`
+  ADD CONSTRAINT `FK_inscrire_id_candidat` FOREIGN KEY (`id_candidat`) REFERENCES `candidat` (`id_candidat`),
+  ADD CONSTRAINT `FK_inscrire_id_competition` FOREIGN KEY (`id_competition`) REFERENCES `competition` (`id_competition`),
+  ADD CONSTRAINT `inscrire_ibfk_1` FOREIGN KEY (`id_competition`) REFERENCES `competition` (`id_competition`);
+
+--
+-- Contraintes pour la table `personne`
+--
+ALTER TABLE `personne`
+  ADD CONSTRAINT `FK_personne_id_candidat` FOREIGN KEY (`id_candidat`) REFERENCES `candidat` (`id_candidat`),
+  ADD CONSTRAINT `personne_ibfk_1` FOREIGN KEY (`id_candidat`) REFERENCES `candidat` (`id_candidat`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
