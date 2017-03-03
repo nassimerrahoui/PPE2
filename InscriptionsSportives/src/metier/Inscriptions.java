@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import persistance.appartenir;
+import persistance.ecritureBase;
 import persistance.lectureBase;
 
 /**
@@ -111,6 +111,7 @@ public class Inscriptions implements Serializable
 	{
 		Personne personne = new Personne(this, nom, prenom, mail);
 		candidats.add(personne);
+		//persistance.ecritureBase.inserePersonne(personne);
 		return personne;
 	}
 	
@@ -254,9 +255,13 @@ public class Inscriptions implements Serializable
 		lesManouches.add(boris);
 		lesManouches.add(tony);
 		System.out.println(inscriptions);
-		lesManouches.delete();
+		//lesManouches.delete();
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
+		
+		//ecritureBase EB = new ecritureBase();
+		//EB.createCompetition("competTest",LocalDate.of(2017,10,8),LocalDate.of(2017,03,3),1);
+		
 		try
 		{
 			inscriptions.sauvegarder();

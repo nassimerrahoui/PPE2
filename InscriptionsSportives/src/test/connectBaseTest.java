@@ -4,14 +4,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import persistance.lectureBase;
+import persistance.connectBase;
 
-public class lectureBaseTest {
+
+public class connectBaseTest {
 
 	@Test
 	public void testAfficher() 
 	{
-		lectureBase CO = new lectureBase();
+		connectBase CO = new connectBase();
 		assertEquals("Vous êtes connecté",CO.bddConnexion());
 	}
 }
