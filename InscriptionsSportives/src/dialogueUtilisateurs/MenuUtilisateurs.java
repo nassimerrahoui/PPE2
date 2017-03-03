@@ -17,8 +17,9 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 		Menu menu = getMenuPrincipal(Inscriptions.getInscriptions());
 		menu.start();
 	}
+	
 
-	static Menu getMenuPrincipal(Inscriptions inscriptions)
+    static Menu getMenuPrincipal(Inscriptions inscriptions)
 	{
 		Menu menuPrincipal = new Menu ("Menu Principal");
 		menuPrincipal.ajoute(getMenuPersonnes(inscriptions));
@@ -30,7 +31,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuPersonnes(Inscriptions inscriptions)
 	{
-		Menu menuPersonne = new Menu ("Menu Personne","p");
+		Menu menuPersonne = new Menu ("Menu Personne","1");
 		menuPersonne.ajoute(getOptionAjoutPersonne(inscriptions));
 		menuPersonne.ajoute(getMenuListePersonnes(inscriptions));
 		menuPersonne.ajouteRevenir("r");
@@ -105,7 +106,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuEquipe(Inscriptions inscriptions)
 	{
-		Menu menuEquipe = new Menu ("Menu Equipe","e");
+		Menu menuEquipe = new Menu ("Menu Equipe","2");
 		menuEquipe.ajoute(getOptionAjoutEquipe(inscriptions));
 		menuEquipe.ajoute(getMenuListeEquipes(inscriptions));
 		menuEquipe.ajouteRevenir("r");
@@ -159,7 +160,7 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 	
 	static Menu getMenuCompetition(Inscriptions inscriptions)
 	{
-		Menu menuCompetition = new Menu ("Menu Compétition","c");
+		Menu menuCompetition = new Menu ("Menu Compétition","3");
 		menuCompetition.ajoute(getOptionAjoutCompetition(inscriptions));
 		menuCompetition.ajoute(getMenuListeCompetitions(inscriptions));
 		menuCompetition.ajouteRevenir("r");
