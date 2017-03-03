@@ -216,12 +216,6 @@ public class OptionUtilisateurs
 
 							public Option getOption(Equipe element)
 							{
-//								return new Option(""+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
-//								{
-//									public void optionSelectionnee()
-//									{
-//									}
-//								});
 								return null;
 							}
 				};
@@ -245,12 +239,6 @@ public class OptionUtilisateurs
 							
 							public Option getOption(Equipe element)
 							{
-//								return new Option (""+new ArrayList<>(inscriptions.getEquipes()), null, new Action()
-//								{
-//									public void optionSelectionnee()
-//									{
-//									}	
-//								});
 								return null;
 							}
 				};
@@ -353,12 +341,6 @@ public class OptionUtilisateurs
 
 							public Option getOption(Competition element)
 							{
-//								return new Option(""+new ArrayList<>(inscriptions.getCompetitions()), null, new Action()
-//								{
-//									public void optionSelectionnee()
-//									{
-//									}
-//								});
 								return null;
 							}
 					};
@@ -380,13 +362,6 @@ public class OptionUtilisateurs
 
 							public Option getOption(Competition element)
 							{
-//								return new Option(""+new ArrayList<>(inscriptions.getCompetitions()), null, new Action()
-//								{
-//									public void optionSelectionnee()
-//									{
-//											
-//									}
-//								});
 								return null;
 							}
 					};
