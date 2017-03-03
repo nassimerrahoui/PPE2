@@ -7,32 +7,8 @@ CREATE TRIGGER `before_Insert_appartenir` BEFORE INSERT ON `appartenir`
     
     IF (P1 <> 1) THEN 
     	SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Vous ne pouvez pas ajouter une equipe en tant que membre';
+        SET MESSAGE_TEXT = "Vous ne pouvez pas ajouter une equipe en tant que membre d'une autre equipe ou d'une personne";
     END IF;
-END
-
-CREATE TRIGGER `before_Update_competition` BEFORE UPDATE ON `competition`
- FOR EACH ROW BEGIN
-	DECLARE P1 boolean;
-
-    SELECT COUNT(competition.id_competition) INTO P1 FROM competition 
-    WHERE OLD.dateCloture < NEW.dateCloture;
-    
-    IF (P1 <> 1) THEN 
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Date Cloture incorrect';
-    END IF;
-    
-    IF (NEW.dateOuverture = '')
-	THEN 
-	SET NEW.dateOuverture = OLD.dateOuverture;
- 	END IF;
-    
-    IF (NEW.dateOuverture > NEW.dateCloture)
-	THEN 
- 	SIGNAL SQLSTATE '45000'
- 	SET MESSAGE_TEXT = 'Date Cloture doit être après la Date Ouverture';
- 	END IF;
 END
 
 CREATE TRIGGER `before_Insert_candidat` BEFORE INSERT ON `candidat`
@@ -78,5 +54,47 @@ CREATE TRIGGER `before_Insert_inscrire` BEFORE INSERT ON `inscrire`
     	SIGNAL SQLSTATE '45001'
         SET MESSAGE_TEXT = 'Inscription impossible';
     END IF;
+    END IF;
+END
+
+CREATE TRIGGER `before_Update_candidat` BEFORE UPDATE ON `candidat`
+ FOR EACH ROW BEGIN	
+    IF NEW.nom_candidat = "" THEN
+   		SET NEW.nom_candidat = OLD.nom_candidat;
+    END IF;
+END
+
+CREATE TRIGGER `before_Update_competition` BEFORE UPDATE ON `competition`
+ FOR EACH ROW BEGIN
+	DECLARE P1 boolean;
+
+    SELECT COUNT(competition.id_competition) INTO P1 FROM competition 
+    WHERE OLD.dateCloture < NEW.dateCloture;
+    
+    IF (P1 <> 1) THEN 
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Date Cloture incorrect';
+    END IF;
+    
+    IF (NEW.dateOuverture = '')
+	THEN 
+	SET NEW.dateOuverture = OLD.dateOuverture;
+ 	END IF;
+    
+    IF (NEW.dateOuverture > NEW.dateCloture)
+	THEN 
+ 	SIGNAL SQLSTATE '45000'
+ 	SET MESSAGE_TEXT = 'Date Cloture doit être après la Date Ouverture';
+ 	END IF;
+END
+
+CREATE TRIGGER `before_Update_personne` BEFORE UPDATE ON `personne`
+ FOR EACH ROW BEGIN	
+    IF NEW.prenom_personne = "" THEN
+   		SET NEW.prenom_personne = OLD.prenom_personne;
+    END IF;
+    
+    IF NEW.mail = "" THEN
+   		SET NEW.mail = OLD.mail;
     END IF;
 END
