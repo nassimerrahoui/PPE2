@@ -12,10 +12,10 @@ import commandLine.*;
 public class MenuUtilisateurs extends OptionUtilisateurs
 {
 
-	public static void menu ()
+	public static void main(String[] args)
 	{
 		Menu menu = getMenuPrincipal(Inscriptions.getInscriptions());
-		menu.start();		
+		menu.start();
 	}
 	
 
