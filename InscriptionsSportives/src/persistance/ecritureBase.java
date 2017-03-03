@@ -43,7 +43,7 @@ public class ecritureBase
 			CO.bddConnexion();
 			String sql = "{call createCompetition(" + nomCompetition + "," + Cloture + "," + Ouverture + "," + EnEquipe + ")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
-			cs.executeUpdate(); 
+			cs.executeUpdate();
 		}
 		
 		catch (SQLException e)
@@ -64,7 +64,8 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call createEquipe("+ pCandidat + ")}"); 
+			String sql = "{call createEquipe("+ pCandidat + ")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " equipe(s) créée(s)";
 		}
@@ -87,7 +88,8 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call createPersonne("+ pCandidat + "," + pPrenom + "," + pMail +")}"); 
+			String sql = "{call createPersonne("+ pCandidat + "," + pPrenom + "," + pMail +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " personne(s) créée(s)";
 		}
@@ -110,7 +112,8 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call deleteCandidat("+idCandidat+")}"); 
+			String sql = "{call deleteCandidat("+idCandidat+")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat(s) supprimé(s)";
 		}
@@ -133,7 +136,8 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call deleteCompetition("+ pID +")}"); 
+			String sql = "{call deleteCompetition("+ pID +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " compétition(s) supprimé(s)";
 		}
@@ -156,7 +160,8 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call inscriptionCandidat("+ idCandidat + "," + idCompetition +")}"); 
+			String sql = "{call inscriptionCandidat("+ idCandidat + "," + idCompetition +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat est inscrit";
 		}

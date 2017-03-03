@@ -17,7 +17,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getCandidatCarac("+ pID +")}"); 
+			String sql = "{call getCandidatCarac("+ pID +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 			while (Result.next()) {
 		            String nomCandidat = Result.getString("nom_candidat");
@@ -59,7 +60,8 @@ public class lectureBase
 			// Affiche la liste avec les prénoms et mails si ce sont des personnes sinon juste le nom des équipes
 			if(enEquipe == 0)
 			{
-				java.sql.CallableStatement cs = CO.cn.prepareCall("{call getCandidatCompetition("+ idCompetition +")}"); 
+				String sql = "{call getCandidatCompetition("+ idCompetition +")}";
+				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 				Result = cs.executeQuery();
 				System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
 					while (Result.next()) 
@@ -72,7 +74,8 @@ public class lectureBase
 			}
 			else
 			{
-				java.sql.CallableStatement cs = CO.cn.prepareCall("{call getCandidatCompetition("+ idCompetition +")}"); 
+				String sql = "{call getCandidatCompetition("+ idCompetition +")}";
+				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 				Result = cs.executeQuery();
 				System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
 					while (Result.next()) 
@@ -99,7 +102,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getCandidats()}"); 
+			String sql = "{call getCandidats()}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 			while (Result.next()) {
 		            String nomCandidat = Result.getString("nom_candidat");
@@ -126,7 +130,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getCompetitionCarac("+ idCompetition +")}"); 
+			String sql = "{call getCompetitionCarac("+ idCompetition +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 			while (Result.next()) {
 				String nomCompetition = Result.getString("nom_competition");
@@ -154,7 +159,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getEquipeOfPersonne("+ idPersonne +")}"); 
+			String sql = "{call getEquipeOfPersonne("+ idPersonne +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 			
 			// afficher la personne et la première équipe à laquelle elle appartient
@@ -189,7 +195,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getEquipes()}"); 
+			String sql = "{call getEquipes()}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 			
 			while (Result.next())
@@ -227,7 +234,8 @@ public class lectureBase
 			
 			if(estUnePersonne == 0) // le candidat est une équipe
 			{
-				java.sql.CallableStatement cs = CO.cn.prepareCall("{call getInscriptionCandidat("+ idCandidat +")}"); 
+				String sql = "{call getInscriptionCandidat("+ idCandidat +")}";
+				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 				Result = cs.executeQuery();
 					
 				// affiche l'équipe et la première compétition à laquelle elle est inscrite
@@ -253,7 +261,8 @@ public class lectureBase
 			}
 			else
 			{
-				java.sql.CallableStatement cs = CO.cn.prepareCall("{call getInscriptionCandidat("+ idCandidat +")}"); 
+				String sql = "{call getInscriptionCandidat("+ idCandidat +")}";
+				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 				Result = cs.executeQuery();
 					
 				// affiche la personne et la première compétition à laquelle elle est inscrite
@@ -297,7 +306,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getMembreEquipe("+ idEquipe +")}"); 
+			String sql = "{call getMembreEquipe("+ idEquipe +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 				
 			// afficher le nom de l'équipe et la première personne dans l'équipe
@@ -337,7 +347,8 @@ public class lectureBase
 		try	
 		{
 			CO.bddConnexion();
-			java.sql.CallableStatement cs = CO.cn.prepareCall("{call getPersonnes()}"); 
+			String sql = "{call getPersonnes()}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
 				
 			while (Result.next())
