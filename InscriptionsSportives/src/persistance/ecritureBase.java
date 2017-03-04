@@ -175,4 +175,91 @@ public class ecritureBase
 		return message;
 	}
 	
+	public String removeCandidatCompetition(int idCandidat, int idCompetition)
+	{
+		CO = new connectBase();
+							
+		try	
+		{
+			CO.bddConnexion();
+			String sql = "{call removeCandidatCompetition("+ idCompetition + "," + idCandidat +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			Result = cs.executeUpdate(); 
+			message = Result + " candidat désinscrit";
+		}
+							
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			message = "Le candidat et/ou la compétition n'existe pas";
+		}	
+		
+		return message;
+	}
+	
+	public String removePersonneEquipe(int idEquipe, int idPersonne)
+	{
+		CO = new connectBase();
+							
+		try	
+		{
+			CO.bddConnexion();
+			String sql = "{call removePersonneEquipe("+ idEquipe + "," + idPersonne +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			Result = cs.executeUpdate(); 
+			message = Result + " personne a été enlevé de l'équipe";
+		}
+							
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			message = "L'équipe et/ou la personne n'existe pas";
+		}	
+		
+		return message;
+	}
+	
+	public String setCandidatCarac(int pID, String nomCandidat, String prenomPersonne, String email)
+	{
+		CO = new connectBase();
+							
+		try	
+		{
+			CO.bddConnexion();
+			String sql = "{call setCandidatCarac("+ pID + "," + nomCandidat + "," + prenomPersonne + "," + email + ")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			Result = cs.executeUpdate(); 
+			message = Result + " candidat a été modifié";
+		}
+							
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			message = "Le candidat n'existe pas";
+		}	
+		
+		return message;
+	}
+	
+	public String setCompetitionCarac(String Competition, LocalDate Ouverture, LocalDate Cloture, int EnEquipe, int pID)
+	{
+		CO = new connectBase();
+							
+		try	
+		{
+			CO.bddConnexion();
+			String sql = "{call setCandidatCarac("+ Competition + "," + Ouverture + "," + Cloture + "," + EnEquipe + pID +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			Result = cs.executeUpdate(); 
+			message = Result + " candidat a été modifié";
+		}
+							
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			message = "Le candidat n'existe pas";
+		}	
+		
+		return message;
+	}
 }

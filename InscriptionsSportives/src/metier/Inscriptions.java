@@ -257,8 +257,6 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
 		
-		//ecritureBase EB = new ecritureBase();
-		//EB.createCompetition("competTest",LocalDate.of(2017,10,8),LocalDate.of(2017,03,3),1);
 		
 		try
 		{
