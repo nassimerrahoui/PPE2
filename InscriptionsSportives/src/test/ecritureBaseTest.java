@@ -41,4 +41,24 @@ public class ecritureBaseTest {
 		fail("Not yet implemented");
 	}
 
+	@Test
+	public void testRemoveCandidatCompetition() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testRemovePersonneEquipe() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetCandidatCarac() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetCompetitionCarac() {
+		fail("Not yet implemented");
+	}
+
 }

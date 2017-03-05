@@ -1,6 +1,7 @@
 package persistance;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class ecritureBase 
@@ -34,14 +35,17 @@ public class ecritureBase
 	}
 	
 	// Créer une compétition
-	public String createCompetition(String nomCompetition, LocalDate Cloture, LocalDate Ouverture, int EnEquipe)
+	public String createCompetition(String nomCompetition, String Cloture, String Ouverture, int EnEquipe)
 	{
 		CO = new connectBase();
 		
 		try	
 		{
 			CO.bddConnexion();
-			String sql = "{call createCompetition(" + nomCompetition + "," + Cloture + "," + Ouverture + "," + EnEquipe + ")}";
+			String sql = "{call createCompetition(" +
+					"\"" + nomCompetition + "\"" + "," +
+					"\"" + Cloture +  "\"" + "," + 
+					 "\"" + Ouverture +  "\""  + "," + EnEquipe + ")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			cs.executeUpdate();
 		}
@@ -64,7 +68,7 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			String sql = "{call createEquipe("+ pCandidat + ")}";
+			String sql = "{call createEquipe("+ "\"" + pCandidat + "\"" + ")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " equipe(s) créée(s)";
@@ -88,7 +92,7 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			String sql = "{call createPersonne("+ pCandidat + "," + pPrenom + "," + pMail +")}";
+			String sql = "{call createPersonne("+ "\"" + pCandidat + "\"" + "," + "\"" + pPrenom + "\"" + "," + "\"" + pMail + "\"" +")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " personne(s) créée(s)";
@@ -226,7 +230,10 @@ public class ecritureBase
 		try	
 		{
 			CO.bddConnexion();
-			String sql = "{call setCandidatCarac("+ pID + "," + nomCandidat + "," + prenomPersonne + "," + email + ")}";
+			String sql = "{call setCandidatCarac("+ pID + "," + 
+					"\"" + nomCandidat + "\"" + "," + 
+					"\"" + prenomPersonne + "\"" + "," + 
+					"\"" + email + "\"" + ")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat a été modifié";
@@ -241,23 +248,26 @@ public class ecritureBase
 		return message;
 	}
 	
-	public String setCompetitionCarac(String Competition, LocalDate Ouverture, LocalDate Cloture, int EnEquipe, int pID)
+	public String setCompetitionCarac(String Competition, String Ouverture, String Cloture, int EnEquipe, int pID)
 	{
 		CO = new connectBase();
 							
 		try	
 		{
 			CO.bddConnexion();
-			String sql = "{call setCandidatCarac("+ Competition + "," + Ouverture + "," + Cloture + "," + EnEquipe + pID +")}";
+			String sql = "{call setCompetitionCarac(" +
+					"\"" + Competition + "\"" + "," +
+					"\"" + Cloture +  "\"" + "," + 
+					 "\"" + Ouverture +  "\""  + "," + EnEquipe + ")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeUpdate(); 
-			message = Result + " candidat a été modifié";
+			message = Result + " compétition a été modifié";
 		}
 							
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			message = "Le candidat n'existe pas";
+			message = "La compétition n'existe pas";
 		}	
 		
 		return message;

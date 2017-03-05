@@ -1,5 +1,7 @@
 package metier;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,6 +12,9 @@ import java.util.Collections;
 import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import persistance.ecritureBase;
+import persistance.lectureBase;
 
 
 /**
@@ -26,6 +31,7 @@ public class Inscriptions implements Serializable
 	
 	private SortedSet<Competition> competitions = new TreeSet<>();
 	private SortedSet<Candidat> candidats = new TreeSet<>();
+	static lectureBase LB = new lectureBase();
 
 	private Inscriptions()
 	{
@@ -72,6 +78,7 @@ public class Inscriptions implements Serializable
 	
 	public SortedSet<Equipe> getEquipes()
 	{
+		LB.getEquipes();
 		SortedSet<Equipe> equipes = new TreeSet<>();
 		for (Candidat c : getCandidats())
 			if (c instanceof Equipe)
@@ -257,6 +264,10 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
 		
+		//ecritureBase EB = new ecritureBase();
+		//EB.createCompetition("Test","2017-12-31","2017-03-05",1);
+		//System.out.println(EB.createEquipe("TeamABC"));
+		//System.out.println(EB.createPersonne("Lastname","Faker","lcs@lcs.fr"));
 		
 		try
 		{

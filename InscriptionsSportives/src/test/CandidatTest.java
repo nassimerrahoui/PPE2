@@ -19,7 +19,6 @@ public class CandidatTest {
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		String i = testeur.getPrenom();
 		assertEquals("testeur",i);
-		
 	}
 
 	@Test

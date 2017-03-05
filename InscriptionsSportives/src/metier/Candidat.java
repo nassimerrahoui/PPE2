@@ -1,9 +1,13 @@
 package metier;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+
+import persistance.lectureBase;
 
 /**
  * Candidat à un événement sportif, soit une personne physique, soit une équipe.

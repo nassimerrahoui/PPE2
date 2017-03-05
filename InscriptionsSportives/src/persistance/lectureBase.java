@@ -10,30 +10,51 @@ public class lectureBase
 	String message;
 	
 	// Affiche les Caractéristiques d'un candidat
-	public void getCandidatCarac(int pID)
-	{
+	public String getCandidatCarac(int pID)
+	{	
 		CO = new connectBase();
+		String message = "";
 		
-		try	
+		try
 		{
 			CO.bddConnexion();
+			// Vérifie si le candidat est une personne ou une equipe
+			String query = "SELECT COUNT(id_candidat) as estUnePersonne FROM personne WHERE id_candidat = " + pID;
+			Result = CO.st.executeQuery(query);
+			int estUnePersonne = 0;
+			
+			while(Result.next())
+			{
+				estUnePersonne = Result.getInt("estUnePersonne");
+			}
+						
 			String sql = "{call getCandidatCarac("+ pID +")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
 			Result = cs.executeQuery();
-			while (Result.next()) {
-		            String nomCandidat = Result.getString("nom_candidat");
-		            String prenomCandidat = Result.getString("prenom_personne");
-		            String mail = Result.getString("mail");
-		            
-		            System.out.println(nomCandidat + "," + prenomCandidat + "," + mail);
-		        }
+			while (Result.next())
+			{
+				String nomCandidat = Result.getString("nom_candidat");
+				if(estUnePersonne == 1) // le candidat est une équipe
+				{
+					System.out.println("hahaha");
+					String prenomCandidat = Result.getString("prenom_personne");
+					String mail = Result.getString("mail");
+					message = nomCandidat + "," + prenomCandidat + "," + mail;
+				}
+				else
+				{
+					message = nomCandidat;
+				}
+			}
 		}
 		
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			System.out.println("Le candidat n'existe pas.");
+			message = "Le candidat n'existe pas.";
 		}
+		
+		return message;
 		
 	}
 	
@@ -58,31 +79,23 @@ public class lectureBase
 			}
 			
 			// Affiche la liste avec les prénoms et mails si ce sont des personnes sinon juste le nom des équipes
-			if(enEquipe == 0)
+			String sql = "{call getCandidatCompetition("+ idCompetition +")}";
+			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			Result = cs.executeQuery();
+			System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
+			while (Result.next()) 
 			{
-				String sql = "{call getCandidatCompetition("+ idCompetition +")}";
-				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
-				Result = cs.executeQuery();
-				System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
-					while (Result.next()) 
-					{
-			            String nomCandidat = Result.getString("nom_candidat");
-			            String prenomCandidat = Result.getString("prenom_personne");
-			            String mail = Result.getString("mail");
-			            System.out.println(nomCandidat + "," + prenomCandidat + "," + mail);
-			        }
-			}
-			else
-			{
-				String sql = "{call getCandidatCompetition("+ idCompetition +")}";
-				java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
-				Result = cs.executeQuery();
-				System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
-					while (Result.next()) 
-					{
-			            String nomCandidat = Result.getString("nom_candidat");
-			            System.out.println(nomCandidat);
-			        }
+				String nomCandidat = Result.getString("nom_candidat");
+			    if(enEquipe == 0) 
+			    {
+			    	String prenomCandidat = Result.getString("prenom_personne");
+				    String mail = Result.getString("mail");
+				    System.out.println(nomCandidat + "," + prenomCandidat + "," + mail);
+			    }
+			    else
+			    {
+			    	System.out.println(nomCandidat);
+			    }
 			}
 		}
 		
