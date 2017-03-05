@@ -109,7 +109,7 @@ public class Inscriptions implements Serializable
 	{
 		Personne personne = new Personne(this, nom, prenom, mail);
 		candidats.add(personne);
-		persistance.ecritureBase.createPersonne(nom, prenom, mail);
+		//persistance.ecritureBase.createPersonne(nom, prenom, mail);
 		return personne;
 	}
 	
