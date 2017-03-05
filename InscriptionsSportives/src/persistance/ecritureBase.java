@@ -1,8 +1,6 @@
 package persistance;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 public class ecritureBase 
 {
