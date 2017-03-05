@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class ecritureBase 
 {
-	connectBase CO;
+	static connectBase CO;
 	int Result;
 	String message;
 	
@@ -83,7 +83,7 @@ public class ecritureBase
 	}
 	
 	// Créer une personne
-	public String createPersonne(String pCandidat, String pPrenom, String pMail)
+	public static void createPersonne(String pCandidat, String pPrenom, String pMail)
 	{
 		CO = new connectBase();
 		
@@ -92,17 +92,15 @@ public class ecritureBase
 			CO.bddConnexion();
 			String sql = "{call createPersonne("+ "\"" + pCandidat + "\"" + "," + "\"" + pPrenom + "\"" + "," + "\"" + pMail + "\"" +")}";
 			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
-			Result = cs.executeUpdate(); 
-			message = Result + " personne(s) créée(s)";
+			cs.executeUpdate();
+			System.out.println("OK !");
 		}
 		
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			message = "La personne n'a pas été créée.";
+			System.out.println("La personne n'a pas été créée.");
 		}
-		
-		return message;
 		
 	}
 	
