@@ -2,12 +2,18 @@ package persistance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import metier.Candidat;
 
 public class lectureBase 
 {
-	connectBase CO;
-	ResultSet Result;
+	static connectBase CO;
+	static ResultSet Result;
 	String message;
+	public static SortedSet<String> candidatsBdd = new TreeSet<>();
 	
 	// Affiche les Caractéristiques d'un candidat
 	public String getCandidatCarac(int pID)
@@ -108,7 +114,7 @@ public class lectureBase
 	}
 	
 	// Affiche tout les candidats (equipes et personnes)
-	public void getCandidats()
+	public static SortedSet<String> getCandidats()
 	{
 		CO = new connectBase();
 		
@@ -120,10 +126,8 @@ public class lectureBase
 			Result = cs.executeQuery();
 			while (Result.next()) {
 		            String nomCandidat = Result.getString("nom_candidat");
-		            String prenomCandidat = Result.getString("prenom_personne");
-		            String mail = Result.getString("mail");
 		            
-		            System.out.println(nomCandidat + "," + prenomCandidat + "," + mail);
+		            candidatsBdd.add(nomCandidat);
 		        }
 		}
 		
@@ -132,6 +136,7 @@ public class lectureBase
 			e.printStackTrace();
 			System.out.println("Il n'y a pas de candidat.");
 		}
+		return candidatsBdd;
 		
 	}
 	

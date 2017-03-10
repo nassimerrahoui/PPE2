@@ -7,9 +7,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Iterator;
 import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import persistance.lectureBase;
 
 
 /**
@@ -26,6 +29,8 @@ public class Inscriptions implements Serializable
 	
 	private SortedSet<Competition> competitions = new TreeSet<>();
 	private SortedSet<Candidat> candidats = new TreeSet<>();
+	private static lectureBase LB = new lectureBase();
+	
 
 	private Inscriptions()
 	{
@@ -46,9 +51,10 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public SortedSet<Candidat> getCandidats()
+	public static SortedSet<String> getCandidats()
 	{
-		return Collections.unmodifiableSortedSet(candidats);
+		//return Collections.unmodifiableSortedSet(candidats);
+		return Collections.unmodifiableSortedSet(LB.getCandidats());
 	}
 
 	/**
@@ -59,7 +65,7 @@ public class Inscriptions implements Serializable
 	public SortedSet<Personne> getPersonnes()
 	{
 		SortedSet<Personne> personnes = new TreeSet<>();
-		for (Candidat c : getCandidats())
+		for (String c : getCandidats())
 			if (c instanceof Personne)
 				personnes.add((Personne)c);
 		return Collections.unmodifiableSortedSet(personnes);
@@ -93,6 +99,7 @@ public class Inscriptions implements Serializable
 	{
 		Competition competition = new Competition(this, nom, dateCloture, enEquipe);
 		competitions.add(competition);
+		//persistance.ecritureBase.createCompetition(nom, dateCloture, enEquipe);
 		return competition;
 	}
 
@@ -126,6 +133,7 @@ public class Inscriptions implements Serializable
 	{
 		Equipe equipe = new Equipe(this, nom);
 		candidats.add(equipe);
+		//persistance.ecritureBase.createEquipe(nom);
 		return equipe;
 	}
 	
@@ -261,6 +269,14 @@ public class Inscriptions implements Serializable
 		//EB.createCompetition("Test","2017-12-31","2017-03-05",1);
 		//System.out.println(EB.createEquipe("TeamABC"));
 		//System.out.println(EB.createPersonne("Lastname","Faker","lcs@lcs.fr"));
+		
+		for(String c : getCandidats()) 
+		{
+			System.out.println(c);
+		}
+		
+		//System.out.println(LB.getCandidats());
+		
 		
 		try
 		{
