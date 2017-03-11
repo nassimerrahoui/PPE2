@@ -1,23 +1,27 @@
+
 package persistance;
 
 import java.sql.SQLException;
 
 public class ecritureBase 
 {
-	static connectBase CO;
 	int Result;
 	String message;
+	protected connectBase connect = null;
+	
+	public ecritureBase(connectBase CO)
+	{
+		this.connect = CO;
+	}
 	
 	// Ajoute un membre dans une équipe
 	public String addMembre(int idPersonne, int idEquipe)
 	{
-		CO = new connectBase();
 		
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call addMembreEquipe("+ idPersonne + "," + idEquipe +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 		    cs.executeUpdate();
 			message = Result + " Membre ajouté";
 		}
@@ -34,17 +38,14 @@ public class ecritureBase
 	
 	// Créer une compétition
 	public String createCompetition(String nomCompetition, String Cloture, String Ouverture, int EnEquipe)
-	{
-		CO = new connectBase();
-		
+	{	
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call createCompetition(" +
 					"\"" + nomCompetition + "\"" + "," +
 					"\"" + Cloture +  "\"" + "," + 
 					 "\"" + Ouverture +  "\""  + "," + EnEquipe + ")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			cs.executeUpdate();
 		}
 		
@@ -60,14 +61,11 @@ public class ecritureBase
 	
 	// Créer une équipe
 	public String createEquipe(String pCandidat)
-	{
-		CO = new connectBase();
-		
+	{	
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call createEquipe("+ "\"" + pCandidat + "\"" + ")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " equipe(s) créée(s)";
 		}
@@ -83,15 +81,12 @@ public class ecritureBase
 	}
 	
 	// Créer une personne
-	public static void createPersonne(String pCandidat, String pPrenom, String pMail)
+	public void createPersonne(String pCandidat, String pPrenom, String pMail)
 	{
-		CO = new connectBase();
-		
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call createPersonne("+ "\"" + pCandidat + "\"" + "," + "\"" + pPrenom + "\"" + "," + "\"" + pMail + "\"" +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			cs.executeUpdate();
 			System.out.println("OK !");
 		}
@@ -107,13 +102,10 @@ public class ecritureBase
 	// Effacer une candidat
 	public String deleteCandidat(int idCandidat)
 	{
-		CO = new connectBase();
-		
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call deleteCandidat("+idCandidat+")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat(s) supprimé(s)";
 		}
@@ -131,13 +123,10 @@ public class ecritureBase
 	// Effacer une compétition
 	public String deleteCompetition(int pID)
 	{
-		CO = new connectBase();
-		
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call deleteCompetition("+ pID +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " compétition(s) supprimé(s)";
 		}
@@ -154,14 +143,11 @@ public class ecritureBase
 	
 	// Inscrit un candidat à une compétition
 	public String inscriptionCandidat(int idCandidat, int idCompetition)
-	{
-		CO = new connectBase();
-							
+	{						
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call inscriptionCandidat("+ idCandidat + "," + idCompetition +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat est inscrit";
 		}
@@ -177,13 +163,10 @@ public class ecritureBase
 	
 	public String removeCandidatCompetition(int idCandidat, int idCompetition)
 	{
-		CO = new connectBase();
-							
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call removeCandidatCompetition("+ idCompetition + "," + idCandidat +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat désinscrit";
 		}
@@ -199,13 +182,10 @@ public class ecritureBase
 	
 	public String removePersonneEquipe(int idEquipe, int idPersonne)
 	{
-		CO = new connectBase();
-							
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call removePersonneEquipe("+ idEquipe + "," + idPersonne +")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " personne a été enlevé de l'équipe";
 		}
@@ -221,16 +201,13 @@ public class ecritureBase
 	
 	public String setCandidatCarac(int pID, String nomCandidat, String prenomPersonne, String email)
 	{
-		CO = new connectBase();
-							
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call setCandidatCarac("+ pID + "," + 
 					"\"" + nomCandidat + "\"" + "," + 
 					"\"" + prenomPersonne + "\"" + "," + 
 					"\"" + email + "\"" + ")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " candidat a été modifié";
 		}
@@ -246,16 +223,13 @@ public class ecritureBase
 	
 	public String setCompetitionCarac(String Competition, String Ouverture, String Cloture, int EnEquipe, int pID)
 	{
-		CO = new connectBase();
-							
 		try	
 		{
-			CO.bddConnexion();
 			String sql = "{call setCompetitionCarac(" +
 					"\"" + Competition + "\"" + "," +
 					"\"" + Cloture +  "\"" + "," + 
 					 "\"" + Ouverture +  "\""  + "," + EnEquipe + ")}";
-			java.sql.CallableStatement cs = CO.cn.prepareCall(sql); 
+			java.sql.CallableStatement cs = this.connect.getConnexion().prepareCall(sql); 
 			Result = cs.executeUpdate(); 
 			message = Result + " compétition a été modifié";
 		}
