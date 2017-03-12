@@ -7,25 +7,16 @@ import com.mysql.jdbc.Connection;
 
 public class connectBase
 {
-	private static String url;
-	private static String login;
-	private static String passwd;
+	private static String url = "jdbc:mysql://localhost/sport?autoReconnect=true&useSSL=false";
+	private static String login = "root";
+	private static String passwd = "";
 	private static Connection cn;
 	
-	private connectBase()
-	{
-		url = "jdbc:mysql://localhost/sport?autoReconnect=true&useSSL=false";
-		login = "root";
-		passwd = "";
-		cn = null;
-	}
-	
 	/** Création de la connexion @return */
-	private static void bddConnexion()
+	private connectBase()
 	{
 		try	
 		{
-			Class.forName("com.mysql.jdbc.Driver");
 			cn = (Connection) DriverManager.getConnection(url, login, passwd);
 		}
 		
@@ -33,18 +24,21 @@ public class connectBase
 		{
 			e.printStackTrace();
 		}
-		catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
-	/** Retourne notre connexion et la créer si elle n'existe pas @return */
-	public Connection getConnexion(){
+	/** Retourne notre connexion ou la créé si elle n'existe pas @return */
+	public static Connection getInstance(){
 		if(cn == null){
-			bddConnexion();
+			synchronized(connectBase.class)
+			{
+				new connectBase();
+				System.out.println("Nouvelle Connexion !");
+			}
 		}
-	    return cn;   
+		else
+		{
+			System.out.println("Connexion existante !");
+		}
+	    return cn;
 	}   
-	
 }

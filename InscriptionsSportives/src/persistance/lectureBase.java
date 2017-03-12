@@ -9,17 +9,11 @@ import java.util.TreeSet;
 
 public class lectureBase 
 {
-	private ResultSet Result;
-	private String message;
+	public ResultSet Result;
+	public String message;
 	public static SortedSet<String> candidatsBdd = new TreeSet<>();
 	public static SortedSet<Collections> competitionsBdd = new TreeSet<>();
-	private connectBase connect = null;
-	private PreparedStatement st;
-	
-	public lectureBase(connectBase CO)
-	{
-		this.connect = CO;
-	}
+	public PreparedStatement st;
 	
 	/** Affiche les Caractéristiques d'un candidat @ return */
 	public String getCandidatCarac(int pID)
@@ -28,7 +22,7 @@ public class lectureBase
 		{
 			// Vérifie si le candidat est une personne ou une equipe
 			String query = "SELECT COUNT(id_candidat) as estUnePersonne FROM personne WHERE id_candidat = " + pID;
-			st = this.connect.getConnexion().clientPrepareStatement(query);
+			st = connectBase.getInstance().prepareStatement(query);
 			Result = st.executeQuery(query);
 			int estUnePersonne = 0;
 			
@@ -38,7 +32,7 @@ public class lectureBase
 			}
 						
 			String sql = "{call getCandidatCarac("+ pID +")}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			while (Result.next())
 			{
@@ -74,7 +68,7 @@ public class lectureBase
 		{
 			// Vérifie si la compétition est en équipe
 			String query = "SELECT nom_competition, estEnEquipe FROM Competition WHERE id_competition = " + idCompetition;
-			st = this.connect.getConnexion().clientPrepareStatement(query);
+			st = connectBase.getInstance().prepareStatement(query);
 			Result = st.executeQuery(query);
 			int enEquipe = 0;
 			String nomCompetition = "";
@@ -87,7 +81,7 @@ public class lectureBase
 			
 			// Affiche la liste avec les prénoms et mails si ce sont des personnes sinon juste le nom des équipes
 			String sql = "{call getCandidatCompetition("+ idCompetition +")}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			System.out.println("Candidats inscrit pour la compétition " + nomCompetition + " :");
 			while (Result.next()) 
@@ -120,7 +114,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getCandidats()}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			while (Result.next()) {
 					String nomCandidatBdd = Result.getString("nom_candidat");
@@ -143,7 +137,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getCompetitionCarac("+ idCompetition +")}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			while (Result.next()) {
 				String nomCompetition = Result.getString("nom_competition");
@@ -169,7 +163,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getCompetitions()}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			while (Result.next()) {
 				//int idCompetitionBdd = Result.getInt("id_competition");
@@ -199,7 +193,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getEquipeOfPersonne("+ idPersonne +")}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			
 			// afficher la personne et la première équipe à laquelle elle appartient
@@ -232,7 +226,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getEquipes()}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 			
 			while (Result.next())
@@ -256,7 +250,7 @@ public class lectureBase
 		{
 			// Vérifie si le candidat est une personne ou une equipe
 			String query = "SELECT COUNT(id_candidat) as estUnePersonne FROM personne WHERE id_candidat = " + idCandidat;
-			st = this.connect.getConnexion().clientPrepareStatement(query);
+			st = connectBase.getInstance().prepareStatement(query);
 			Result = st.executeQuery(query);
 			int estUnePersonne = 0;
 			
@@ -268,7 +262,7 @@ public class lectureBase
 			if(estUnePersonne == 0) // le candidat est une équipe
 			{
 				String sql = "{call getInscriptionCandidat("+ idCandidat +")}";
-				st = this.connect.getConnexion().clientPrepareStatement(sql);
+				st = connectBase.getInstance().prepareStatement(sql);
 				Result = st.executeQuery(sql);
 					
 				// affiche l'équipe et la première compétition à laquelle elle est inscrite
@@ -295,7 +289,7 @@ public class lectureBase
 			else
 			{
 				String sql = "{call getInscriptionCandidat("+ idCandidat +")}";
-				st = this.connect.getConnexion().clientPrepareStatement(sql);
+				st = connectBase.getInstance().prepareStatement(sql);
 				Result = st.executeQuery(sql);
 					
 				// affiche la personne et la première compétition à laquelle elle est inscrite
@@ -337,7 +331,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getMembreEquipe("+ idEquipe +")}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 				
 			// afficher le nom de l'équipe et la première personne dans l'équipe
@@ -375,7 +369,7 @@ public class lectureBase
 		try	
 		{
 			String sql = "{call getPersonnes()}";
-			st = this.connect.getConnexion().clientPrepareStatement(sql);
+			st = connectBase.getInstance().prepareStatement(sql);
 			Result = st.executeQuery(sql);
 				
 			while (Result.next())

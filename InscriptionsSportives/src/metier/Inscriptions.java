@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import persistance.lectureBase;
+
 
 /**
  * Point d'entrée dans l'application, un seul objet de type Inscription
@@ -259,6 +261,20 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		System.out.println(flechettes.getDateCloture());
 		
+		/*try 
+		{	
+			lectureBase LB = new lectureBase();
+			for (String e : LB.getCandidats())
+				System.out.println(e);
+			for (String e : LB.getCandidats())
+				System.out.println(e);
+		}
+		catch (Exception LB)
+		{
+			System.out.println("CO impossible " + LB);
+		}*/
+		
+		
 		try
 		{
 			inscriptions.sauvegarder();
@@ -268,5 +284,5 @@ public class Inscriptions implements Serializable
 			System.out.println("Sauvegarde impossible." + e);
 		}
 		
-		}
 	}
+}
