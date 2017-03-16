@@ -21,6 +21,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	private LocalDate dateCloture;
 	private boolean enEquipe = false;
 	private LocalDate today = LocalDate.now();
+	private int id;
 
 	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe) {
 		this.inscriptions = inscriptions;
@@ -28,6 +29,16 @@ public class Competition implements Comparable<Competition>, Serializable {
 		this.dateCloture = dateCloture;
 		this.enEquipe = enEquipe;
 		candidats = new TreeSet<>();
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id) 
+	{
+		this.id = id;
 	}
 
 	/**
@@ -299,5 +310,6 @@ public class enEquipeException extends Exception {
 			}
 			
 			
-		}	
 		}
+	
+}

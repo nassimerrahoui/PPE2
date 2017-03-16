@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import persistance.lectureBase;
 
 
 /**
@@ -26,13 +25,12 @@ public class Inscriptions implements Serializable
 	private static final String FILE_NAME = "Inscriptions.srz";
 	private static Inscriptions inscriptions;
 	
-	private SortedSet<Competition> competitions = new TreeSet<>();
-	private SortedSet<Candidat> candidats = new TreeSet<>();
+	private static SortedSet<Competition> competitions = new TreeSet<>();
+	private static SortedSet<Candidat> candidats = new TreeSet<>();
 
 	private Inscriptions()
 	{
-		//competitions = LB.getCompetitions();
-		//candidats = LB.getCandidats();
+		//TO DO
 	}
 	
 	/**
@@ -92,12 +90,11 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public Competition createCompetition(String nom, 
+	public static Competition createCompetition(String nom, 
 			LocalDate dateCloture, boolean enEquipe)
 	{
-		Competition competition = new Competition(this, nom, dateCloture, enEquipe);
+		Competition competition = new Competition(inscriptions, nom, dateCloture, enEquipe);
 		competitions.add(competition);
-		//persistance.ecritureBase.createCompetition(nom, dateCloture, enEquipe);
 		return competition;
 	}
 
@@ -110,9 +107,9 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public Personne createPersonne(String nom, String prenom, String mail)
+	public static Personne createPersonne(String nom, String prenom, String mail)
 	{
-		Personne personne = new Personne(this, nom, prenom, mail);
+		Personne personne = new Personne(inscriptions, nom, prenom, mail);
 		candidats.add(personne);
 		return personne;
 	}
@@ -126,9 +123,9 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public Equipe createEquipe(String nom)
+	public static Equipe createEquipe(String nom)
 	{
-		Equipe equipe = new Equipe(this, nom);
+		Equipe equipe = new Equipe(inscriptions, nom);
 		candidats.add(equipe);
 		return equipe;
 	}
@@ -247,10 +244,10 @@ public class Inscriptions implements Serializable
 	public static void main(String[] args)
 	{
 	
-		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		LocalDate date = LocalDate.of(2015, 12, 31);
-		Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", date, false);
-		Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 
+		//Inscriptions inscriptions = Inscriptions.getInscriptions();
+		//LocalDate date = LocalDate.of(2015, 12, 31);
+		//Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", date, false);
+		/*Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 
 				boris = inscriptions.createPersonne("Boris", "le Hachoir", "ytreza");
 
 		Equipe lesManouches = inscriptions.createEquipe("Les Manouches");
@@ -259,21 +256,19 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		//lesManouches.delete();
 		System.out.println(inscriptions);
-		System.out.println(flechettes.getDateCloture());
+		System.out.println(flechettes.getDateCloture());*/
 		
-		/*try 
-		{	
-			lectureBase LB = new lectureBase();
-			for (String e : LB.getCandidats())
-				System.out.println(e);
-			for (String e : LB.getCandidats())
-				System.out.println(e);
-		}
-		catch (Exception LB)
+		
+		//for (Competition e : lectureBase.getCompetitions())
+			//	System.out.println(e);
+		
+		/*for (Competition c : inscriptions.getCompetitions())
 		{
-			System.out.println("CO impossible " + LB);
+			System.out.println(c);
 		}*/
 		
+		//competitionDAO p = new competitionDAO();
+		//p.create(flechettes);
 		
 		try
 		{
