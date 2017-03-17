@@ -37,6 +37,7 @@ public class candidatData
     					unCandidat = Inscriptions.createPersonne(result.getString("nom_candidat"),
     												result.getString("prenom_personne"),
     												result.getString("mail"));
+    					unCandidat.setId(result.getInt("id_candidat"));
     					Candidats.add(unCandidat);
     					flag = true;
     					break;
@@ -46,6 +47,7 @@ public class candidatData
     			if(flag == false)
 				{
 					unCandidat = Inscriptions.createEquipe(result.getString("nom_candidat"));
+					unCandidat.setId(result.getInt("id_candidat"));
     				Candidats.add(unCandidat);
 				}
             }    
