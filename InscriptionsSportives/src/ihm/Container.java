@@ -1,27 +1,57 @@
 package ihm;
-
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
-public class Container extends JFrame
+import metier.Inscriptions;
+public class Container 
 {
-	private Panneau panneau = new Panneau();
 	
 	public Container()
 	{   
+		JFrame f = new JFrame("Gestion des Inscriptions");
+		f.setSize(900, 700);
+				
+		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 		
-	    this.setTitle("Gestionnaire de compétition");
-	    this.setSize(800, 600);
-	    this.setResizable(false);
-	    this.setLocationRelativeTo(null);               
-	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      
-	    this.setContentPane(panneau);               
-	    this.setVisible(true);
-	 } 
+		
+		SpacePersonne Pers = new SpacePersonne(new JLabel ("Personne"));	
+		JPanel ongletPers = Pers.getOnglet();
+		
+		
+		SpaceEquipe Equi = new SpaceEquipe(new JLabel ("Equipe"));	
+		JPanel ongletEqui = Equi.getOnglet();
+		
+		
+		SpaceCompet Comp = new SpaceCompet(new JLabel ("Competition"));	
+		JPanel ongletComp = Comp.getOnglet();
+		
+		
+		
+		onglets.addTab("Competition", ongletComp);
+		onglets.addTab("Personne", ongletPers);
+		onglets.addTab("Equipe", ongletEqui);
 	
+		
+		onglets.setOpaque(true);		
+		f.add(onglets);		
+		f.getContentPane().add(onglets);		
+		f.setVisible(true);
+		f.setResizable(false);
+		getInscriptions();
+		}
+	  
+	public static Inscriptions getInscriptions()
+	{
+		Inscriptions i= Inscriptions.getInscriptions();
+		return i;
+	}
 	public static void main(String[] args)
 	{
-		Container content = new Container();
-        content.setVisible(true);
+	new Container();
+        
 	}
 }
 
