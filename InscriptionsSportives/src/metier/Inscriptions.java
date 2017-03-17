@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import persistance.candidatData;
+import persistance.competitionData;
+
 
 
 /**
@@ -27,10 +30,11 @@ public class Inscriptions implements Serializable
 	
 	private static SortedSet<Competition> competitions = new TreeSet<>();
 	private static SortedSet<Candidat> candidats = new TreeSet<>();
-
+	
 	private Inscriptions()
 	{
-		//TO DO
+		candidats = candidatData.select(this);
+		competitions = competitionData.select(this);
 	}
 	
 	/**
@@ -243,8 +247,8 @@ public class Inscriptions implements Serializable
 	
 	public static void main(String[] args)
 	{
-	
-		//Inscriptions inscriptions = Inscriptions.getInscriptions();
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		inscriptions.reinitialiser();
 		//LocalDate date = LocalDate.of(2015, 12, 31);
 		//Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", date, false);
 		/*Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 
@@ -259,16 +263,9 @@ public class Inscriptions implements Serializable
 		System.out.println(flechettes.getDateCloture());*/
 		
 		
-		//for (Competition e : lectureBase.getCompetitions())
-			//	System.out.println(e);
+		//for (Competition e : competitions)
+			//System.out.println(e.getNom());
 		
-		/*for (Competition c : inscriptions.getCompetitions())
-		{
-			System.out.println(c);
-		}*/
-		
-		//competitionDAO p = new competitionDAO();
-		//p.create(flechettes);
 		
 		try
 		{

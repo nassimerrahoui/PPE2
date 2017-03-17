@@ -9,7 +9,6 @@ import java.util.TreeSet;
  * s'inscrire à une compétition.
  * 
  */
-
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;

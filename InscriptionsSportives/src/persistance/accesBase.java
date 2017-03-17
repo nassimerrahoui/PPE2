@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
 
-public class connectBase
+public class accesBase
 {
 	private static String url = "jdbc:mysql://localhost/sport?autoReconnect=true&useSSL=false";
 	private static String login = "root";
@@ -13,7 +13,7 @@ public class connectBase
 	private static Connection cn;
 	
 	/** Création de la connexion @return */
-	private connectBase()
+	private accesBase()
 	{
 		try	
 		{
@@ -29,15 +29,10 @@ public class connectBase
 	/** Retourne notre connexion ou la créé si elle n'existe pas @return */
 	public static Connection getInstance(){
 		if(cn == null){
-			synchronized(connectBase.class)
+			synchronized(accesBase.class)
 			{
-				new connectBase();
-				System.out.println("Nouvelle Connexion !");
+				new accesBase();
 			}
-		}
-		else
-		{
-			System.out.println("Connexion existante !");
 		}
 	    return cn;
 	}   

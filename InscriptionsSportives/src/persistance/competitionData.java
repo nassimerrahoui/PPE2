@@ -6,24 +6,22 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-
-import com.mysql.jdbc.CallableStatement;
-import com.mysql.jdbc.Statement;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import metier.Competition;
 import metier.Inscriptions;
 
 
-public class competitionDAO extends DAO<Competition>
+public class competitionData
 {
-
-	@Override
-	public Competition create(Competition obj)
+	@SuppressWarnings("static-access")
+	public void create(Competition obj)
 	{
 		try	
 		{
 			String sql = "{call createCompetition( ? , ? , ? , ?)}";
-			java.sql.CallableStatement cs = connectBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setString(1,obj.getNom());
         	
         	Date dateClotureJava = Date.from(obj.getDateCloture().atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -36,52 +34,21 @@ public class competitionDAO extends DAO<Competition>
         	
         	cs.setBoolean(4,obj.estEnEquipe());
 			cs.executeUpdate();
-			obj = this.find(cs.RETURN_GENERATED_KEYS);
 			obj.setId(cs.RETURN_GENERATED_KEYS);
-			
-			System.out.println(obj.getId());
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 			System.out.println("La compétition n'a pas été créée.");
 		}
-	    return obj;
 	}
 	
-	public Competition find(int id) 
-	{
-		Competition competition = null;
-		try 
-		{
-			String sql = "{call getCompetitionCarac(?)}";
-			java.sql.CallableStatement cs = connectBase.getInstance().prepareCall(sql);
-			cs.setInt(1,id);
-			ResultSet result = cs.executeQuery();
-            if(result.first())
-            {
-            	LocalDate dateClotureJava = result.getDate("dateCloture").toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            	competition = Inscriptions.createCompetition(result.getString("nom_competition"),
-            												dateClotureJava,
-            												result.getBoolean("estEnEquipe"));
-            	competition.setId(id);
-            }    
-		} 
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			System.out.println("Cette compétition n'existe pas encore dans l'application");
-		}
-		return competition;
-	}
-	
-	@Override
 	public Competition update(Competition obj)
 	{
 		try 
 		{
 			String sql = "{call setCompetitionCarac(? )}";
-        	java.sql.CallableStatement cs = this.connect.prepareCall(sql);
+        	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setLong(1,obj.getId());
         	cs.setString(2,obj.getNom());
         	cs.setDate(3, null);
@@ -89,23 +56,22 @@ public class competitionDAO extends DAO<Competition>
         	cs.setDate(4,(java.sql.Date) dateClotureSql);
         	cs.setBoolean(5,obj.estEnEquipe());
         	cs.executeUpdate();
-        	obj = this.find(obj.getId());
 		}
         						
         catch (SQLException e)
         {
         	e.printStackTrace();
+        	System.out.println("La compétition n'a pas été mise à jour.");
         }
 	    return obj;
 	}
 
-	@Override
 	public void delete(Competition obj)
 	{
 		try 
 		{
 			String sql = "{call deleteCompetition( ? )}";
-			java.sql.CallableStatement cs = this.connect.prepareCall(sql);
+			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
 			cs.setLong(1,obj.getId());
 			cs.executeUpdate(); 	
 	    } 
@@ -114,5 +80,36 @@ public class competitionDAO extends DAO<Competition>
 			e.printStackTrace();
 			System.out.println("La compétition n'a pas été supprimé.");
 	    }
-	}	
+	}
+		
+	public static SortedSet<Competition> select(Inscriptions inscriptions) 
+	{
+		SortedSet<Competition> Competitions = new TreeSet<>();
+		try 
+		{
+			Competition uneCompetition;
+			String sql = "{call getCompetitions()}";
+			java.sql.Statement cs = accesBase.getInstance().createStatement();
+			ResultSet result = cs.executeQuery(sql);
+	        while(result.next())
+	        {
+	            LocalDate dateClotureJava = result.getDate("dateCloture").toLocalDate();
+	            uneCompetition = Inscriptions.createCompetition(result.getString("nom_competition"),
+	            												dateClotureJava,
+	            												result.getBoolean("estEnEquipe"));
+	            
+	            uneCompetition.setId(result.getInt("id_competition"));
+	            Competitions.add(uneCompetition);
+	        }    
+		} 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Cette compétition n'existe pas encore dans l'application");
+		}
+		
+		return Competitions;
+	}
+	
+	//TO DO comment charger les candidats inscrits
 }
