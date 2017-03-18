@@ -13,26 +13,28 @@ import metier.Competition;
 import metier.Inscriptions;
 
 
-public class competitionData
+public class competitionData extends Competition
 {
+	private static final long serialVersionUID = -9162867045729982345L;
+
+	competitionData(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
+	{
+		super(inscriptions, nom, dateCloture, enEquipe);
+	}
+
 	@SuppressWarnings("static-access")
-	public void create(Competition obj)
+	public static void create(Competition obj)
 	{
 		try	
 		{
-			String sql = "{call createCompetition( ? , ? , ? , ?)}";
+			String sql = "{call createCompetition( ? , ? , ?)}";
 			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setString(1,obj.getNom());
         	
-        	Date dateClotureJava = Date.from(obj.getDateCloture().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        	java.sql.Date dateClotureSql = new java.sql.Date(dateClotureJava.getTime());
+        	java.sql.Date dateClotureSql = java.sql.Date.valueOf(obj.getDateCloture());
         	cs.setDate(2,dateClotureSql);
         	
-        	Date dateOuvertureJava = new Date();
-        	java.sql.Date dateOuvertureSql = new java.sql.Date(dateOuvertureJava.getTime());
-        	cs.setDate(3, dateOuvertureSql);
-        	
-        	cs.setBoolean(4,obj.estEnEquipe());
+        	cs.setBoolean(3,obj.estEnEquipe());
 			cs.executeUpdate();
 			obj.setId(cs.RETURN_GENERATED_KEYS);
 		}
@@ -87,14 +89,13 @@ public class competitionData
 		SortedSet<Competition> Competitions = new TreeSet<>();
 		try 
 		{
-			Competition uneCompetition;
 			String sql = "{call getCompetitions()}";
 			java.sql.Statement cs = accesBase.getInstance().createStatement();
 			ResultSet result = cs.executeQuery(sql);
 	        while(result.next())
 	        {
 	            LocalDate dateClotureJava = result.getDate("dateCloture").toLocalDate();
-	            uneCompetition = Inscriptions.createCompetition(result.getString("nom_competition"),
+	            Competition uneCompetition = new competitionData(inscriptions, result.getString("nom_competition"),
 	            												dateClotureJava,
 	            												result.getBoolean("estEnEquipe"));
 	            

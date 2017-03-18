@@ -3,21 +3,30 @@ package persistance;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import metier.Candidat;
 import metier.Equipe;
+import metier.Inscriptions;
 import metier.Personne;
 
 
-public class equipeData
+public class equipeData extends Equipe
 {
 
+	private static final long serialVersionUID = -3393260894899407673L;
+
+	protected equipeData(Inscriptions inscriptions, String nom)
+	{
+		super(inscriptions, nom);
+	}
+
 	@SuppressWarnings("static-access")
-	public void create(Equipe obj)
+	public static void create(Equipe obj)
 	{
 		try	
 		{
-			String sql = "{call createEquipe("+ "\" ? \"" + ")}";
+			String sql = "{call createEquipe( ? )}";
 			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
 			cs.setString(1, obj.getNom());
 			cs.executeUpdate();
@@ -99,7 +108,7 @@ public class equipeData
 	
 	
 	// TO DO, comment charger tout les membres des équipes
-	public SortedSet<Personne> getMembre(int id) 
+	/*public SortedSet<Personne> getMembre(int id) 
 	{
 		SortedSet<Personne> membres = null;
 		Personne personne = null;
@@ -120,5 +129,31 @@ public class equipeData
 			System.out.println("Cette equipe n'existe pas encore dans l'application");
 		}
 		return membres;
+	}*/
+	
+	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
+	{
+		SortedSet<Candidat> Candidats = new TreeSet<>();
+
+		try 
+		{
+			String sql = "{call getEquipes()}";
+			java.sql.Statement cs = accesBase.getInstance().createStatement();
+			ResultSet result = cs.executeQuery(sql);
+			
+			// boucle pour ajouter une equipe dans la couche métier
+            while(result.next())
+            {
+            	Candidat unCandidat = new equipeData(inscriptions, result.getString("nom_candidat"));
+    			unCandidat.setId(result.getInt("id_candidat"));
+        		Candidats.add(unCandidat);
+            }    
+		} 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Il n'y a pas de candidats");
+		}
+		return Candidats;
 	}
 }

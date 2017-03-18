@@ -15,7 +15,7 @@ public class Personne extends Candidat
 	private Set<Equipe> equipes;
 	private int id;
 	
-	Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
+	protected Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
 	{
 		super(inscriptions, nom);
 		this.prenom = prenom;

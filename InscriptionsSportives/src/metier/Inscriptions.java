@@ -13,6 +13,8 @@ import java.util.TreeSet;
 
 import persistance.candidatData;
 import persistance.competitionData;
+import persistance.equipeData;
+import persistance.personneData;
 
 
 
@@ -94,11 +96,12 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public static Competition createCompetition(String nom, 
+	public Competition createCompetition(String nom, 
 			LocalDate dateCloture, boolean enEquipe)
 	{
 		Competition competition = new Competition(inscriptions, nom, dateCloture, enEquipe);
 		competitions.add(competition);
+		competitionData.create(competition);
 		return competition;
 	}
 
@@ -111,10 +114,11 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public static Personne createPersonne(String nom, String prenom, String mail)
+	public Personne createPersonne(String nom, String prenom, String mail)
 	{
 		Personne personne = new Personne(inscriptions, nom, prenom, mail);
 		candidats.add(personne);
+		personneData.create(personne);
 		return personne;
 	}
 	
@@ -127,10 +131,11 @@ public class Inscriptions implements Serializable
 	 * @return
 	 */
 	
-	public static Equipe createEquipe(String nom)
+	public Equipe createEquipe(String nom)
 	{
 		Equipe equipe = new Equipe(inscriptions, nom);
 		candidats.add(equipe);
+		equipeData.create(equipe);
 		return equipe;
 	}
 	
@@ -249,22 +254,22 @@ public class Inscriptions implements Serializable
 	{
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		inscriptions.reinitialiser();
-		//LocalDate date = LocalDate.of(2015, 12, 31);
-		//Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", date, false);
-		/*Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 
-				boris = inscriptions.createPersonne("Boris", "le Hachoir", "ytreza");
+		/*LocalDate date = LocalDate.of(2017, 12, 31);
+		Competition tennis = inscriptions.createCompetition("Mondial de tennis", date, false);
+		Personne tony = inscriptions.createPersonne("Tonis", "Dent de plonge", "qwerty"), 
+				boris = inscriptions.createPersonne("Boric", "le couteau", "qsdf");
 
-		Equipe lesManouches = inscriptions.createEquipe("Les Manouches");
-		lesManouches.add(boris);
+		Equipe lesManouches = inscriptions.createEquipe("Les Manchots");
+		lesManouches.add(tony);
 		lesManouches.add(tony);
 		System.out.println(inscriptions);
 		//lesManouches.delete();
-		System.out.println(inscriptions);
-		System.out.println(flechettes.getDateCloture());*/
+		//System.out.println(inscriptions);
+		System.out.println(tennis.getDateCloture());*/
 		
-		
-		//for (Competition e : competitions)
-			//System.out.println(e.getNom());
+		//System.out.println(inscriptions);
+		for (Candidat e : candidats)
+			System.out.println(e);
 		
 		
 		try

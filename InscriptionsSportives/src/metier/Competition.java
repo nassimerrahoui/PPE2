@@ -1,7 +1,6 @@
 package metier;
 import java.io.Serializable;
 import java.util.Collections;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
@@ -23,7 +22,8 @@ public class Competition implements Comparable<Competition>, Serializable {
 	private LocalDate today = LocalDate.now();
 	private int id;
 
-	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe) {
+	protected Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
+	{
 		this.inscriptions = inscriptions;
 		this.nom = nom;
 		this.dateCloture = dateCloture;
@@ -68,15 +68,9 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public boolean inscriptionsOuvertes() {
 		// TODO retourner vrai si et seulement si la date système est
-		// antérieure à la date de clôture.
-		
+		// antérieure à la date de clôture.	
 		
 		return (today.isBefore(dateCloture));
-		
-		
-
-		
-
 	}
 
 	/**
@@ -88,7 +82,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	public LocalDate getDateCloture() {
 		return dateCloture;
 	}
-
+	
 	/**
 	 * Est vrai si et seulement si les inscriptions sont réservées aux
 	 * équipes.
@@ -118,8 +112,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 			this.dateCloture = dateCloture;
 		
 	}
-
-
+	
 	/**
 	 * Retourne l'ensemble des candidats inscrits.
 	 * 
@@ -206,11 +199,12 @@ public class Competition implements Comparable<Competition>, Serializable {
 		return getNom();
 	}
 
-	
+
 public class enEquipeException extends Exception {
 		
-		LocalDate date,dateCloture ;
-		String nom,libelleCompet,typeCompet,typePers;
+	private static final long serialVersionUID = -7303533125444582417L;
+	LocalDate date,dateCloture ;
+	String nom,libelleCompet,typeCompet,typePers;
 		
 	public enEquipeException(Personne p){
 			date = LocalDate.now();
@@ -250,6 +244,7 @@ public class enEquipeException extends Exception {
 	
 	public class setDateClotureException extends Exception{
 		
+		private static final long serialVersionUID = 7790420760864054581L;
 		String libelleCompet,type;
 		LocalDate dateCloture, dateSet;
 		
@@ -275,6 +270,7 @@ public class enEquipeException extends Exception {
 		
 	public class addCloseException extends Exception {
 			
+			private static final long serialVersionUID = 900473083584083912L;
 			LocalDate date,dateCloture ;
 			String nom,libelleCompet,typeCompet;
 			

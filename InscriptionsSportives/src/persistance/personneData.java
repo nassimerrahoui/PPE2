@@ -10,11 +10,19 @@ import metier.Inscriptions;
 import metier.Personne;
 
 
-public class personneData
+public class personneData extends Personne
 {
 	
+	private static final long serialVersionUID = -3493675220278815873L;
+
+	protected personneData(Inscriptions inscriptions, String nom, String prenom, String mail)
+	{
+		super(inscriptions, nom, prenom, mail);
+	}
+
+
 	@SuppressWarnings("static-access")
-	public void create(Personne obj)
+	public static void create(Personne obj)
 	{
 		try	
 		{
@@ -67,5 +75,33 @@ public class personneData
 			e.printStackTrace();
 			System.out.println("Le candidat n'a pas été supprimé.");
 	    }
-	}	
+	}
+	
+	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
+	{
+		SortedSet<Candidat> Candidats = new TreeSet<>();
+
+		try 
+		{
+			String sql = "{call getPersonnes()}";
+			java.sql.Statement cs = accesBase.getInstance().createStatement();
+			ResultSet result = cs.executeQuery(sql);
+			
+			// boucle pour ajouter une personne dans la couche métier
+            while(result.next())
+            {
+    			Candidat unCandidat = new personneData(inscriptions, result.getString("nom_candidat"),
+    												result.getString("prenom_personne"),
+    												result.getString("mail"));
+    			unCandidat.setId(result.getInt("id_candidat"));
+    			Candidats.add(unCandidat);
+            }    
+		} 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Il n'y a pas de personnes");
+		}
+		return Candidats;
+	}
 }

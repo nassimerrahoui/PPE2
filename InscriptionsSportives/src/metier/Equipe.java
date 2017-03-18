@@ -13,10 +13,21 @@ public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
 	private SortedSet<Personne> membres = new TreeSet<>();
+	private int id;
 	
-	Equipe(Inscriptions inscriptions, String nom)
+	protected Equipe(Inscriptions inscriptions, String nom)
 	{
 		super(inscriptions, nom);
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 
 	/**
@@ -63,6 +74,6 @@ public class Equipe extends Candidat
 	@Override
 	public String toString()
 	{
-		return "Equipe " + super.toString();
+		return "\n" + "Equipe " + super.toString();
 	}
 }
