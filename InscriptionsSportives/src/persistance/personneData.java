@@ -42,11 +42,11 @@ public class personneData extends Personne
 	}
 	
 	
-	public void update(Personne obj)
+	public static void update(Personne obj)
 	{
 		try 
 		{
-			String sql = "{call setCandidatCarac(?, ?, ?, ?)}";
+			String sql = "{call setPersonneCarac(?, ?, ?, ?)}";
         	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setInt(1,obj.getId());
         	cs.setString(2,obj.getNom());

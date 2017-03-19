@@ -54,6 +54,7 @@ public class Personne extends Candidat
 	public void setPrenom(String prenom)
 	{
 		this.prenom = prenom;
+		personneData.update(this);
 	}
 
 	/**
@@ -74,6 +75,7 @@ public class Personne extends Candidat
 	public void setMail(String mail)
 	{
 		this.mail = mail;
+		personneData.update(this);
 	}
 
 	/**

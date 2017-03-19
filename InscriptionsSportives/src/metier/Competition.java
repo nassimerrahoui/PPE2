@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
+import persistance.candidatData;
 import persistance.competitionData;
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats inscrits
@@ -144,7 +145,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 				throw new enEquipeException(personne);
 			
 				personne.add(this);
-		
+				candidatData.inscriptionCandidat(personne, this);
 		return candidats.add(personne);
 	}
 
@@ -166,7 +167,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 				throw new enEquipeException(equipe);
 			
 				equipe.add(this);
-		
+				candidatData.inscriptionCandidat(equipe, this);
 		return candidats.add(equipe);
 	}
 

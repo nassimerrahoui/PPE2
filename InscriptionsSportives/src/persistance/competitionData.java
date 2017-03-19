@@ -195,5 +195,4 @@ public class competitionData extends Competition
 		}
 		
 	}
-
 }

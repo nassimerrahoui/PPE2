@@ -43,7 +43,7 @@ public class equipeData extends Equipe
 	{
 		try 
 		{
-			String sql = "{call setEquipeCarac( ? , ?)}";
+			String sql = "{call setCandidatCarac( ? , ?)}";
         	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setInt(1, obj.getId());
         	cs.setString(2, obj.getNom());
