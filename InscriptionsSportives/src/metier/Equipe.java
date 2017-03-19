@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import persistance.equipeData;
+
+
 /**
  * Représente une Equipe. C'est-à-dire un ensemble de personnes pouvant 
  * s'inscrire à une compétition.
@@ -48,6 +51,7 @@ public class Equipe extends Candidat
 	public boolean add(Personne membre)
 	{
 		membre.add(this);
+		equipeData.addMembre(membre,this);
 		return membres.add(membre);
 	}
 
@@ -60,6 +64,7 @@ public class Equipe extends Candidat
 	public boolean remove(Personne membre)
 	{
 		membre.remove(this);
+		equipeData.remove(membre,this);
 		return membres.remove(membre);
 	}
 
@@ -69,6 +74,7 @@ public class Equipe extends Candidat
 		super.delete();
 		for (Personne p : membres)
 			this.remove(p);
+		equipeData.delete(this);
 	}
 	
 	@Override

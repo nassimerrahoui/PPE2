@@ -61,7 +61,7 @@ public class personneData extends Personne
         }
 	}
 
-	public void delete(Personne obj)
+	public static void delete(Personne obj)
 	{
 		try 
 		{
@@ -73,7 +73,7 @@ public class personneData extends Personne
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			System.out.println("Le candidat n'a pas été supprimé.");
+			System.out.println("La personne n'a pas été supprimé.");
 	    }
 	}
 	

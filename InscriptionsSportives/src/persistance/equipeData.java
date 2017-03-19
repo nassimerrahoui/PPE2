@@ -39,11 +39,11 @@ public class equipeData extends Equipe
 		}
 	}
 	
-	public void update(Candidat obj)
+	public static void update(Candidat obj)
 	{
 		try 
 		{
-			String sql = "{call setCandidatCarac( ? , ? )}";
+			String sql = "{call setEquipeCarac( ? , ?)}";
         	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setInt(1, obj.getId());
         	cs.setString(2, obj.getNom());
@@ -53,10 +53,11 @@ public class equipeData extends Equipe
         catch (SQLException e)
         {
         	e.printStackTrace();
+        	System.out.println("L'équipe n'a pas été mise à jour.");
         }
 	}
 
-	public void delete(Candidat obj)
+	public static void delete(Candidat obj)
 	{
 		try 
 		{
@@ -72,14 +73,14 @@ public class equipeData extends Equipe
 	    }
 	}
 	
-	public void remove(Personne membre, Equipe equipe)
+	public static void remove(Personne membre, Equipe equipe)
 	{
 		try 
 		{
 			String sql = "{call removePersonneEquipe( ? , ? )}";
 			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
-			cs.setInt(1,membre.getId());
 			cs.setInt(1,equipe.getId());
+			cs.setInt(2,membre.getId());
 			cs.executeUpdate(); 	
 	    } 
 		catch (SQLException e)
@@ -89,14 +90,15 @@ public class equipeData extends Equipe
 	    }
 	}
 	
-	public void addMembre(Personne membre, Equipe equipe)
+	/* TODO fonctionne mais essaye d'ajouter les des personnes deja présentes dans les équipes */ 
+	public static void addMembre(Personne membre, Equipe equipe)
 	{
 		try	
 		{
-			String sql = "{call addMembre( ? , ? )}";
+			String sql = "{call addMembreEquipe( ? , ? )}";
 			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setObject(1,membre.getId());
-        	cs.setInt(1,equipe.getId());
+        	cs.setInt(2,equipe.getId());
 			cs.executeUpdate();
 		}
 		catch (SQLException e)
@@ -105,31 +107,6 @@ public class equipeData extends Equipe
 			System.out.println("La personne n'a pas été ajoutée dans l'équipe.");
 		}
 	}
-	
-	
-	// TO DO, comment charger tout les membres des équipes
-	/*public SortedSet<Personne> getMembre(int id) 
-	{
-		SortedSet<Personne> membres = null;
-		Personne personne = null;
-		try 
-		{
-			String sql = "{call getMembreEquipe(?)}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
-			cs.setInt(1,id);
-			ResultSet result = cs.executeQuery();
-            while(result.next())
-            {
-            	membres.add(personne);
-            }    
-		} 
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			System.out.println("Cette equipe n'existe pas encore dans l'application");
-		}
-		return membres;
-	}*/
 	
 	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
 	{
@@ -155,5 +132,38 @@ public class equipeData extends Equipe
 			System.out.println("Il n'y a pas de candidats");
 		}
 		return Candidats;
+	}
+	
+	/** Charger les membres d'une ou plusieures équipes */
+	public static void selectMembre(Inscriptions inscriptions)
+	{
+		try 
+		{
+			for (Equipe e : inscriptions.getEquipes()) 
+			{
+				String sql = "{call getMembreEquipe( ? )}";
+				java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+				cs.setInt(1, e.getId());
+				ResultSet result = cs.executeQuery();
+		        while(result.next())
+		        {
+		            for (Personne membre : inscriptions.getPersonnes()) 
+		            {
+						if(result.getInt("id_candidat") == membre.getId())
+						{
+							e.add(membre);
+							break;
+						}
+					}
+		        } 
+			}   
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Il n'y a aucun candidat appartenant à une équipe");
+		}
+		
 	}
 }

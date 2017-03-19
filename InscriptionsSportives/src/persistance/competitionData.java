@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import metier.Candidat;
 import metier.Competition;
 import metier.Equipe;
 import metier.Inscriptions;
@@ -45,6 +46,7 @@ public class competitionData extends Competition
 		}
 	}
 	
+	// TODO ne fonctionne pas mais retourne aucune erreur alors que la procédure fonctionne dans la console SGBD
 	public static void update(Competition obj)
 	{
 		try 
@@ -88,6 +90,23 @@ public class competitionData extends Competition
 		{
 			e.printStackTrace();
 			System.out.println("La compétition n'a pas été supprimé.");
+	    }
+	}
+	
+	public static void remove(Competition competition, Candidat candidat)
+	{
+		try 
+		{
+			String sql = "{call removeCandidatCompetition( ? , ? )}";
+			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			cs.setInt(1,competition.getId());
+			cs.setInt(2,candidat.getId());
+			cs.executeUpdate(); 	
+	    } 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Le candidat n'a pas été enlevé de la compétition.");
 	    }
 	}
 		

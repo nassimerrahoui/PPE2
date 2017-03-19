@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import persistance.competitionData;
-
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats inscrits
  * à un événement, les inscriptions sont closes à la date dateCloture.
@@ -180,6 +179,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public boolean remove(Candidat candidat) {
 		candidat.remove(this);
+		competitionData.remove(this, candidat);
 		return candidats.remove(candidat);
 	}
 

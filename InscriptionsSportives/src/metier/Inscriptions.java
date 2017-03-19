@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+
 import persistance.candidatData;
 import persistance.competitionData;
 import persistance.equipeData;
@@ -38,6 +39,7 @@ public class Inscriptions implements Serializable
 		candidats = candidatData.select(this);
 		competitions = competitionData.select(this);
 		competitionData.selectInscrit(this);
+		equipeData.selectMembre(this);
 	}
 	
 	/**
@@ -253,9 +255,8 @@ public class Inscriptions implements Serializable
 	
 	public static void main(String[] args)
 	{
-		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		inscriptions.reinitialiser();
-		/*LocalDate date = LocalDate.of(2017, 12, 31);
+		/*Inscriptions inscriptions = Inscriptions.getInscriptions();
+		LocalDate date = LocalDate.of(2017, 12, 31);
 		Competition tennis = inscriptions.createCompetition("Mondial de tennis", date, false);
 		Personne tony = inscriptions.createPersonne("Tonis", "Dent de plonge", "qwerty"), 
 				boris = inscriptions.createPersonne("Boric", "le couteau", "qsdf");
@@ -265,20 +266,13 @@ public class Inscriptions implements Serializable
 		lesManouches.add(tony);
 		System.out.println(inscriptions);
 		//lesManouches.delete();
-		//System.out.println(inscriptions);
+		System.out.println(inscriptions);
 		System.out.println(tennis.getDateCloture());*/
 		
-		System.out.println(inscriptions);
+		//System.out.println(inscriptions);
 		
-		/*for (Competition e : competitions)
-		{
-			if(e.getId() == 8)
-			{
-				e.delete();
-			}
-			System.out.println(e);
-		}*/
-		
+		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		inscriptions.reinitialiser();
 		
 		try
 		{

@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+import persistance.personneData;
+
+
 /**
  * Représente une personne physique pouvant s'inscrire à une compétition.
  */
@@ -99,6 +102,7 @@ public class Personne extends Candidat
 		super.delete();
 		for (Equipe e : equipes)
 			e.remove(this);
+		personneData.delete(this);
 	}
 	
 	@Override

@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+import persistance.candidatData;
+import persistance.equipeData;
+
 /**
  * Candidat à un événement sportif, soit une personne physique, soit une équipe.
  *
@@ -53,6 +56,7 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	public void setNom(String nom)
 	{
 		this.nom = nom;
+		equipeData.update(this);
 	}
 
 	/**
@@ -84,6 +88,7 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 		for (Competition c : competitions)
 			c.remove(this);
 		inscriptions.remove(this);
+		candidatData.delete(this);
 	}
 	
 	@Override
