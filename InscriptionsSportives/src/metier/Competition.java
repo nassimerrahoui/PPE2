@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
+import persistance.competitionData;
+
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats inscrits
  * à un événement, les inscriptions sont closes à la date dateCloture.
@@ -57,6 +59,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+		competitionData.update(this);
 	}
 
 	/**
@@ -110,7 +113,8 @@ public class Competition implements Comparable<Competition>, Serializable {
 		if(dateCloture.isBefore(this.dateCloture))
 			throw new setDateClotureException(dateCloture);
 			this.dateCloture = dateCloture;
-		
+			competitionData.update(this);
+			
 	}
 	
 	/**
@@ -187,6 +191,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 		for (Candidat candidat : candidats)
 			this.remove(candidat);
 		inscriptions.remove(this);
+		competitionData.delete(this);
 	}
 
 	@Override

@@ -37,6 +37,7 @@ public class Inscriptions implements Serializable
 	{
 		candidats = candidatData.select(this);
 		competitions = competitionData.select(this);
+		competitionData.selectInscrit(this);
 	}
 	
 	/**
@@ -267,9 +268,16 @@ public class Inscriptions implements Serializable
 		//System.out.println(inscriptions);
 		System.out.println(tennis.getDateCloture());*/
 		
-		//System.out.println(inscriptions);
-		for (Candidat e : candidats)
+		System.out.println(inscriptions);
+		
+		/*for (Competition e : competitions)
+		{
+			if(e.getId() == 8)
+			{
+				e.delete();
+			}
 			System.out.println(e);
+		}*/
 		
 		
 		try

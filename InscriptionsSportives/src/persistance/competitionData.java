@@ -4,13 +4,13 @@ package persistance;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import metier.Competition;
+import metier.Equipe;
 import metier.Inscriptions;
+import metier.Personne;
 
 
 public class competitionData extends Competition
@@ -27,7 +27,7 @@ public class competitionData extends Competition
 	{
 		try	
 		{
-			String sql = "{call createCompetition( ? , ? , ?)}";
+			String sql = "{call createCompetition( ? , ? , ? )}";
 			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
         	cs.setString(1,obj.getNom());
         	
@@ -45,18 +45,26 @@ public class competitionData extends Competition
 		}
 	}
 	
-	public Competition update(Competition obj)
+	public static void update(Competition obj)
 	{
 		try 
 		{
-			String sql = "{call setCompetitionCarac(? )}";
+			String sql = "{call setCompetitionCarac( ? , ? , ? , ? )}";
         	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
-        	cs.setLong(1,obj.getId());
-        	cs.setString(2,obj.getNom());
-        	cs.setDate(3, null);
-        	Date dateClotureSql = Date.from(obj.getDateCloture().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        	cs.setDate(4,(java.sql.Date) dateClotureSql);
-        	cs.setBoolean(5,obj.estEnEquipe());
+        	
+        	cs.setString(1,obj.getNom());
+        	System.out.println(obj.getNom());
+        	
+        	java.sql.Date dateClotureSql = java.sql.Date.valueOf(obj.getDateCloture());
+        	cs.setDate(2,dateClotureSql);
+        	System.out.println(obj.getDateCloture());
+        	
+        	cs.setBoolean(3,obj.estEnEquipe());
+        	System.out.println(obj.estEnEquipe());
+        	
+        	cs.setInt(4,obj.getId());
+        	System.out.println(obj.getId());
+        	
         	cs.executeUpdate();
 		}
         						
@@ -65,10 +73,9 @@ public class competitionData extends Competition
         	e.printStackTrace();
         	System.out.println("La compétition n'a pas été mise à jour.");
         }
-	    return obj;
 	}
 
-	public void delete(Competition obj)
+	public static void delete(Competition obj)
 	{
 		try 
 		{
@@ -112,5 +119,62 @@ public class competitionData extends Competition
 		return Competitions;
 	}
 	
-	//TO DO comment charger les candidats inscrits
+	
+	/** Charger les candidats inscrits dans une ou plusieurs compétitions */
+	public static void selectInscrit(Inscriptions inscriptions)
+	{
+		try 
+		{
+			for (Competition c : inscriptions.getCompetitions()) 
+			{
+				String sql = "{call getCandidatCompetition( ? )}";
+				java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+				cs.setInt(1, c.getId());
+				ResultSet result = cs.executeQuery();
+		        while(result.next())
+		        {
+		            for (Personne p : inscriptions.getPersonnes()) 
+		            {
+						if(result.getInt("id_candidat") == p.getId())
+						{
+							try
+							{
+								c.add(p);
+							} 
+							catch (addCloseException | enEquipeException e1) 
+							{
+									e1.printStackTrace();
+							}
+							
+							
+							break;
+						}
+					}
+		            
+		            for (Equipe e : inscriptions.getEquipes()) 
+		            {
+						if(result.getInt("id_candidat") == e.getId())
+						{
+							try 
+							{
+								c.add(e);
+							} catch (addCloseException | enEquipeException e1)
+							{
+								e1.printStackTrace();
+							}
+							break;
+						}
+					}
+		        } 
+			}   
+		}
+		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("Il n'y a aucun candidat inscrit dans une compétition");
+		}
+		
+	}
+
 }
