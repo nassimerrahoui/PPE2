@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
@@ -12,7 +14,7 @@ import metier.Personne;
 public class EquipeTest {
 
 	@Test
-	public void testDelete() {
+	public void testDelete() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Equipe e = inscriptions.createEquipe("test");
@@ -26,7 +28,7 @@ public class EquipeTest {
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("testeur", "Dent de plomb", "azerty");
@@ -37,7 +39,7 @@ public class EquipeTest {
 
 
 	@Test
-	public void testGetMembres() {
+	public void testGetMembres() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		Personne testeur2 = inscriptions.createPersonne("test", "testeur", "azerty");
@@ -54,7 +56,7 @@ public class EquipeTest {
 	}
 
 	@Test
-	public void testAddPersonne() {
+	public void testAddPersonne() throws enEquipeException, addCloseException {
 
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("testeur", "testeur", "azerty");
@@ -69,7 +71,7 @@ public class EquipeTest {
 	}
 
 	@Test
-	public void testRemovePersonne() {
+	public void testRemovePersonne() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");

@@ -60,6 +60,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	public void setNom(String nom) {
 		this.nom = nom;
 		competitionData.update(this);
+		System.out.println("test");
 	}
 
 	/**
@@ -206,7 +207,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	}
 
 
-public class enEquipeException extends Exception {
+	public class enEquipeException extends RuntimeException {
 		
 	private static final long serialVersionUID = -7303533125444582417L;
 	LocalDate date,dateCloture ;
@@ -236,7 +237,7 @@ public class enEquipeException extends Exception {
 		public String toString()
 		{
 			String result = super.toString();
-			result += " ERREUR! Vous tentez d'inscrire le candidat :" + this.nom + "\n"+
+			result += " ERREUR! Vous tentez d'inscrire le candidat :" + getNom() + "\n"+
 					" de type:" + this.typePers + "\n"+
 					" le:" + this.date + "\n"+
 					" a la compétition: "+ this.libelleCompet + "\n"+

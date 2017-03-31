@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
@@ -12,7 +14,7 @@ import commandLine.*;
 public class MenuUtilisateurs extends OptionUtilisateurs
 {
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
 		Menu menu = getMenuPrincipal(Inscriptions.getInscriptions());
 		menu.start();
@@ -56,7 +58,16 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			@Override
 			public Option getOption(Personne element)
 			{
-				return getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
+				Option menuSelectionPersonnes = null;
+				try 
+				{
+					menuSelectionPersonnes = getMenuSelectionPersonnes(Inscriptions.getInscriptions(), element);
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				return menuSelectionPersonnes;
 			}
 		});
 		menu.ajouteRevenir("r");
@@ -131,8 +142,17 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			
 			@Override
 			public Option getOption(Equipe element)
-			{
-				return getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
+			{	
+				Option menuSelectionPersonnes = null;
+				try 
+				{
+					menuSelectionPersonnes = getMenuSelectionEquipes(Inscriptions.getInscriptions(), element);
+				}
+				catch (enEquipeException | addCloseException e)
+				{
+					e.printStackTrace();
+				}
+				return menuSelectionPersonnes;
 			}
 		});
 		menu.ajouteRevenir("r");
@@ -185,7 +205,16 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 			@Override
 			public Option getOption(Competition element)
 			{
-				return getMenuSelectionCompetitions(Inscriptions.getInscriptions(), element);
+				Option menuSelectionCompetitions = null;
+				try 
+				{
+					menuSelectionCompetitions = getMenuSelectionCompetitions(Inscriptions.getInscriptions(), element);
+				}
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				return menuSelectionCompetitions;
 			}
 
 		});

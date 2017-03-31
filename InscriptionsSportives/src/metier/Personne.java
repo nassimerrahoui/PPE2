@@ -105,6 +105,7 @@ public class Personne extends Candidat
 		for (Equipe e : equipes)
 			e.remove(this);
 		personneData.delete(this);
+		System.out.println("LOL");
 	}
 	
 	@Override

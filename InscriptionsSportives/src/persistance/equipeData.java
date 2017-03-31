@@ -11,25 +11,17 @@ import metier.Inscriptions;
 import metier.Personne;
 
 
-public class equipeData extends Equipe
+public class equipeData
 {
-
-	private static final long serialVersionUID = -3393260894899407673L;
-
-	protected equipeData(Inscriptions inscriptions, String nom)
-	{
-		super(inscriptions, nom);
-	}
-
 	@SuppressWarnings("static-access")
 	public static void create(Equipe obj)
 	{
 		try	
 		{
 			String sql = "{call createEquipe( ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 			cs.setString(1, obj.getNom());
-			cs.executeUpdate();
+			AccesBase.executeUpdate(cs);
 			obj.setId(cs.RETURN_GENERATED_KEYS);
 		}
 		catch (SQLException e)
@@ -44,10 +36,10 @@ public class equipeData extends Equipe
 		try 
 		{
 			String sql = "{call setCandidatCarac( ? , ?)}";
-        	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+        	java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setInt(1, obj.getId());
         	cs.setString(2, obj.getNom());
-        	cs.executeUpdate();
+        	AccesBase.executeUpdate(cs);
 		}
         						
         catch (SQLException e)
@@ -62,9 +54,9 @@ public class equipeData extends Equipe
 		try 
 		{
 			String sql = "{call deleteCandidat( ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 			cs.setInt(1,obj.getId());
-			cs.executeUpdate(); 	
+			AccesBase.executeUpdate(cs);	
 	    } 
 		catch (SQLException e)
 		{
@@ -78,10 +70,10 @@ public class equipeData extends Equipe
 		try 
 		{
 			String sql = "{call removePersonneEquipe( ? , ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 			cs.setInt(1,equipe.getId());
 			cs.setInt(2,membre.getId());
-			cs.executeUpdate(); 	
+			AccesBase.executeUpdate(cs); 	
 	    } 
 		catch (SQLException e)
 		{
@@ -89,17 +81,16 @@ public class equipeData extends Equipe
 			System.out.println("La personne n'a pas été enlevé de l'équipe.");
 	    }
 	}
-	
-	/* TODO fonctionne mais essaye d'ajouter les des personnes deja présentes dans les équipes */ 
+	 
 	public static void addMembre(Personne membre, Equipe equipe)
 	{
 		try	
 		{
 			String sql = "{call addMembreEquipe( ? , ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setObject(1,membre.getId());
         	cs.setInt(2,equipe.getId());
-			cs.executeUpdate();
+			AccesBase.executeUpdate(cs);
 		}
 		catch (SQLException e)
 		{
@@ -111,17 +102,16 @@ public class equipeData extends Equipe
 	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
 	{
 		SortedSet<Candidat> Candidats = new TreeSet<>();
-
 		try 
 		{
 			String sql = "{call getEquipes()}";
-			java.sql.Statement cs = accesBase.getInstance().createStatement();
+			java.sql.Statement cs = AccesBase.getInstance().createStatement();
 			ResultSet result = cs.executeQuery(sql);
 			
 			// boucle pour ajouter une equipe dans la couche métier
             while(result.next())
             {
-            	Candidat unCandidat = new equipeData(inscriptions, result.getString("nom_candidat"));
+            	Candidat unCandidat = inscriptions.createEquipe(result.getString("nom_candidat"));
     			unCandidat.setId(result.getInt("id_candidat"));
         		Candidats.add(unCandidat);
             }    
@@ -142,7 +132,7 @@ public class equipeData extends Equipe
 			for (Equipe e : inscriptions.getEquipes()) 
 			{
 				String sql = "{call getMembreEquipe( ? )}";
-				java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+				java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 				cs.setInt(1, e.getId());
 				ResultSet result = cs.executeQuery();
 		        while(result.next())
@@ -152,13 +142,12 @@ public class equipeData extends Equipe
 						if(result.getInt("id_candidat") == membre.getId())
 						{
 							e.add(membre);
-							break;
 						}
-					}
-		        } 
-			}   
+
+		            } 
+		        }   
+			}
 		}
-		
 		catch (SQLException e)
 		{
 			e.printStackTrace();

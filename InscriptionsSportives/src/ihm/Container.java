@@ -5,11 +5,13 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Inscriptions;
 public class Container 
 {
 	
-	public Container()
+	public Container() throws enEquipeException, addCloseException
 	{   
 		JFrame f = new JFrame("Gestion des Inscriptions");
 		f.setSize(900, 700);
@@ -43,12 +45,12 @@ public class Container
 		getInscriptions();
 		}
 	  
-	public static Inscriptions getInscriptions()
+	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
 	{
 		Inscriptions i= Inscriptions.getInscriptions();
 		return i;
 	}
-	public static void main(String[] args)
+	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
 	new Container();
         

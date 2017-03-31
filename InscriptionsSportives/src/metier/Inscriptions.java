@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
+import persistance.AccesBase;
 import persistance.candidatData;
 import persistance.competitionData;
 import persistance.equipeData;
@@ -34,12 +36,16 @@ public class Inscriptions implements Serializable
 	private static SortedSet<Competition> competitions = new TreeSet<>();
 	private static SortedSet<Candidat> candidats = new TreeSet<>();
 	
-	private Inscriptions()
+	private Inscriptions() throws enEquipeException, addCloseException
 	{
+		AccesBase.setEnChargement(true);
+		
 		candidats = candidatData.select(this);
 		competitions = competitionData.select(this);
 		competitionData.selectInscrit(this);
 		equipeData.selectMembre(this);
+		
+		AccesBase.setEnChargement(false);
 	}
 	
 	/**
@@ -156,16 +162,20 @@ public class Inscriptions implements Serializable
 	 * Retourne l'unique instance de cette classe.
 	 * Crée cet objet s'il n'existe déjà.
 	 * @return l'unique objet de type {@link Inscriptions}.
+	 * @throws addCloseException 
+	 * @throws enEquipeException 
 	 */
 	
-	public static Inscriptions getInscriptions()
+	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
 	{
 		
 		if (inscriptions == null)
 		{
 			inscriptions = readObject();
 			if (inscriptions == null)
+			{
 				inscriptions = new Inscriptions();
+			}
 		}
 		return inscriptions;
 	}
@@ -173,9 +183,11 @@ public class Inscriptions implements Serializable
 	/**
 	 * Retourne un object inscriptions vide. Ne modifie pas les compétitions
 	 * et candidats déjà existants.
+	 * @throws addCloseException 
+	 * @throws enEquipeException 
 	 */
 	
-	public Inscriptions reinitialiser()
+	public Inscriptions reinitialiser() throws enEquipeException, addCloseException
 	{
 		inscriptions = new Inscriptions();
 		return getInscriptions();
@@ -184,9 +196,11 @@ public class Inscriptions implements Serializable
 	/**
 	 * Efface toutes les modifications sur Inscriptions depuis la dernière sauvegarde.
 	 * Ne modifie pas les compétitions et candidats déjà existants.
+	 * @throws addCloseException 
+	 * @throws enEquipeException 
 	 */
 	
-	public Inscriptions recharger()
+	public Inscriptions recharger() throws enEquipeException, addCloseException
 	{
 		inscriptions = null;
 		return getInscriptions();
@@ -253,13 +267,13 @@ public class Inscriptions implements Serializable
 			+ "\nCompetitions  " + getCompetitions().toString();
 	}
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws enEquipeException, addCloseException, IOException
 	{
 		/*Inscriptions inscriptions = Inscriptions.getInscriptions();
 		LocalDate date = LocalDate.of(2017, 12, 31);
 		Competition tennis = inscriptions.createCompetition("Mondial de tennis", date, false);
-		Personne tony = inscriptions.createPersonne("Tonis", "Dent de plonge", "qwerty"), 
-				boris = inscriptions.createPersonne("Boric", "le couteau", "qsdf");
+		Personne tony = inscriptions.createPersonne("Tony", "Dent de plonge", "qwerty"), 
+				boris = inscriptions.createPersonne("Boris", "le couteau", "qsdf");
 
 		Equipe lesManouches = inscriptions.createEquipe("Les Manchots");
 		lesManouches.add(tony);
@@ -269,10 +283,12 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		System.out.println(tennis.getDateCloture());*/
 		
-		//System.out.println(inscriptions);
-		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
-		inscriptions.reinitialiser();
+		
+		for (Candidat c : inscriptions.getCandidats()) 
+		{
+			System.out.println(c.toString());
+		}
 		
 		try
 		{

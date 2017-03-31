@@ -22,14 +22,14 @@ public class CompetitionTest {
 
 
 	@Test
-	public void testGetNom() {
+	public void testGetNom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);	
 		assertEquals("testCompet",test.getNom());
 	}
 
 	@Test
-	public void testSetNom() {
+	public void testSetNom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);	
 		test.setNom("NewName");
@@ -37,28 +37,28 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testInscriptionsOuvertes() {
+	public void testInscriptionsOuvertes() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), true);
 		assertTrue(c.inscriptionsOuvertes());
 	}
 	
-	public void testInscriptionsOuvertesFalse() {
+	public void testInscriptionsOuvertesFalse() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", LocalDate.now(),true);
 		assertFalse(c.inscriptionsOuvertes());
 	}
 	@Test
-	public void testGetDateCloture() {
+	public void testGetDateCloture() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("test", LocalDate.now(), false);	
 		assertEquals(LocalDate.now(),test.getDateCloture());
 	}
 
 	@Test
-	public void testEstEnEquipe() {
+	public void testEstEnEquipe() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), true);	
@@ -67,7 +67,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testSetDateCloture() {
+	public void testSetDateCloture() throws enEquipeException, addCloseException {
 		LocalDate test = LocalDate.now().plusDays(10);
 		LocalDate test2 = LocalDate.now().plusDays(20);
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
@@ -83,7 +83,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testGetCandidats() {
+	public void testGetCandidats() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("test", LocalDate.now().plusDays(10), false);
@@ -102,7 +102,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testAddPersonne() {
+	public void testAddPersonne() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		LocalDate date = LocalDate.now().plusDays(20);
@@ -125,7 +125,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testAddEquipe() {
+	public void testAddEquipe() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		LocalDate date = LocalDate.now().plusDays(20);
@@ -153,7 +153,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testRemove() {
+	public void testRemove() throws enEquipeException, addCloseException {
 		Inscriptions i = Inscriptions.getInscriptions();
 		LocalDate date = LocalDate.now().plusDays(20);
 		Competition c = i.createCompetition("test", date,false);
@@ -173,7 +173,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testDelete() {
+	public void testDelete() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 		int size = inscriptions.getCompetitions().size();
@@ -182,7 +182,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testCompareTo() {
+	public void testCompareTo() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition c = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
 		Competition cc = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
@@ -191,7 +191,7 @@ public class CompetitionTest {
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition test = inscriptions.createCompetition("testCompet", LocalDate.now().plusDays(20), false);
@@ -239,7 +239,7 @@ public class CompetitionTest {
 	}
 	
 	@Test(expected = setDateClotureException.class)
-	public void testSetDateClotureException() throws setDateClotureException
+	public void testSetDateClotureException() throws setDateClotureException, enEquipeException, addCloseException
 	{
 		Inscriptions i = Inscriptions.getInscriptions();
 		Competition c = i.createCompetition("CompetTest",LocalDate.now().plusDays(10),true);

@@ -10,28 +10,19 @@ import metier.Inscriptions;
 import metier.Personne;
 
 
-public class personneData extends Personne
+public class personneData
 {
-	
-	private static final long serialVersionUID = -3493675220278815873L;
-
-	protected personneData(Inscriptions inscriptions, String nom, String prenom, String mail)
-	{
-		super(inscriptions, nom, prenom, mail);
-	}
-
-
 	@SuppressWarnings("static-access")
 	public static void create(Personne obj)
 	{
 		try	
 		{
 			String sql = "{call createPersonne(?, ?, ?)}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setString(1,obj.getNom());
         	cs.setString(2,obj.getPrenom());
         	cs.setString(3,obj.getMail());
-			cs.executeUpdate();
+			AccesBase.executeUpdate(cs);
 			obj.setId(cs.RETURN_GENERATED_KEYS);
 		}
 		catch (SQLException e)
@@ -47,12 +38,12 @@ public class personneData extends Personne
 		try 
 		{
 			String sql = "{call setPersonneCarac(?, ?, ?, ?)}";
-        	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+        	java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setInt(1,obj.getId());
         	cs.setString(2,obj.getNom());
         	cs.setString(3,obj.getPrenom());
         	cs.setString(4,obj.getMail());
-        	cs.executeUpdate();
+        	AccesBase.executeUpdate(cs);
 		}
         						
         catch (SQLException e)
@@ -66,9 +57,9 @@ public class personneData extends Personne
 		try 
 		{
 			String sql = "{call deleteCandidat( ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 			cs.setInt(1,obj.getId());
-			cs.executeUpdate(); 	
+			AccesBase.executeUpdate(cs); 	
 	    } 
 		catch (SQLException e)
 		{
@@ -80,17 +71,16 @@ public class personneData extends Personne
 	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
 	{
 		SortedSet<Candidat> Candidats = new TreeSet<>();
-
 		try 
 		{
 			String sql = "{call getPersonnes()}";
-			java.sql.Statement cs = accesBase.getInstance().createStatement();
+			java.sql.Statement cs = AccesBase.getInstance().createStatement();
 			ResultSet result = cs.executeQuery(sql);
 			
 			// boucle pour ajouter une personne dans la couche métier
             while(result.next())
             {
-    			Candidat unCandidat = new personneData(inscriptions, result.getString("nom_candidat"),
+    			Candidat unCandidat = inscriptions.createPersonne(result.getString("nom_candidat"),
     												result.getString("prenom_personne"),
     												result.getString("mail"));
     			unCandidat.setId(result.getInt("id_candidat"));

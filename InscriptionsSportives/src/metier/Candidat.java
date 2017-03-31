@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-import persistance.candidatData;
 import persistance.equipeData;
 
 /**
@@ -88,7 +87,6 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 		for (Competition c : competitions)
 			c.remove(this);
 		inscriptions.remove(this);
-		candidatData.delete(this);
 	}
 	
 	@Override

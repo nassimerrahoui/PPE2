@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import org.junit.Test;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
@@ -14,7 +16,7 @@ import metier.Personne;
 public class InscriptionsTest {
 
 	@Test
-	public void testGetCompetitions() {
+	public void testGetCompetitions() throws enEquipeException, addCloseException {
 		Inscriptions i = Inscriptions.getInscriptions();
 		Competition c = i.createCompetition("tes", LocalDate.now().plusDays(10), true);
 		Competition cc = i.createCompetition("tes", LocalDate.now().plusDays(10), true);
@@ -25,7 +27,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testGetCandidats() {
+	public void testGetCandidats() throws enEquipeException, addCloseException {
 		
 		Inscriptions i = Inscriptions.getInscriptions();
 		Personne p = i.createPersonne("test", "test", "test");
@@ -43,7 +45,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testGetPersonnes() {
+	public void testGetPersonnes() throws enEquipeException, addCloseException {
 		Inscriptions i = Inscriptions.getInscriptions();
 		Personne p = i.createPersonne("test","test", "test");
 		Personne pp = i.createPersonne("test", "test", "test");
@@ -55,7 +57,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testGetEquipes() {
+	public void testGetEquipes() throws enEquipeException, addCloseException {
 		Inscriptions i = Inscriptions.getInscriptions();
 		Equipe e = i.createEquipe("testTeam");
 		Equipe ee = i.createEquipe("TestTeam2");
@@ -68,7 +70,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testCreateCompetition() {
+	public void testCreateCompetition() throws enEquipeException, addCloseException {
 		
 		Inscriptions i = Inscriptions.getInscriptions();
 		Competition c = i.createCompetition("test", LocalDate.now().plusDays(10), true);
@@ -76,7 +78,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testCreatePersonne() {
+	public void testCreatePersonne() throws enEquipeException, addCloseException {
 		
 		Inscriptions i = Inscriptions.getInscriptions();
 		Personne p = i.createPersonne("test","test", "test");
@@ -86,7 +88,7 @@ public class InscriptionsTest {
 	}
 
 	@Test
-	public void testCreateEquipe() {
+	public void testCreateEquipe() throws enEquipeException, addCloseException {
 		
 		Inscriptions i = Inscriptions.getInscriptions();
 		Equipe e = i.createEquipe("test");
@@ -97,7 +99,7 @@ public class InscriptionsTest {
 	
 
 	@Test
-	public void testGetInscriptions() {
+	public void testGetInscriptions() throws enEquipeException, addCloseException {
 		Inscriptions i = Inscriptions.getInscriptions();
 		assertNotNull(i);
 	}
@@ -105,7 +107,7 @@ public class InscriptionsTest {
 
 
 	@Test
-	public void testToString() {
+	public void testToString() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		assertNotNull(inscriptions.toString());
 	}

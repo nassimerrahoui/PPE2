@@ -32,9 +32,9 @@ public class candidatData
 		try 
 		{
 			String sql = "{call deleteCandidat( ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
 			cs.setInt(1,obj.getId());
-			cs.executeUpdate(); 	
+			AccesBase.executeUpdate(cs); 	
 	    } 
 		catch (SQLException e)
 		{
@@ -48,10 +48,10 @@ public class candidatData
 		try 
 		{
 			String sql = "{call setCandidatCarac( ? , ?)}";
-        	java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+        	java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setInt(1, obj.getId());
         	cs.setString(2, obj.getNom());
-        	cs.executeUpdate();
+        	AccesBase.executeUpdate(cs);
 		}
         						
         catch (SQLException e)
@@ -66,10 +66,10 @@ public class candidatData
 		try	
 		{
 			String sql = "{call inscriptionCandidat( ? , ? )}";
-			java.sql.CallableStatement cs = accesBase.getInstance().prepareCall(sql);
+			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	cs.setObject(1,candidat.getId());
         	cs.setInt(2,competition.getId());
-			cs.executeUpdate();
+			AccesBase.executeUpdate(cs);
 		}
 		catch (SQLException e)
 		{

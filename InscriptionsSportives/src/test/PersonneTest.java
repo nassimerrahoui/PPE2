@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import org.junit.Test;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Equipe;
 import metier.Inscriptions;
 import metier.Personne;
@@ -16,7 +18,7 @@ import metier.Personne;
 public class PersonneTest {
 	
 	@Test
-	public void testDelete() {
+	public void testDelete() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
@@ -35,7 +37,7 @@ public class PersonneTest {
 	}
 
 	@Test
-	public void testGetPrenom() {
+	public void testGetPrenom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		String i = testeur.getPrenom();
@@ -43,7 +45,7 @@ public class PersonneTest {
 		}
 
 	@Test
-	public void testSetPrenom() {
+	public void testSetPrenom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		testeur.setPrenom("setters");
@@ -52,7 +54,7 @@ public class PersonneTest {
 	}
 
 	@Test
-	public void testGetMail() {
+	public void testGetMail() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		String i = testeur.getMail();
@@ -60,7 +62,7 @@ public class PersonneTest {
 	}
 
 	@Test
-	public void testSetMail() {
+	public void testSetMail() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		testeur.setMail("MailTest");
@@ -69,7 +71,7 @@ public class PersonneTest {
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("testeur", "Dent de plomb", "azerty");
 		assertNotNull(testeur.toString());
@@ -79,7 +81,7 @@ public class PersonneTest {
 
 	
 	@Test
-	public void testGetEquipes() {
+	public void testGetEquipes() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");

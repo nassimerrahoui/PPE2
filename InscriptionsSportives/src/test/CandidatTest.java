@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import org.junit.Test;
 
 import metier.Competition;
+import metier.Competition.addCloseException;
+import metier.Competition.enEquipeException;
 import metier.Inscriptions;
 import metier.Personne;
 
@@ -14,7 +16,7 @@ public class CandidatTest {
 
 
 	@Test
-	public void testGetNom() {
+	public void testGetNom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		String i = testeur.getPrenom();
@@ -22,7 +24,7 @@ public class CandidatTest {
 	}
 
 	@Test
-	public void testSetNom() {
+	public void testSetNom() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne t = inscriptions.createPersonne("test", "testeur", "azerty");
 		t.setNom("NewName");
@@ -31,7 +33,7 @@ public class CandidatTest {
 	}
 
 	@Test
-	public void testGetCompetitions() {
+	public void testGetCompetitions() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
@@ -54,7 +56,7 @@ public class CandidatTest {
 
 
 	@Test
-	public void testDelete() {
+	public void testDelete() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne testeur = inscriptions.createPersonne("test", "testeur", "azerty");
 		testeur.delete();
@@ -63,7 +65,7 @@ public class CandidatTest {
 	
 
 	@Test
-	public void testCompareTo() {
+	public void testCompareTo() throws enEquipeException, addCloseException {
 		
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne a = inscriptions.createPersonne("test", "testeur", "mail.com");
@@ -79,7 +81,7 @@ public class CandidatTest {
 	}
 
 	@Test
-	public void testToString() {
+	public void testToString() throws enEquipeException, addCloseException {
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Personne boris = inscriptions.createPersonne("Boris", "le Hachoir", "ytreza");
 		
