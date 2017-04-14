@@ -10,7 +10,6 @@ import javax.swing.*;
 public class SpacePersonne
 	{	
 		private JPanel ongletPers = new JPanel();
-
 		
 		public SpacePersonne(JLabel titreOnglet)
 		{
@@ -24,8 +23,6 @@ public class SpacePersonne
 		public JPanel getOnglet(){
 			return this.ongletPers;
 		}
-	
-		
 			
 	}
 

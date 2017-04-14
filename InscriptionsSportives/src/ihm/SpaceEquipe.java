@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.*;
 import javax.swing.*;
 
-public class SpaceEquipe extends JFrame
+public class SpaceEquipe
 	{		
 		private JPanel ongletEqui = new JPanel();
 		

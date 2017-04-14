@@ -283,12 +283,13 @@ public class Inscriptions implements Serializable
 		System.out.println(inscriptions);
 		System.out.println(tennis.getDateCloture());*/
 		
-		Inscriptions inscriptions = Inscriptions.getInscriptions();
+		/*Inscriptions inscriptions = Inscriptions.getInscriptions();
+		inscriptions.reinitialiser();
 		
-		for (Candidat c : inscriptions.getCandidats()) 
+		for (Competition c : inscriptions.getCompetitions()) 
 		{
-			System.out.println(c.toString());
-		}
+			System.out.println(c);
+		}*/
 		
 		try
 		{

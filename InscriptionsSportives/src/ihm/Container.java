@@ -1,16 +1,21 @@
 package ihm;
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
 import metier.Inscriptions;
-public class Container 
+public class Container
 {
 	
+
 	public Container() throws enEquipeException, addCloseException
 	{   
 		JFrame f = new JFrame("Gestion des Inscriptions");
@@ -27,19 +32,23 @@ public class Container
 		JPanel ongletEqui = Equi.getOnglet();
 		
 		
-		SpaceCompet Comp = new SpaceCompet(new JLabel ("Competition"));	
+		SpaceCompet Comp = new SpaceCompet(new JLabel ("Competition"), new JTable());	
 		JPanel ongletComp = Comp.getOnglet();
 		
 		
-		
 		onglets.addTab("Competition", ongletComp);
-		onglets.addTab("Personne", ongletPers);
 		onglets.addTab("Equipe", ongletEqui);
+		onglets.addTab("Personne", ongletPers);
 	
 		
 		onglets.setOpaque(true);		
-		f.add(onglets);		
-		f.getContentPane().add(onglets);		
+		//f.add(onglets);		
+		f.getContentPane().add(onglets);
+
+		ongletComp.setLayout(new BorderLayout());
+		ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
+		ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
+		
 		f.setVisible(true);
 		f.setResizable(false);
 		getInscriptions();
