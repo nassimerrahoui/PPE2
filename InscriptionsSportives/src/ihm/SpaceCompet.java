@@ -22,7 +22,7 @@ public class SpaceCompet
 		
 		public JTable getTableau() throws enEquipeException, addCloseException
 		{
-			String[] entete = {"Nom", "Cloture"};
+			String[] entete = {"Nom", "Cloture", "En Equipe"};
 			Object[][] data = new Object[10][10];
 			int i = 0;
 			int j = 0;
@@ -31,6 +31,9 @@ public class SpaceCompet
 				data[i][j] = c.getNom();
 				j++;
 				data[i][j] = c.getDateCloture();
+				j++;
+				data[i][j] = c.estEnEquipe();
+				j--;
 				j--;
 				i++;
 			}
