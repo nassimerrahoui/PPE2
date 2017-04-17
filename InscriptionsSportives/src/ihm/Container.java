@@ -1,8 +1,6 @@
 package ihm;
 import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -37,19 +35,27 @@ public class Container
 		SpaceCompet Comp = new SpaceCompet(new JLabel ("Competition"), new JTable());	
 		JPanel ongletComp = Comp.getOnglet();
 		
-		
+		//les onglets
 		onglets.addTab("Competition", ongletComp);
 		onglets.addTab("Equipe", ongletEqui);
 		onglets.addTab("Personne", ongletPers);
-	
-		
-		onglets.setOpaque(true);		
-		//f.add(onglets);		
+		onglets.setOpaque(true);				
 		f.getContentPane().add(onglets);
 
+		//tableau des competitions
 		ongletComp.setLayout(new BorderLayout());
 		ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
 		ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
+		
+		//tableau des equipes
+		ongletEqui.setLayout(new BorderLayout());
+		ongletEqui.add(Equi.getTableau().getTableHeader(), BorderLayout.PAGE_START);
+		ongletEqui.add(Equi.getTableau(), BorderLayout.CENTER);
+		
+		//tableau des personnes
+		ongletPers.setLayout(new BorderLayout());
+		ongletPers.add(Pers.getTableau().getTableHeader(), BorderLayout.PAGE_START);
+		ongletPers.add(Pers.getTableau(), BorderLayout.CENTER);
 		
 		f.setVisible(true);
 		f.setResizable(false);
