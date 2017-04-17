@@ -1,6 +1,9 @@
 package ihm;
 
+
+
 import java.awt.Color;
+
 import javax.swing.*;
 import metier.Competition;
 import metier.Competition.addCloseException;
@@ -10,10 +13,9 @@ public class SpaceCompet
 	{
 		private JPanel ongletComp = new JPanel();
 		
-		public SpaceCompet(JLabel titreOnglet, JTable tableau)
+		public SpaceCompet()
 		{
-			this.ongletComp.add(titreOnglet);
-			this.ongletComp.add(tableau);
+			
 		}
 		
 		public JPanel getOnglet(){
@@ -23,7 +25,7 @@ public class SpaceCompet
 		public JTable getTableau() throws enEquipeException, addCloseException
 		{
 			String[] entete = {"Nom", "Cloture", "En Equipe"};
-			Object[][] data = new Object[10][10];
+			Object[][] data = new Object[30][30];
 			int i = 0;
 			int j = 0;
 			for (Competition c : Container.getInscriptions().getCompetitions()) 
@@ -39,9 +41,7 @@ public class SpaceCompet
 			}
 			JTable tableau = new JTable(data, entete);
 			
-			// mise en page du tableau
-			
-			tableau.setBounds(100, 100, 500, 500);
+			// mise en page du header	
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			return tableau;

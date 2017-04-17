@@ -11,10 +11,8 @@ public class SpacePersonne
 	{	
 		private JPanel ongletPers = new JPanel();
 		
-		public SpacePersonne(JLabel titreOnglet)
+		public SpacePersonne()
 		{
-			
-			this.ongletPers.add(titreOnglet);
 			
 		}
 		
@@ -41,9 +39,7 @@ public class SpacePersonne
 			}
 			JTable tableau = new JTable(data, entete);
 			
-			// mise en page du tableau
-			
-			tableau.setBounds(100, 100, 500, 500);
+			// mise en page du header
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			return tableau;

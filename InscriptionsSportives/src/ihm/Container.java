@@ -1,10 +1,8 @@
 package ihm;
-import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import metier.Competition.addCloseException;
@@ -26,15 +24,15 @@ public class Container
 				
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
 		
-		SpacePersonne Pers = new SpacePersonne(new JLabel ("Personne"));	
+		SpacePersonne Pers = new SpacePersonne();	
 		JPanel ongletPers = Pers.getOnglet();
 		
 		
-		SpaceEquipe Equi = new SpaceEquipe(new JLabel ("Equipe"));	
+		SpaceEquipe Equi = new SpaceEquipe();	
 		JPanel ongletEqui = Equi.getOnglet();
 		
 		
-		SpaceCompet Comp = new SpaceCompet(new JLabel ("Competition"), new JTable());	
+		SpaceCompet Comp = new SpaceCompet();	
 		JPanel ongletComp = Comp.getOnglet();
 		
 		//les onglets
@@ -45,20 +43,15 @@ public class Container
 		f.getContentPane().add(onglets);
 
 		//tableau des competitions
-		ongletComp.setLayout(new BorderLayout());
-		ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
-		ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
+		ongletComp.add(new JScrollPane(Comp.getTableau()));
 		
 		//tableau des equipes
-		ongletEqui.setLayout(new BorderLayout());
-		ongletEqui.add(Equi.getTableau().getTableHeader(), BorderLayout.PAGE_START);
-		ongletEqui.add(Equi.getTableau(), BorderLayout.CENTER);
+		ongletEqui.add(new JScrollPane(Equi.getTableau()));
 		
 		//tableau des personnes
-		ongletPers.setLayout(new BorderLayout());
-		ongletPers.add(Pers.getTableau().getTableHeader(), BorderLayout.PAGE_START);
-		ongletPers.add(Pers.getTableau(), BorderLayout.CENTER);
+		ongletPers.add(new JScrollPane(Pers.getTableau()));
 		
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		f.setResizable(false);
 		return f;

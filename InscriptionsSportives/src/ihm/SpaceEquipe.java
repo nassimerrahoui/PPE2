@@ -12,9 +12,8 @@ public class SpaceEquipe
 	{		
 		private JPanel ongletEqui = new JPanel();
 		
-		public SpaceEquipe(JLabel titreOnglet)
+		public SpaceEquipe()
 		{
-			this.ongletEqui.add(titreOnglet);
 	
 		}
 		
@@ -35,9 +34,7 @@ public class SpaceEquipe
 			}
 			JTable tableau = new JTable(data, entete);
 			
-			// mise en page du tableau
-			
-			tableau.setBounds(100, 100, 500, 500);
+			// mise en page du header
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			return tableau;
