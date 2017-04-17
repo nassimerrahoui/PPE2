@@ -14,15 +14,23 @@ import metier.Competition.enEquipeException;
 import metier.Inscriptions;
 public class Container
 {
-	
-
 	public Container() throws enEquipeException, addCloseException
 	{   
+		getContainer();
+	}
+	  
+	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
+	{
+		Inscriptions i= Inscriptions.getInscriptions();
+		return i;
+	}
+	
+	public JFrame getContainer()
+	{
 		JFrame f = new JFrame("Gestion des Inscriptions");
 		f.setSize(900, 700);
 				
 		JTabbedPane onglets = new JTabbedPane(SwingConstants.TOP);
-		
 		
 		SpacePersonne Pers = new SpacePersonne(new JLabel ("Personne"));	
 		JPanel ongletPers = Pers.getOnglet();
@@ -46,23 +54,18 @@ public class Container
 		f.getContentPane().add(onglets);
 
 		ongletComp.setLayout(new BorderLayout());
-		ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
-		ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
+		//ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
+		//ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
 		
 		f.setVisible(true);
 		f.setResizable(false);
-		getInscriptions();
-		}
-	  
-	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
-	{
-		Inscriptions i= Inscriptions.getInscriptions();
-		return i;
+		
+		return f;
 	}
+	
 	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
-	new Container();
-        
+		new Container();   
 	}
 }
 
