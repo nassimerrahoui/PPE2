@@ -3,6 +3,7 @@ package ihm;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.*;
 import metier.Competition;
@@ -45,5 +46,19 @@ public class SpaceCompet
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			return tableau;
+		}
+		
+		public JPanel getAddCompetition() 
+		{
+			JPanel addCompetition = new JPanel();
+			JTextField nomAjoutField = new JTextField();
+			JButton boutonAjout = new JButton("Ajouter");
+			addCompetition.setBackground(Color.WHITE);
+			nomAjoutField.setPreferredSize(new Dimension(130, 20));
+			addCompetition.add(new JLabel("Intitulé de la compétition : "));
+			addCompetition.add(nomAjoutField);
+			addCompetition.add(boutonAjout);
+			
+			return addCompetition;
 		}
 	}
