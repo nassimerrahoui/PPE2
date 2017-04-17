@@ -46,8 +46,8 @@ public class Container
 
 		//tableau des competitions
 		ongletComp.setLayout(new BorderLayout());
-		//ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
-		//ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
+		ongletComp.add(Comp.getTableau().getTableHeader(), BorderLayout.PAGE_START);
+		ongletComp.add(Comp.getTableau(), BorderLayout.CENTER);
 		
 		//tableau des equipes
 		ongletEqui.setLayout(new BorderLayout());
@@ -73,7 +73,6 @@ public class Container
 	
 	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
-		new Container();
 		new Container();
 	}
 }
