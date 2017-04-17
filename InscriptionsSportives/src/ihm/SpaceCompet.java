@@ -1,17 +1,10 @@
 package ihm;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 
 import metier.Competition;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
-import metier.Inscriptions;
 
 public class SpaceCompet
 	{
@@ -29,18 +22,18 @@ public class SpaceCompet
 		
 		public JTable getTableau() throws enEquipeException, addCloseException
 		{
-			String[] nomColonnes = new String[10];
-			Object[][] data = new Object[10][10];
+			String[] entete = {"Nom"};
+			String[][] data = new String[10][10];
 			int i = 0;
-			int j = 1;
+			int j = 0;
 			
-			for (Competition c : Inscriptions.getInscriptions().getCompetitions()) 
+			for (Competition c : Container.getInscriptions().getCompetitions()) 
 			{
 				data[i][j] = c.getNom();
 				i++;
 			}
 			
-			JTable tableau = new JTable(data, nomColonnes);
+			JTable tableau = new JTable(data, entete);
 			
 			return tableau;
 		}

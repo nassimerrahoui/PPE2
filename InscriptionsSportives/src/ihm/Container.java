@@ -18,6 +18,8 @@ public class Container
 
 	public Container() throws enEquipeException, addCloseException
 	{   
+		getInscriptions();
+		
 		JFrame f = new JFrame("Gestion des Inscriptions");
 		f.setSize(900, 700);
 				
@@ -51,17 +53,19 @@ public class Container
 		
 		f.setVisible(true);
 		f.setResizable(false);
-		getInscriptions();
+		
 		}
 	  
 	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
 	{
-		Inscriptions i= Inscriptions.getInscriptions();
+		Inscriptions i = Inscriptions.getInscriptions();
+		i.reinitialiser();
 		return i;
 	}
+	
 	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
-	new Container();
+		new Container();
         
 	}
 }
