@@ -107,7 +107,7 @@ public class equipeData
 			String sql = "{call getEquipes()}";
 			java.sql.Statement cs = AccesBase.getInstance().createStatement();
 			ResultSet result = cs.executeQuery(sql);
-			
+			//TODO MAP<Integer,Personne> à intégrer pour trier le set et éviter de boucler X fois dans spaceEquipe
 			// boucle pour ajouter une equipe dans la couche métier
             while(result.next())
             {
