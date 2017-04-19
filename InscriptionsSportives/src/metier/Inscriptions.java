@@ -289,7 +289,8 @@ public class Inscriptions implements Serializable
 		for (Competition c : inscriptions.getCompetitions()) 
 		{
 			System.out.println(c);
-		}*/
+		}
+		
 		
 		try
 		{
@@ -298,7 +299,7 @@ public class Inscriptions implements Serializable
 		catch (IOException e)
 		{
 			System.out.println("Sauvegarde impossible." + e);
-		}
+		}*/
 		
 	}
 }
