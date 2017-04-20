@@ -175,7 +175,7 @@ public class SpacePersonne
 				
 				JOptionPane.showMessageDialog(
 						null,
-						fieldAddNom.getText() + " " 
+						fieldAddNom.getText()+ fieldAddPrenom.getText() + " " 
 						+ "a bien été ajouté ! (c'est un test rien a été ajouté)", "M2L Info",
 						JOptionPane.INFORMATION_MESSAGE
 				);

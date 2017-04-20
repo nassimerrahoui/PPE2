@@ -48,6 +48,7 @@ public class Container
 		
 		//tableau des equipes
 		ongletEqui.add(new JScrollPane(Equi.getTableau()));
+		ongletEqui.add(Equi.getAddEquipe());
 		
 		//tableau des personnes
 		ongletPers.add(new JScrollPane(Pers.getTableau()));
