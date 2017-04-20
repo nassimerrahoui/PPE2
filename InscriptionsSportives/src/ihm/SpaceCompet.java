@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import javax.swing.*;
 import metier.Competition;
@@ -101,17 +99,17 @@ public class SpaceCompet
 		}
 
 		/** validation format des champs d'ajout d'une compétition **/
-		private boolean isValid(String s) 
+		private boolean isValid() 
 		{
-			switch (s) 
+			if(nomValid() == true && clotureValid() == true)
 			{
-				case "intitule":
-					return nomValid();
-				case "cloture":
-					return clotureValid();
+				return true;
 			}
 			
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 		
 		/** contrôle sur l'intitulé de la compétition **/
@@ -121,14 +119,25 @@ public class SpaceCompet
 		
 		/** contrôle sur la date de clôture de la compétition **/
 		private boolean clotureValid() {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				format.parse(fieldAddCloture.getText());
-		        return true;
-		    }
-		    catch(ParseException e){
-		          return false;
-		    }
+			boolean test = false;
+			try 
+			{
+				LocalDate Cloture = LocalDate.parse(fieldAddCloture.getText());
+				if(Cloture != null)
+				{
+					test = true;
+				}
+				else
+				{
+					test = false;
+				}
+			}
+			catch (Exception e) 
+			{
+				// TODO: handle exception
+			}
+			
+			return test;
 		}
 
 		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
@@ -136,7 +145,7 @@ public class SpaceCompet
 		{
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
 			fieldAddCloture.setBorder(BorderFactory.createLineBorder(clotureValid() ? Color.GREEN : Color.RED));
-			buttonAdd.setEnabled((isValid("intitule") && isValid("cloture")));
+			buttonAdd.setEnabled(isValid());
 		}
 
 		/** écoute les touches **/

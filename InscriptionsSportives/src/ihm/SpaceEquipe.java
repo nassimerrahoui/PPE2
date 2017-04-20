@@ -76,15 +76,17 @@ public class SpaceEquipe
 		}
 
 		/** validation format des champs d'ajout d'une personne **/
-		private boolean isValid(String s) 
+		private boolean isValid() 
 		{
-			switch (s) 
+			if(nomValid() == true)
 			{
-				case "Nom":
-					return nomValid();
+				return true;
 			}
 			
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 		
 		/** contrôle sur l'intitulé de la compétition **/
@@ -96,7 +98,7 @@ public class SpaceEquipe
 		private void verifyField()
 		{
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
-			buttonAdd.setEnabled((isValid("Nom")));
+			buttonAdd.setEnabled((isValid()));
 		}
 
 		/** écoute les touches **/

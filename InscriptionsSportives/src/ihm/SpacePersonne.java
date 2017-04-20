@@ -95,20 +95,18 @@ public class SpacePersonne
 			ongletPers.repaint();
 		}
 
-		/** validation format des champs d'ajout d'une personne **/
-		private boolean isValid(String s) 
+		/** validation format des champs d'ajout d'une personne **/ 
+		private boolean isValid() 
 		{
-			switch (s) 
+			if(nomValid() == true && prenomValid() == true && mailValid() == true)
 			{
-				case "Nom":
-					return nomValid();
-				case "Prenom":
-					return prenomValid();
-				case "Mail":
-					return mailValid();
+				return true;
 			}
 			
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 		
 		/** contrôle sur le nom de la personne **/
@@ -131,7 +129,7 @@ public class SpacePersonne
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
 			fieldAddPrenom.setBorder(BorderFactory.createLineBorder(prenomValid() ? Color.GREEN : Color.RED));
 			fieldAddMail.setBorder(BorderFactory.createLineBorder(mailValid() ? Color.GREEN : Color.RED));
-			buttonAdd.setEnabled((isValid("Nom") && isValid("Prenom") && isValid("Mail")));
+			buttonAdd.setEnabled((isValid()));
 		}
 
 		/** écoute les touches **/
