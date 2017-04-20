@@ -40,6 +40,7 @@ public class SpacePersonne
 			Object[][] data = new Object[50][50];
 			int i = 0;
 			int j = 0;
+			JTable tableau = new JTable(data, entete);
 			for (Personne p : Container.getInscriptions().getPersonnes()) 
 			{
 				data[i][j] = p.getNom();
@@ -51,7 +52,6 @@ public class SpacePersonne
 				j--;
 				i++;
 			}
-			JTable tableau = new JTable(data, entete);
 			
 			// mise en page du header
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
@@ -154,7 +154,7 @@ public class SpacePersonne
 
 		}
 
-		/** écoute les actions **/
+		/** actions lorsqu'on clique sur ajouter **/
 		class buttonAddListener implements ActionListener 
 		{
 			@Override
@@ -190,8 +190,7 @@ public class SpacePersonne
 			fieldAddMail.addKeyListener(new fieldAddListener());
 			buttonAdd.addActionListener(new buttonAddListener());
 
-		}
-			
+		}	
 	}
 
 	
