@@ -51,6 +51,7 @@ public class Container
 		
 		//tableau des personnes
 		ongletPers.add(new JScrollPane(Pers.getTableau()));
+		ongletPers.add(Pers.getAddPersonne());
 		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
