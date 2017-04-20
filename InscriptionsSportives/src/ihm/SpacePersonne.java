@@ -95,7 +95,7 @@ public class SpacePersonne
 			ongletPers.repaint();
 		}
 
-		/** validation format des champs d'ajout d'une compétition **/
+		/** validation format des champs d'ajout d'une personne **/
 		private boolean isValid(String s) 
 		{
 			switch (s) 
