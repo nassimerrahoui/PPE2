@@ -96,7 +96,6 @@ public class SpaceCompet
 		/** Actualisation des données **/
 		private void refreshSpaceCompet() 
 		{
-			ongletComp.removeAll();
 			ongletComp.revalidate();
 			ongletComp.repaint();
 		}

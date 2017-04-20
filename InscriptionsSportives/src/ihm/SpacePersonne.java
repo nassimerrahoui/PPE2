@@ -91,7 +91,7 @@ public class SpacePersonne
 		
 		private void refreshSpacePers() 
 		{
-			ongletPers.validate();
+			ongletPers.revalidate();
 			ongletPers.repaint();
 		}
 
