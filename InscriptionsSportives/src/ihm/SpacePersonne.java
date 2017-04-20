@@ -1,7 +1,18 @@
 package ihm;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
+
+import ihm.SpaceCompet.buttonAddListener;
+import ihm.SpaceCompet.fieldAddListener;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
 import metier.Personne;
@@ -10,10 +21,19 @@ import metier.Personne;
 public class SpacePersonne
 	{	
 		private JPanel ongletPers = new JPanel();
+		JPanel addPersonne = new JPanel();
+		JTextField fieldAddNom = new JTextField();
+		JTextField fieldAddPrenom = new JTextField();
+		JTextField fieldAddMail = new JTextField();
+		JButton buttonAdd = new JButton("Ajouter");
 		
 		public SpacePersonne()
 		{
+			// désactive le boutton ajouter
+			buttonAdd.setEnabled(false);
 			
+			// active l'écoute sur les champs
+			setListener();
 		}
 		
 		public JPanel getOnglet(){
@@ -43,6 +63,128 @@ public class SpacePersonne
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			return tableau;
+		}
+		
+		public JPanel getAddPersonne()
+		{
+			addPersonne.setBackground(Color.WHITE);
+			
+			// Initialisation des bordures de champ en rouge
+			fieldAddNom.setBorder(BorderFactory.createLineBorder(Color.RED));
+			fieldAddPrenom.setBorder(BorderFactory.createLineBorder(Color.RED));
+			fieldAddMail.setBorder(BorderFactory.createLineBorder(Color.RED));
+			
+			// Taille des champs
+			fieldAddNom.setPreferredSize(new Dimension(130, 20));
+			fieldAddPrenom.setPreferredSize(new Dimension(130, 20));
+			fieldAddMail.setPreferredSize(new Dimension(130, 20));
+			
+			// Ajout des composants dans le panneau d'ajout de compétition
+			addPersonne.add(new JLabel("Nom :"));
+			addPersonne.add(fieldAddNom);
+			addPersonne.add(new JLabel("Prenom : "));
+			addPersonne.add(fieldAddPrenom);
+			addPersonne.add(new JLabel("Mail : "));
+			addPersonne.add(fieldAddMail);
+			addPersonne.add(Box.createHorizontalStrut(5));
+			addPersonne.add(Box.createHorizontalStrut(5));
+			addPersonne.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+			addPersonne.setBorder(BorderFactory.createTitledBorder("Créer une personne"));
+			addPersonne.add(buttonAdd);
+			
+			return addPersonne;
+		}
+		
+		private void refreshSpacePers() 
+		{
+			ongletPers.validate();
+			ongletPers.repaint();
+		}
+
+		/** validation format des champs d'ajout d'une compétition **/
+		private boolean isValid(String s) 
+		{
+			switch (s) 
+			{
+				case "Nom":
+					return nomValid();
+				case "Prenom":
+					return prenomValid();
+				case "Mail":
+					return mailValid();
+			}
+			
+			return false;
+		}
+		
+		/** contrôle sur l'intitulé de la compétition **/
+		private boolean nomValid() {
+			return fieldAddNom.getText().matches("[a-zA-Z ]{1,}");
+		}
+		
+		/** contrôle sur la date de clôture de la compétition **/
+		private boolean prenomValid() {
+			return fieldAddPrenom.getText().matches("[a-zA-Z ]{1,}");
+		}
+		
+		private boolean mailValid() {
+			return fieldAddMail.getText().matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-z]{2,6}");
+		}
+
+		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
+		private void verifyField()
+		{
+			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
+			fieldAddPrenom.setBorder(BorderFactory.createLineBorder(prenomValid() ? Color.GREEN : Color.RED));
+			fieldAddMail.setBorder(BorderFactory.createLineBorder(mailValid() ? Color.GREEN : Color.RED));
+			buttonAdd.setEnabled((isValid("Nom") && isValid("Prenom") && isValid("Mail")));
+		}
+
+		/** écoute les touches **/
+		class fieldAddListener implements KeyListener 
+		{
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				verifyField();
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+
+			}
+
+		}
+
+		/** écoute les actions **/
+		class buttonAddListener implements ActionListener 
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				/*inscriptions.createCompetition();*/
+				JOptionPane.showMessageDialog(
+						null,
+						fieldAddNom.getText() + " " 
+						+ "a bien été ajouté ! (c'est un test rien a été ajouté)", "M2L Info",
+						JOptionPane.INFORMATION_MESSAGE
+				);
+				refreshSpacePers();
+			}
+		}
+		
+		/** Ajout des écouteurs pour chaque champ **/
+		private void setListener() 
+		{
+			fieldAddNom.addKeyListener(new fieldAddListener());
+			fieldAddPrenom.addKeyListener(new fieldAddListener());
+			fieldAddMail.addKeyListener(new fieldAddListener());
+			buttonAdd.addActionListener(new buttonAddListener());
+
 		}
 			
 	}
