@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import javax.swing.*;
 import metier.Competition;
 import metier.Competition.addCloseException;
@@ -83,8 +84,8 @@ public class SpaceCompet
 			addCompetition.add(fieldAddCloture);
 			addCompetition.add(new JLabel("En Equipe : "));
 			addCompetition.add(fieldAddEnEquipe);
-			addCompetition.add(Box.createHorizontalStrut(5));
-			addCompetition.add(Box.createHorizontalStrut(5));
+			addCompetition.add(Box.createHorizontalStrut(10));
+			addCompetition.add(Box.createHorizontalStrut(10));
 			addCompetition.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 			addCompetition.setBorder(BorderFactory.createTitledBorder("Créer une compétition"));
 			addCompetition.add(buttonAdd);
@@ -95,7 +96,8 @@ public class SpaceCompet
 		/** Actualisation des données **/
 		private void refreshSpaceCompet() 
 		{
-			ongletComp.validate();
+			ongletComp.removeAll();
+			ongletComp.revalidate();
 			ongletComp.repaint();
 		}
 
@@ -164,7 +166,19 @@ public class SpaceCompet
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*inscriptions.createCompetition();*/
+				String nom = fieldAddNom.getText();
+				LocalDate Cloture = LocalDate.parse(fieldAddCloture.getText());
+				boolean EnEquipe = isInTeam();
+
+				try 
+				{
+					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				
 				JOptionPane.showMessageDialog(
 						null,
 						fieldAddNom.getText() + " " 
@@ -172,6 +186,15 @@ public class SpaceCompet
 						JOptionPane.INFORMATION_MESSAGE
 				);
 				refreshSpaceCompet();
+			}
+			
+			private boolean isInTeam() {
+				if(fieldAddEnEquipe.isSelected()) {
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 		}
 		
