@@ -181,7 +181,7 @@ public class SpaceCompet
 				JOptionPane.showMessageDialog(
 						null,
 						fieldAddNom.getText() + " " 
-						+ "a bien été ajouté ! (c'est un test rien a été ajouté)", "M2L Info",
+						+ "a bien été ajouté !", "M2L Info",
 						JOptionPane.INFORMATION_MESSAGE
 				);
 				refreshSpaceCompet();

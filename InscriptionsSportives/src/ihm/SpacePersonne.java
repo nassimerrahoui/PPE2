@@ -73,7 +73,7 @@ public class SpacePersonne
 			fieldAddPrenom.setPreferredSize(new Dimension(130, 20));
 			fieldAddMail.setPreferredSize(new Dimension(130, 20));
 			
-			// Ajout des composants dans le panneau d'ajout de compétition
+			// Ajout des composants dans le panneau d'ajout de personne
 			addPersonne.add(new JLabel("Nom :"));
 			addPersonne.add(fieldAddNom);
 			addPersonne.add(new JLabel("Prenom : "));
@@ -111,12 +111,12 @@ public class SpacePersonne
 			return false;
 		}
 		
-		/** contrôle sur l'intitulé de la compétition **/
+		/** contrôle sur le nom de la personne **/
 		private boolean nomValid() {
 			return fieldAddNom.getText().matches("[a-zA-Z ]{1,}");
 		}
 		
-		/** contrôle sur la date de clôture de la compétition **/
+		/** contrôle sur le prénom de la personne **/
 		private boolean prenomValid() {
 			return fieldAddPrenom.getText().matches("[a-zA-Z ]{1,}");
 		}
@@ -176,7 +176,7 @@ public class SpacePersonne
 				JOptionPane.showMessageDialog(
 						null,
 						fieldAddNom.getText() + " " 
-						+ "a bien été ajouté ! (c'est un test rien a été ajouté)", "M2L Info",
+						+ "a bien été ajouté !", "M2L Info",
 						JOptionPane.INFORMATION_MESSAGE
 				);
 				refreshSpacePers();
