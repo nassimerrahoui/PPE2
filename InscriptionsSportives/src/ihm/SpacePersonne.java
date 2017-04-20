@@ -119,6 +119,7 @@ public class SpacePersonne
 			return fieldAddPrenom.getText().matches("[a-zA-Z ]{1,}");
 		}
 		
+		/** contrôle sur le mail de la personne **/
 		private boolean mailValid() {
 			return fieldAddMail.getText().matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-z]{2,6}");
 		}
