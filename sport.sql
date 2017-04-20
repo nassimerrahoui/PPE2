@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 19 Mars 2017 à 22:13
+-- Généré le :  Jeu 20 Avril 2017 à 12:16
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -287,9 +287,10 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `setCompetitionCarac` (IN `Competition` VARCHAR(50), IN `Cloture` DATE, IN `EnEquipe` BOOLEAN, IN `pID` INT)  MODIFIES SQL DATA
 BEGIN
 
-    UPDATE competition 
-	SET nom_competition = @Competition, dateCloture = @Cloture, estEnEquipe = @EnEquipe
-    WHERE id_competition = @pID;
+    UPDATE competition SET competition.nom_competition = @Competition,
+    competition.dateCloture = @Cloture, 
+    competition.estEnEquipe = @EnEquipe
+    WHERE competition.id_competition = @pID;
 
 END$$
 
@@ -386,7 +387,14 @@ INSERT INTO `candidat` (`id_candidat`, `nom_candidat`) VALUES
 (25, 'Les Manouches'),
 (26, 'Tonis'),
 (27, 'Boric'),
-(28, 'Les Manchots');
+(28, 'Les Manchots'),
+(309, 'Test0'),
+(310, 'Test00'),
+(311, 'equipe'),
+(312, 'TestP'),
+(313, 'TestPP'),
+(314, 'EquipeT'),
+(315, 'Doe');
 
 --
 -- Déclencheurs `candidat`
@@ -430,7 +438,14 @@ CREATE TABLE `competition` (
 INSERT INTO `competition` (`id_competition`, `nom_competition`, `dateCloture`, `dateOuverture`, `estEnEquipe`) VALUES
 (3, 'Solo', '2017-06-29', '2017-02-17', 0),
 (4, 'Solo2', '2017-07-14', '2017-02-13', 0),
-(6, 'Team', '2017-10-30', '2017-02-23', 1);
+(6, 'Team', '2017-10-30', '2017-02-23', 1),
+(7, 'competL', '2017-11-30', '2017-03-29', 1),
+(8, 'Parkour', '2017-12-31', '2017-04-20', 1),
+(9, 'Bike', '2018-03-01', '2017-04-20', 0),
+(10, 'Football', '2017-12-31', '2017-04-20', 1),
+(11, 'FootballChamp', '2017-12-31', '2017-04-20', 1),
+(12, 'BasketBall', '2017-12-31', '2017-04-20', 1),
+(13, 'Hockey', '2017-12-31', '2017-04-20', 1);
 
 --
 -- Déclencheurs `competition`
@@ -447,9 +462,7 @@ $$
 DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `before_Update_competition` BEFORE UPDATE ON `competition` FOR EACH ROW BEGIN
-	DECLARE P1 boolean;
-    
-    IF NEW.dateOuverture > NEW.dateCloture
+	IF NEW.dateOuverture > NEW.dateCloture
 	THEN 
  	SIGNAL SQLSTATE '45000'
  	SET MESSAGE_TEXT = 'Date Cloture doit être après la Date Ouverture';
@@ -534,7 +547,12 @@ INSERT INTO `personne` (`prenom_personne`, `mail`, `id_candidat`) VALUES
 ('Dent de plomb', 'azerty', 23),
 ('le Hachoir', 'ytreza', 24),
 ('Dent de plonge', 'qwerty', 26),
-('le couteau', 'qsdf', 27);
+('le couteau', 'qsdf', 27),
+('Test0', 'Test0@mail.Fr', 309),
+('Test00', 'Test00@mail.fr', 310),
+('TestP', 'TestP@mail.fr', 312),
+('TestPP', 'TestPP@mail.fr', 313),
+('John', 'johndoe@mail.fr', 315);
 
 --
 -- Déclencheurs `personne`
@@ -596,12 +614,12 @@ ALTER TABLE `personne`
 -- AUTO_INCREMENT pour la table `candidat`
 --
 ALTER TABLE `candidat`
-  MODIFY `id_candidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_candidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
 --
 -- AUTO_INCREMENT pour la table `competition`
 --
 ALTER TABLE `competition`
-  MODIFY `id_competition` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_competition` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- Contraintes pour les tables exportées
 --
