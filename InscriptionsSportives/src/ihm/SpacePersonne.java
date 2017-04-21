@@ -23,10 +23,8 @@ public class SpacePersonne
 		
 		public SpacePersonne()
 		{
-			// désactive le boutton ajouter
 			buttonAdd.setEnabled(false);
 			
-			// active l'écoute sur les champs
 			setListener();
 		}
 		
@@ -63,17 +61,14 @@ public class SpacePersonne
 		{
 			addPersonne.setBackground(Color.WHITE);
 			
-			// Initialisation des bordures de champ en rouge
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(Color.RED));
 			fieldAddPrenom.setBorder(BorderFactory.createLineBorder(Color.RED));
 			fieldAddMail.setBorder(BorderFactory.createLineBorder(Color.RED));
 			
-			// Taille des champs
 			fieldAddNom.setPreferredSize(new Dimension(130, 20));
 			fieldAddPrenom.setPreferredSize(new Dimension(130, 20));
 			fieldAddMail.setPreferredSize(new Dimension(130, 20));
 			
-			// Ajout des composants dans le panneau d'ajout de personne
 			addPersonne.add(new JLabel("Nom :"));
 			addPersonne.add(fieldAddNom);
 			addPersonne.add(new JLabel("Prenom : "));
@@ -95,7 +90,6 @@ public class SpacePersonne
 			ongletPers.repaint();
 		}
 
-		/** validation format des champs d'ajout d'une personne **/ 
 		private boolean isValid() 
 		{
 			if(nomValid() == true && prenomValid() == true && mailValid() == true)
@@ -109,22 +103,18 @@ public class SpacePersonne
 			}
 		}
 		
-		/** contrôle sur le nom de la personne **/
 		private boolean nomValid() {
 			return fieldAddNom.getText().matches("[a-zA-Z ]{1,}");
 		}
 		
-		/** contrôle sur le prénom de la personne **/
 		private boolean prenomValid() {
 			return fieldAddPrenom.getText().matches("[a-zA-Z ]{1,}");
 		}
 		
-		/** contrôle sur le mail de la personne **/
 		private boolean mailValid() {
 			return fieldAddMail.getText().matches("[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-z]{2,6}");
 		}
 
-		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
 		private void verifyField()
 		{
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
@@ -133,7 +123,6 @@ public class SpacePersonne
 			buttonAdd.setEnabled((isValid()));
 		}
 
-		/** écoute les touches **/
 		class fieldAddListener implements KeyListener 
 		{
 
@@ -154,7 +143,6 @@ public class SpacePersonne
 
 		}
 
-		/** actions lorsqu'on clique sur ajouter **/
 		class buttonAddListener implements ActionListener 
 		{
 			@Override
@@ -182,7 +170,6 @@ public class SpacePersonne
 			}
 		}
 		
-		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
 			fieldAddNom.addKeyListener(new fieldAddListener());
