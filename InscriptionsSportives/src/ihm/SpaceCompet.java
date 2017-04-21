@@ -60,16 +60,15 @@ public class SpaceCompet
 				data[i][j] = "Supprimer";
 				j++;
 				data[i][j] = c.getId();
-				j--;
-				j--;
-				j--;
-				j--;
+				j-=4;
 				i++;
 			}
 			
 			return data;
 		}
 		
+		// TODO JTableModel
+		// TODO Popup edition
 		/** Liste des compétitions **/
 		public JTable getTableau() throws enEquipeException, addCloseException
 		{

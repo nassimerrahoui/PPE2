@@ -106,7 +106,8 @@ public class competitionData
 			System.out.println("Le candidat n'a pas été enlevé de la compétition.");
 	    }
 	}
-		
+	
+	// TODO remplacer SortedSet par void
 	public static SortedSet<Competition> select(Inscriptions inscriptions) 
 	{
 		SortedSet<Competition> Competitions = new TreeSet<>();
@@ -150,6 +151,7 @@ public class competitionData
 				ResultSet result = cs.executeQuery();
 		        while(result.next())
 		        {
+		        	// TODO remplacer les deux for par une boucle utilisant MAP
 		            for (Personne p : inscriptions.getPersonnes()) 
 						if(result.getInt("id_candidat") == p.getId())
 						{

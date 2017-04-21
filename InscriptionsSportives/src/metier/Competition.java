@@ -22,7 +22,7 @@ public class Competition implements Comparable<Competition>, Serializable {
 	private LocalDate dateCloture;
 	private boolean enEquipe = false;
 	private LocalDate today = LocalDate.now();
-	private int id;
+	private int id = -1;
 
 	protected Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
@@ -40,7 +40,9 @@ public class Competition implements Comparable<Competition>, Serializable {
 	
 	public void setId(int id) 
 	{
-		this.id = id;
+		if(this.id == -1)
+			this.id = id;
+		// TODO Exception runtime ou une classe fille de runtime bricoler
 	}
 
 	/**
@@ -212,7 +214,9 @@ public class Competition implements Comparable<Competition>, Serializable {
 	private static final long serialVersionUID = -7303533125444582417L;
 	LocalDate date,dateCloture ;
 	String nom,libelleCompet,typeCompet,typePers;
-		
+	
+	//TODO prendre en param Candidat et utiliser l'objet pour recup données
+	//TODO enlever les info sur la compétitions
 	public enEquipeException(Personne p){
 			date = LocalDate.now();
 			nom= p.getNom();
