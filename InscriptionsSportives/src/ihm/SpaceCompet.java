@@ -1,14 +1,17 @@
 package ihm;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 import metier.Competition;
 import metier.Competition.addCloseException;
@@ -22,6 +25,7 @@ public class SpaceCompet
 		JTextField fieldAddCloture = new JTextField();
 		JRadioButton fieldAddEnEquipe = new JRadioButton();
 		JButton buttonAdd = new JButton("Ajouter");
+		JTable competitionTable = getTableau();
 		
 		/** Construteur **/
 		public SpaceCompet()
@@ -38,48 +42,111 @@ public class SpaceCompet
 			return this.ongletComp;
 		}
 		
-		public String[] getEntete()
-		{
-			String[] entete = {"Nom", "Cloture", "En Equipe", "Supprimer"};
-			return entete;
-		}
 		
-		public Object[][] getData() throws enEquipeException, addCloseException
+		public TableModel lesDonnees()
 		{
-			Object[][] data = new Object[30][30];
-			int i = 0;
-			int j = 0;
-			for (Competition c : Container.getInscriptions().getCompetitions()) 
+			ArrayList<Competition> competitionsIHM = new ArrayList<>(); 
+			try 
 			{
-				data[i][j] = c.getNom();
-				j++;
-				data[i][j] = c.getDateCloture();
-				j++;
-				data[i][j] = c.estEnEquipe();
-				j++;
-				data[i][j] = "Supprimer";
-				j++;
-				data[i][j] = c.getId();
-				j-=4;
-				i++;
+				for (Competition c : Container.getInscriptions().getCompetitions())
+				{
+					competitionsIHM.add(c);
+				}
+			} 
+			catch (enEquipeException | addCloseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+
+			return new TableModel() {
 			
-			return data;
+				public void addTableModelListener(TableModelListener arg0){
+					// TODO Auto-generated method stub
+	
+				}
+	
+				public Class<?> getColumnClass(int columnIndex) {
+					switch (columnIndex) {
+	
+					case 1:
+						return String.class;
+	
+					case 3:
+						return LocalDate.class;
+	
+					case 2:
+						return boolean.class;
+	
+					default:
+						return Object.class;
+					}
+				}
+	
+				public int getColumnCount() {
+					return 3;
+				}
+	
+				public String getColumnName(int columnIndex) {
+					switch (columnIndex) {
+					case 0: return "Nom";
+					case 1: return "Date de clôture";
+					case 2: return "En equipe ";
+					default:
+						break;
+					}
+					return "-1";
+				}
+	
+				public int getRowCount() {
+					return competitionsIHM.size();
+				}
+	
+				public Object getValueAt(int rowIndex, int columnIndex) {
+					
+					switch (columnIndex) {
+	
+					case 0:
+						// Intitulé de la compétition
+						return competitionsIHM.get(rowIndex).getNom();
+	
+					case 1:
+						// Prenom
+						return competitionsIHM.get(rowIndex).getDateCloture();
+	
+					case 2:
+						// Annee
+						return competitionsIHM.get(rowIndex).estEnEquipe();
+	
+					default:
+						throw new IllegalArgumentException();
+					}
+				}
+	
+				public boolean isCellEditable(int arg0, int arg1) {
+					// TODO Auto-generated method stub
+					return false;
+				}
+	
+				public void removeTableModelListener(TableModelListener arg0) {
+					// TODO Auto-generated method stub
+	
+				}
+	
+				public void setValueAt(Object arg0, int arg1, int arg2) {
+					// TODO Auto-generated method stub
+	
+				}
+			};
 		}
-		
-		// TODO JTableModel
+
 		// TODO Popup edition
 		/** Liste des compétitions **/
-		public JTable getTableau() throws enEquipeException, addCloseException
+		public JTable getTableau()
 		{
-			JTable tableau = new JTable(getData(), getEntete());
+		    JTable tableau = new JTable(lesDonnees());
 			
 			// couleur de l'entete du tableau
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
-			
-			//bouton supprimer;
-			tableau.getColumn("Supprimer").setCellRenderer(new ButtonSuppRenderer());
-			tableau.getColumn("Supprimer").setCellEditor(new ButtonSuppEditor(new JCheckBox()));
 			
 			return tableau;
 		}
@@ -113,14 +180,6 @@ public class SpaceCompet
 			
 			return addCompetition;
 		}
-		
-		/** Actualisation des données **/
-		private void refreshSpaceCompet() 
-		{
-			ongletComp.invalidate();
-			ongletComp.revalidate();
-			ongletComp.repaint();
-		}
 
 		/** validation format des champs d'ajout d'une compétition **/
 		private boolean isValid() 
@@ -147,14 +206,7 @@ public class SpaceCompet
 			try 
 			{
 				LocalDate Cloture = LocalDate.parse(fieldAddCloture.getText());
-				if(Cloture != null)
-				{
-					test = true;
-				}
-				else
-				{
-					test = false;
-				}
+				test = (Cloture != null);
 			}
 			catch (Exception e) 
 			{
@@ -205,7 +257,7 @@ public class SpaceCompet
 				try 
 				{
 					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
-					refreshSpaceCompet();
+					competitionTable.tableChanged(new TableModelEvent(competitionTable.getModel()));
 				} 
 				catch (enEquipeException | addCloseException e) 
 				{
@@ -237,98 +289,5 @@ public class SpaceCompet
 			fieldAddCloture.addKeyListener(new fieldAddListener());
 			buttonAdd.addActionListener(new buttonAddListener());
 
-		}
-		
-		@SuppressWarnings("serial")
-		class ButtonSuppRenderer extends JButton implements TableCellRenderer {
-
-		    public ButtonSuppRenderer() {
-		        setOpaque(true);
-		    }
-
-		    @Override
-		    public Component getTableCellRendererComponent(JTable table, Object value,
-		            boolean isSelected, boolean hasFocus, int row, int column) {
-		        if (isSelected) {
-		            setForeground(table.getSelectionForeground());
-		            setBackground(table.getSelectionBackground());
-		        } else {
-		            setForeground(table.getForeground());
-		            setBackground(UIManager.getColor("Button.background"));
-		        }
-		        setText((value == null) ? "" : value.toString());
-		        return this;
-		    }
-		}
-
-		@SuppressWarnings("serial")
-		class ButtonSuppEditor extends DefaultCellEditor {
-
-		    protected JButton button;
-		    private String label;
-		    private boolean isPushed;
-		    Object[][] tab = new Object[30][30];
-
-		    public ButtonSuppEditor(JCheckBox checkBox) {
-		        super(checkBox);
-		        button = new JButton();
-		        button.setOpaque(true);
-		        button.addActionListener(new ActionListener() {
-		            @Override
-		            public void actionPerformed(ActionEvent e) {
-		                fireEditingStopped();
-		                try 
-		                {
-		                	for (Competition c : Container.getInscriptions().getCompetitions()) 
-		        			{
-		                		Object nom = c.getNom();
-		                		tab = getData();
-								for (int i = 0; i < tab.length; i++) 
-								{
-									if(nom == tab[i][0])
-									{
-										//c.delete();
-									}
-								}
-							}
-						} 
-		                catch (enEquipeException | addCloseException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-		            }
-		        });
-		    }
-
-		    @Override
-		    public Component getTableCellEditorComponent(JTable table, Object value,
-		            boolean isSelected, int row, int column) {
-		        if (isSelected) {
-		            button.setForeground(table.getSelectionForeground());
-		            button.setBackground(table.getSelectionBackground());
-		        } else {
-		            button.setForeground(table.getForeground());
-		            button.setBackground(table.getBackground());
-		        }
-		        label = (value == null) ? "" : value.toString();
-		        button.setText(label);
-		        isPushed = true;
-		        return button;
-		    }
-
-		    @Override
-		    public Object getCellEditorValue() {
-		        if (isPushed) {
-		            JOptionPane.showMessageDialog(button, "La compétition a été supprimé");
-		        }
-		        isPushed = false;
-		        return label;
-		    }
-
-		    @Override
-		    public boolean stopCellEditing() {
-		        isPushed = false;
-		        return super.stopCellEditing();
-		    }
 		}
 	}
