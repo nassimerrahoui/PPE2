@@ -43,7 +43,6 @@ public class SpaceEquipe
 			}
 			JTable tableau = new JTable(data, entete);
 			
-			// mise en page du header
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
 			//verrouillage des champs
@@ -56,13 +55,10 @@ public class SpaceEquipe
 		{
 			addEquipe.setBackground(Color.WHITE);
 			
-			// Initialisation des bordures de champ en rouge
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(Color.RED));
 			
-			// Taille des champs
 			fieldAddNom.setPreferredSize(new Dimension(130, 20));
 			
-			// Ajout des composants dans le panneau d'ajout de compétition
 			addEquipe.add(new JLabel("Nom :"));
 			addEquipe.add(fieldAddNom);
 			addEquipe.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -78,7 +74,6 @@ public class SpaceEquipe
 			ongletEqui.repaint();
 		}
 
-		/** validation format des champs d'ajout d'une personne **/
 		private boolean isValid() 
 		{
 			if(nomValid() == true)
@@ -92,19 +87,16 @@ public class SpaceEquipe
 			}
 		}
 		
-		/** contrôle sur l'intitulé de la compétition **/
 		private boolean nomValid() {
 			return fieldAddNom.getText().matches("[a-zA-Z ]{1,}");
 		}
 
-		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
 		private void verifyField()
 		{
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
 			buttonAdd.setEnabled((isValid()));
 		}
 
-		/** écoute les touches **/
 		class fieldAddListener implements KeyListener 
 		{
 
@@ -125,7 +117,6 @@ public class SpaceEquipe
 
 		}
 
-		/** écoute les actions **/
 		class buttonAddListener implements ActionListener 
 		{
 			@Override
@@ -151,7 +142,6 @@ public class SpaceEquipe
 			}
 		}
 		
-		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
 			fieldAddNom.addKeyListener(new fieldAddListener());
