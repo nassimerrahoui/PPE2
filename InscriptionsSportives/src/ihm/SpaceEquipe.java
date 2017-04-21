@@ -46,6 +46,9 @@ public class SpaceEquipe
 			// mise en page du header
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
+			//verrouillage des champs
+			tableau.setEnabled(false);
+			
 			return tableau;
 		}
 		

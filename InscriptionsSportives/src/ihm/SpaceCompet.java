@@ -1,5 +1,6 @@
 package ihm;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+
 import metier.Competition;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
@@ -35,10 +38,14 @@ public class SpaceCompet
 			return this.ongletComp;
 		}
 		
-		/** Liste des compétitions **/
-		public JTable getTableau() throws enEquipeException, addCloseException
+		public String[] getEntete()
 		{
-			String[] entete = {"Nom", "Cloture", "En Equipe"};
+			String[] entete = {"Nom", "Cloture", "En Equipe", "Supprimer"};
+			return entete;
+		}
+		
+		public Object[][] getData() throws enEquipeException, addCloseException
+		{
 			Object[][] data = new Object[30][30];
 			int i = 0;
 			int j = 0;
@@ -49,14 +56,32 @@ public class SpaceCompet
 				data[i][j] = c.getDateCloture();
 				j++;
 				data[i][j] = c.estEnEquipe();
+				j++;
+				data[i][j] = "Supprimer";
+				j++;
+				data[i][j] = c.getId();
+				j--;
+				j--;
 				j--;
 				j--;
 				i++;
 			}
-			JTable tableau = new JTable(data, entete);
+			
+			return data;
+		}
+		
+		/** Liste des compétitions **/
+		public JTable getTableau() throws enEquipeException, addCloseException
+		{
+			JTable tableau = new JTable(getData(), getEntete());
 			
 			// couleur de l'entete du tableau
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
+			
+			//bouton supprimer
+			tableau.getColumn("Supprimer").setCellRenderer(new ButtonSuppRenderer());
+			tableau.getColumn("Supprimer").setCellEditor(new ButtonSuppEditor(new JCheckBox()));
+			
 			
 			return tableau;
 		}
@@ -134,7 +159,7 @@ public class SpaceCompet
 			}
 			catch (Exception e) 
 			{
-				// TODO: handle exception
+				
 			}
 			
 			return test;
@@ -213,5 +238,98 @@ public class SpaceCompet
 			fieldAddCloture.addKeyListener(new fieldAddListener());
 			buttonAdd.addActionListener(new buttonAddListener());
 
+		}
+		
+		@SuppressWarnings("serial")
+		class ButtonSuppRenderer extends JButton implements TableCellRenderer {
+
+		    public ButtonSuppRenderer() {
+		        setOpaque(true);
+		    }
+
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value,
+		            boolean isSelected, boolean hasFocus, int row, int column) {
+		        if (isSelected) {
+		            setForeground(table.getSelectionForeground());
+		            setBackground(table.getSelectionBackground());
+		        } else {
+		            setForeground(table.getForeground());
+		            setBackground(UIManager.getColor("Button.background"));
+		        }
+		        setText((value == null) ? "" : value.toString());
+		        return this;
+		    }
+		}
+
+		@SuppressWarnings("serial")
+		class ButtonSuppEditor extends DefaultCellEditor {
+
+		    protected JButton button;
+		    private String label;
+		    private boolean isPushed;
+		    Object[][] tab = new Object[30][30];
+
+		    public ButtonSuppEditor(JCheckBox checkBox) {
+		        super(checkBox);
+		        button = new JButton();
+		        button.setOpaque(true);
+		        button.addActionListener(new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+		                fireEditingStopped();
+		                try 
+		                {
+		                	for (Competition c : Container.getInscriptions().getCompetitions()) 
+		        			{
+		                		Object id = c.getId();
+		                		tab = getData();
+								for (int i = 0; i < tab.length; i++) 
+								{
+									if(id == tab[i][4])
+									{
+										//c.delete();
+									}
+								}
+							}
+						} 
+		                catch (enEquipeException | addCloseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+		            }
+		        });
+		    }
+
+		    @Override
+		    public Component getTableCellEditorComponent(JTable table, Object value,
+		            boolean isSelected, int row, int column) {
+		        if (isSelected) {
+		            button.setForeground(table.getSelectionForeground());
+		            button.setBackground(table.getSelectionBackground());
+		        } else {
+		            button.setForeground(table.getForeground());
+		            button.setBackground(table.getBackground());
+		        }
+		        label = (value == null) ? "" : value.toString();
+		        button.setText(label);
+		        isPushed = true;
+		        return button;
+		    }
+
+		    @Override
+		    public Object getCellEditorValue() {
+		        if (isPushed) {
+		            JOptionPane.showMessageDialog(button, "La compétition a été supprimé");
+		        }
+		        isPushed = false;
+		        return label;
+		    }
+
+		    @Override
+		    public boolean stopCellEditing() {
+		        isPushed = false;
+		        return super.stopCellEditing();
+		    }
 		}
 	}

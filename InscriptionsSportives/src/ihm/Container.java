@@ -26,11 +26,9 @@ public class Container
 		
 		SpacePersonne Pers = new SpacePersonne();	
 		JPanel ongletPers = Pers.getOnglet();
-		
-		
+			
 		SpaceEquipe Equi = new SpaceEquipe();	
 		JPanel ongletEqui = Equi.getOnglet();
-		
 		
 		SpaceCompet Comp = new SpaceCompet();	
 		JPanel ongletComp = Comp.getOnglet();

@@ -16,7 +16,9 @@ public class MenuUtilisateurs extends OptionUtilisateurs
 
 	public static void main(String[] args) throws enEquipeException, addCloseException
 	{
-		Menu menu = getMenuPrincipal(Inscriptions.getInscriptions());
+		Inscriptions i = Inscriptions.getInscriptions();
+		i.reinitialiser();
+		Menu menu = getMenuPrincipal(i);
 		menu.start();
 	}
 	
