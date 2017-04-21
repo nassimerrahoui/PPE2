@@ -78,10 +78,9 @@ public class SpaceCompet
 			// couleur de l'entete du tableau
 			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
 			
-			//bouton supprimer
+			//bouton supprimer;
 			tableau.getColumn("Supprimer").setCellRenderer(new ButtonSuppRenderer());
 			tableau.getColumn("Supprimer").setCellEditor(new ButtonSuppEditor(new JCheckBox()));
-			
 			
 			return tableau;
 		}
@@ -119,6 +118,7 @@ public class SpaceCompet
 		/** Actualisation des données **/
 		private void refreshSpaceCompet() 
 		{
+			ongletComp.invalidate();
 			ongletComp.revalidate();
 			ongletComp.repaint();
 		}
@@ -206,6 +206,7 @@ public class SpaceCompet
 				try 
 				{
 					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
+					refreshSpaceCompet();
 				} 
 				catch (enEquipeException | addCloseException e) 
 				{
@@ -218,7 +219,6 @@ public class SpaceCompet
 						+ "a bien été ajouté !", "M2L Info",
 						JOptionPane.INFORMATION_MESSAGE
 				);
-				refreshSpaceCompet();
 			}
 			
 			private boolean isInTeam() {
@@ -282,11 +282,11 @@ public class SpaceCompet
 		                {
 		                	for (Competition c : Container.getInscriptions().getCompetitions()) 
 		        			{
-		                		Object id = c.getId();
+		                		Object nom = c.getNom();
 		                		tab = getData();
 								for (int i = 0; i < tab.length; i++) 
 								{
-									if(id == tab[i][4])
+									if(nom == tab[i][0])
 									{
 										//c.delete();
 									}
