@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 20 Avril 2017 à 12:16
+-- Généré le :  Ven 12 Mai 2017 à 17:57
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -287,10 +287,10 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `setCompetitionCarac` (IN `Competition` VARCHAR(50), IN `Cloture` DATE, IN `EnEquipe` BOOLEAN, IN `pID` INT)  MODIFIES SQL DATA
 BEGIN
 
-    UPDATE competition SET competition.nom_competition = @Competition,
-    competition.dateCloture = @Cloture, 
-    competition.estEnEquipe = @EnEquipe
-    WHERE competition.id_competition = @pID;
+    UPDATE competition SET competition.nom_competition = Competition,
+    competition.dateCloture = Cloture, 
+    competition.estEnEquipe = EnEquipe
+    WHERE competition.id_competition = pID;
 
 END$$
 
@@ -372,10 +372,10 @@ CREATE TABLE `candidat` (
 
 INSERT INTO `candidat` (`id_candidat`, `nom_candidat`) VALUES
 (8, 'TeamRo'),
-(9, 'TeamWhite'),
+(9, 'TeamYellow'),
 (13, 'TeamThorin'),
 (15, 'Joueur2'),
-(16, 'Shingeki'),
+(16, 'unNom'),
 (17, 'Joueur4'),
 (18, 'TeamExploration'),
 (19, 'TeamEscadron'),
@@ -394,7 +394,12 @@ INSERT INTO `candidat` (`id_candidat`, `nom_candidat`) VALUES
 (312, 'TestP'),
 (313, 'TestPP'),
 (314, 'EquipeT'),
-(315, 'Doe');
+(315, 'Doe'),
+(316, 'LaTulipe'),
+(317, 'EquipeFR'),
+(318, 'Perso'),
+(319, 'Refresh'),
+(320, 'ZChamps');
 
 --
 -- Déclencheurs `candidat`
@@ -436,16 +441,17 @@ CREATE TABLE `competition` (
 --
 
 INSERT INTO `competition` (`id_competition`, `nom_competition`, `dateCloture`, `dateOuverture`, `estEnEquipe`) VALUES
-(3, 'Solo', '2017-06-29', '2017-02-17', 0),
+(3, 'Solo', '2017-12-31', '2017-02-17', 0),
 (4, 'Solo2', '2017-07-14', '2017-02-13', 0),
 (6, 'Team', '2017-10-30', '2017-02-23', 1),
-(7, 'competL', '2017-11-30', '2017-03-29', 1),
-(8, 'Parkour', '2017-12-31', '2017-04-20', 1),
-(9, 'Bike', '2018-03-01', '2017-04-20', 0),
-(10, 'Football', '2017-12-31', '2017-04-20', 1),
-(11, 'FootballChamp', '2017-12-31', '2017-04-20', 1),
-(12, 'BasketBall', '2017-12-31', '2017-04-20', 1),
-(13, 'Hockey', '2017-12-31', '2017-04-20', 1);
+(7, 'Karate', '2018-03-03', '2017-03-29', 0),
+(14, 'BasketBall', '2018-01-01', '2017-04-21', 0),
+(15, 'Course', '2017-12-31', '2017-04-21', 0),
+(16, 'Boxe', '2017-12-31', '2017-04-21', 0),
+(17, 'Escrime', '2017-12-31', '2017-04-21', 0),
+(18, 'Tennis', '2018-12-31', '2017-04-21', 0),
+(19, 'Natation', '2017-12-31', '2017-04-21', 0),
+(20, 'ESport', '2017-12-21', '2017-04-21', 1);
 
 --
 -- Déclencheurs `competition`
@@ -487,10 +493,9 @@ CREATE TABLE `inscrire` (
 --
 
 INSERT INTO `inscrire` (`id_candidat`, `id_competition`) VALUES
-(15, 3),
 (16, 3),
-(17, 3),
 (15, 4),
+(16, 4),
 (8, 6),
 (9, 6),
 (13, 6);
@@ -542,7 +547,7 @@ CREATE TABLE `personne` (
 
 INSERT INTO `personne` (`prenom_personne`, `mail`, `id_candidat`) VALUES
 ('Eren', 'mail2@mail.fr', 15),
-('Rivaille', 'rivaille@mail.com', 16),
+('unPrenom', 'mail@mail.fr', 16),
 ('Erwin', 'mail4@mail.fr', 17),
 ('Dent de plomb', 'azerty', 23),
 ('le Hachoir', 'ytreza', 24),
@@ -552,7 +557,9 @@ INSERT INTO `personne` (`prenom_personne`, `mail`, `id_candidat`) VALUES
 ('Test00', 'Test00@mail.fr', 310),
 ('TestP', 'TestP@mail.fr', 312),
 ('TestPP', 'TestPP@mail.fr', 313),
-('John', 'johndoe@mail.fr', 315);
+('John', 'johndoe@mail.fr', 315),
+('LaFleur', 'fleur@mail.fr', 316),
+('Perso', 'Perso@mail.fr', 318);
 
 --
 -- Déclencheurs `personne`
@@ -614,12 +621,12 @@ ALTER TABLE `personne`
 -- AUTO_INCREMENT pour la table `candidat`
 --
 ALTER TABLE `candidat`
-  MODIFY `id_candidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
+  MODIFY `id_candidat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=321;
 --
 -- AUTO_INCREMENT pour la table `competition`
 --
 ALTER TABLE `competition`
-  MODIFY `id_competition` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_competition` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- Contraintes pour les tables exportées
 --
