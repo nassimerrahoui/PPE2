@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.SortedSet;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -202,7 +203,7 @@ public class SpaceCompet
 			addCompetition.add(Box.createHorizontalStrut(10));
 			addCompetition.add(Box.createHorizontalStrut(10));
 			addCompetition.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-			addCompetition.setBorder(BorderFactory.createTitledBorder("Créer une compétition"));
+			addCompetition.setBorder(BorderFactory.createTitledBorder("Créer une compétition (Format de la date de clôture : YYYY-MM-DD)"));
 			addCompetition.add(buttonAdd);
 			
 			return addCompetition;
@@ -231,7 +232,7 @@ public class SpaceCompet
 			updateCompetition.add(Box.createHorizontalStrut(10));
 			updateCompetition.add(Box.createHorizontalStrut(10));
 			updateCompetition.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-			updateCompetition.setBorder(BorderFactory.createTitledBorder("Modifier cette compétition"));
+			updateCompetition.setBorder(BorderFactory.createTitledBorder("Modifier cette compétition (Pour chaque modification, séléctionner la compétition concernée)"));
 			updateCompetition.add(buttonUpdate);
 			
 			return updateCompetition;
@@ -378,13 +379,15 @@ public class SpaceCompet
 
 				try 
 				{
-					for (Competition c : Container.getInscriptions().getCompetitions()) {
+					SortedSet<Competition> Competitions = Container.getInscriptions().getCompetitions();
+					for (Competition c : Competitions) {
 						
-						if(c.getId() == ID && c.getId() <= Container.getInscriptions().getCompetitions().size()) {
-							c.setNom(nom);
-							c.setDateCloture(Cloture);
-							c.setEnEquipe(EnEquipe);
-							TableModel.refresh();
+						if(c.getId() == ID) {
+								System.out.println(c.getId());
+								c.setNom(nom);
+								c.setDateCloture(Cloture);
+								c.setEnEquipe(EnEquipe);
+								TableModel.refresh();
 						}
 					}
 				} 
