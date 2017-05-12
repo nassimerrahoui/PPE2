@@ -31,7 +31,7 @@ public class competitionData
         	java.sql.Date dateClotureSql = java.sql.Date.valueOf(obj.getDateCloture());
         	cs.setDate(2,dateClotureSql);
         	
-        	cs.setBoolean(3,obj.estEnEquipe());
+        	cs.setBoolean(3,obj.getEnEquipe());
 			AccesBase.executeUpdate(cs);
 			obj.setId(cs.RETURN_GENERATED_KEYS);
 		}
@@ -51,20 +51,12 @@ public class competitionData
         	java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
         	
         	cs.setString(1,obj.getNom());
-        	System.out.println(obj.getNom());
-        	
         	java.sql.Date dateClotureSql = java.sql.Date.valueOf(obj.getDateCloture());
         	cs.setDate(2,dateClotureSql);
-        	System.out.println(obj.getDateCloture());
-        	
-        	cs.setBoolean(3,obj.estEnEquipe());
-        	System.out.println(obj.estEnEquipe());
-        	
+        	cs.setBoolean(3,obj.getEnEquipe());
         	cs.setInt(4,obj.getId());
-        	System.out.println(obj.getId());
         	
         	AccesBase.executeUpdate(cs);
-        	System.out.println("test2");
 		}
         						
         catch (SQLException e)

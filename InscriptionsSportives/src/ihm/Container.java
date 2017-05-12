@@ -43,6 +43,7 @@ public class Container
 		//tableau des competitions
 		ongletComp.add(new JScrollPane(Comp.getTableau()));
 		ongletComp.add(Comp.getAddCompetition());
+		ongletComp.add(Comp.getUpdateCompetition());
 		
 		//tableau des equipes
 		ongletEqui.add(new JScrollPane(Equi.getTableau()));
