@@ -24,7 +24,8 @@ public class SpaceCompet
 		JTextField fieldAddCloture = new JTextField();
 		JRadioButton fieldAddEnEquipe = new JRadioButton();
 		JButton buttonAdd = new JButton("Ajouter");
-		private JTable competitionTable = new JTable(new MyTableModel());
+		MyTableModel TableModel = new MyTableModel();
+		private JTable competitionTable = new JTable(TableModel);
 		
 		/** Construteur **/
 		public SpaceCompet()
@@ -144,7 +145,9 @@ public class SpaceCompet
 			
 			public void refresh() {
 				
-				this.fireTableDataChanged();
+				TableModel = new MyTableModel();
+				TableModel.fireTableDataChanged();
+				competitionTable.setModel(TableModel);
 			}
 		}
 		
@@ -263,10 +266,7 @@ public class SpaceCompet
 				try 
 				{
 					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
-					MyTableModel TableModel = new MyTableModel();
 					TableModel.refresh();
-					competitionTable.setModel(TableModel);
-					competitionTable.revalidate();
 				} 
 				catch (enEquipeException | addCloseException e) 
 				{
