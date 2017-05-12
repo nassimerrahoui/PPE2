@@ -9,9 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 import metier.Competition;
 import metier.Competition.addCloseException;
@@ -25,7 +24,7 @@ public class SpaceCompet
 		JTextField fieldAddCloture = new JTextField();
 		JRadioButton fieldAddEnEquipe = new JRadioButton();
 		JButton buttonAdd = new JButton("Ajouter");
-		JTable competitionTable = getTableau();
+		private JTable competitionTable = new JTable(new MyTableModel());
 		
 		/** Construteur **/
 		public SpaceCompet()
@@ -42,113 +41,120 @@ public class SpaceCompet
 			return this.ongletComp;
 		}
 		
-		
-		public TableModel lesDonnees()
-		{
+		private class MyTableModel extends AbstractTableModel {
+			
+			private static final long serialVersionUID = -5329897223213964946L;
 			ArrayList<Competition> competitionsIHM = new ArrayList<>(); 
-			try 
-			{
-				for (Competition c : Container.getInscriptions().getCompetitions())
+			
+			public MyTableModel() {
+				competitionsIHM = load();
+			}
+			
+			public ArrayList<Competition> load() {
+			
+				ArrayList<Competition> competitions = new ArrayList<>(); 
+				try 
 				{
-					competitionsIHM.add(c);
+					for (Competition c : Container.getInscriptions().getCompetitions())
+					{
+						competitions.add(c);
+					}
+				} 
+				catch (enEquipeException | addCloseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} 
-			catch (enEquipeException | addCloseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return competitions;
 			}
 
-			return new TableModel() {
-			
-				public void addTableModelListener(TableModelListener arg0){
-					// TODO Auto-generated method stub
-	
-				}
-	
-				public Class<?> getColumnClass(int columnIndex) {
-					switch (columnIndex) {
-	
-					case 1:
-						return String.class;
-	
-					case 3:
-						return LocalDate.class;
-	
-					case 2:
-						return boolean.class;
-	
-					default:
-						return Object.class;
-					}
-				}
-	
-				public int getColumnCount() {
-					return 3;
-				}
-	
-				public String getColumnName(int columnIndex) {
-					switch (columnIndex) {
-					case 0: return "Nom";
-					case 1: return "Date de clôture";
-					case 2: return "En equipe ";
-					default:
-						break;
-					}
-					return "-1";
-				}
-	
-				public int getRowCount() {
-					return competitionsIHM.size();
-				}
-	
-				public Object getValueAt(int rowIndex, int columnIndex) {
-					
-					switch (columnIndex) {
-	
-					case 0:
-						// Intitulé de la compétition
-						return competitionsIHM.get(rowIndex).getNom();
-	
-					case 1:
-						// Prenom
-						return competitionsIHM.get(rowIndex).getDateCloture();
-	
-					case 2:
-						// Annee
-						return competitionsIHM.get(rowIndex).estEnEquipe();
-	
-					default:
-						throw new IllegalArgumentException();
-					}
-				}
-	
-				public boolean isCellEditable(int arg0, int arg1) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-	
-				public void removeTableModelListener(TableModelListener arg0) {
-					// TODO Auto-generated method stub
-	
-				}
-	
-				public void setValueAt(Object arg0, int arg1, int arg2) {
-					// TODO Auto-generated method stub
-	
-				}
-			};
-		}
+			public void addTableModelListener(TableModelListener arg0){
+				// TODO Auto-generated method stub
+			}
 
+			public Class<?> getColumnClass(int columnIndex) {
+				switch (columnIndex) {
+
+				case 1:
+					return String.class;
+
+				case 3:
+					return LocalDate.class;
+
+				case 2:
+					return boolean.class;
+
+				default:
+					return Object.class;
+				}
+			}
+
+			public int getColumnCount() {
+				return 3;
+			}
+
+			public String getColumnName(int columnIndex) {
+				switch (columnIndex) {
+				case 0: return "Nom";
+				case 1: return "Date de clôture";
+				case 2: return "En equipe ";
+				default:
+					break;
+				}
+				return "-1";
+			}
+
+			public int getRowCount() {
+				return competitionsIHM.size();
+			}
+
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				
+				switch (columnIndex) {
+
+				case 0:
+					// Intitulé de la compétition
+					return competitionsIHM.get(rowIndex).getNom();
+
+				case 1:
+					// Prenom
+					return competitionsIHM.get(rowIndex).getDateCloture();
+
+				case 2:
+					// Annee
+					return competitionsIHM.get(rowIndex).estEnEquipe();
+
+				default:
+					throw new IllegalArgumentException();
+				}
+			}
+
+			public boolean isCellEditable(int arg0, int arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			public void removeTableModelListener(TableModelListener arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void setValueAt(Object arg0, int arg1, int arg2) {
+				// TODO Auto-generated method stub
+			}
+			
+			public void refresh() {
+				
+				this.fireTableDataChanged();
+			}
+		}
+		
 		// TODO Popup edition
 		/** Liste des compétitions **/
 		public JTable getTableau()
 		{
-		    JTable tableau = new JTable(lesDonnees());
+		    competitionTable.getTableHeader().setBackground(new Color(0, 149, 182));
 			
-			// couleur de l'entete du tableau
-			tableau.getTableHeader().setBackground(new Color(0, 149, 182));
-			
-			return tableau;
+			return competitionTable;
 		}
 		
 		/** Panneau d'ajout de compétition **/
@@ -257,19 +263,15 @@ public class SpaceCompet
 				try 
 				{
 					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
-					competitionTable.tableChanged(new TableModelEvent(competitionTable.getModel()));
+					MyTableModel TableModel = new MyTableModel();
+					TableModel.refresh();
+					competitionTable.setModel(TableModel);
+					competitionTable.revalidate();
 				} 
 				catch (enEquipeException | addCloseException e) 
 				{
 					e.printStackTrace();
 				}
-				
-				JOptionPane.showMessageDialog(
-						null,
-						fieldAddNom.getText() + " " 
-						+ "a bien été ajouté !", "M2L Info",
-						JOptionPane.INFORMATION_MESSAGE
-				);
 			}
 			
 			private boolean isInTeam() {
