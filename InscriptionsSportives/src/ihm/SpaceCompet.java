@@ -28,6 +28,10 @@ public class SpaceCompet
 		MyTableModel TableModel = new MyTableModel();
 		private JTable competitionTable = new JTable(TableModel);
 		
+		JLabel labelIntitule = new JLabel("Intitulé de la compétition : ");
+		JLabel labelCloture = new JLabel("Date de cloture : ");
+		JLabel labelEnEquipe = new JLabel("En Equipe : ");
+		
 		JTextField fieldAddNom = new JTextField();
 		JTextField fieldAddCloture = new JTextField();
 		JRadioButton fieldAddEnEquipe = new JRadioButton();
@@ -37,6 +41,8 @@ public class SpaceCompet
 		JTextField fieldUpdateCloture = new JTextField();
 		JRadioButton fieldUpdateEnEquipe = new JRadioButton();
 		JButton buttonUpdate = new JButton("Confirmer");
+		
+		JDialog modifyWindow = new JDialog();
 		
 		/** Construteur **/
 		public SpaceCompet()
@@ -194,11 +200,11 @@ public class SpaceCompet
 			fieldAddCloture.setPreferredSize(new Dimension(130, 20));
 			
 			// Ajout des composants dans le panneau d'ajout de compétition
-			addCompetition.add(new JLabel("Intitulé de la compétition : "));
+			addCompetition.add(labelIntitule);
 			addCompetition.add(fieldAddNom);
-			addCompetition.add(new JLabel("Date de cloture : "));
+			addCompetition.add(labelCloture);
 			addCompetition.add(fieldAddCloture);
-			addCompetition.add(new JLabel("En Equipe : "));
+			addCompetition.add(labelEnEquipe);
 			addCompetition.add(fieldAddEnEquipe);
 			addCompetition.add(Box.createHorizontalStrut(10));
 			addCompetition.add(Box.createHorizontalStrut(10));
@@ -223,16 +229,12 @@ public class SpaceCompet
 			fieldUpdateCloture.setPreferredSize(new Dimension(130, 20));
 			
 			// Ajout des composants dans le panneau d'ajout de compétition
-			updateCompetition.add(new JLabel("Intitulé de la compétition : "));
+			updateCompetition.add(labelIntitule);
 			updateCompetition.add(fieldUpdateNom);
-			updateCompetition.add(new JLabel("Date de cloture : "));
+			updateCompetition.add(labelCloture);
 			updateCompetition.add(fieldUpdateCloture);
-			updateCompetition.add(new JLabel("En Equipe : "));
+			updateCompetition.add(labelEnEquipe);
 			updateCompetition.add(fieldUpdateEnEquipe);
-			updateCompetition.add(Box.createHorizontalStrut(10));
-			updateCompetition.add(Box.createHorizontalStrut(10));
-			updateCompetition.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-			updateCompetition.setBorder(BorderFactory.createTitledBorder("Modifier cette compétition (Pour chaque modification, séléctionner la compétition concernée)"));
 			updateCompetition.add(buttonUpdate);
 			
 			return updateCompetition;
@@ -343,6 +345,10 @@ public class SpaceCompet
 		    	fieldUpdateNom.setText(nom);
 		    	fieldUpdateCloture.setText(Cloture.toString());
 		    	fieldUpdateEnEquipe.setSelected(enEquipe);
+		    	
+		    	modifyWindow.setSize(400, 400);
+		    	modifyWindow.add(getUpdateCompetition());
+		    	modifyWindow.setVisible(true);
 		    }
 		 
 		    @Override
@@ -394,6 +400,8 @@ public class SpaceCompet
 				{
 					e.printStackTrace();
 				}
+				
+				modifyWindow.dispose();
 			}
 			
 			private boolean isInTeam() {
@@ -405,7 +413,6 @@ public class SpaceCompet
 				}
 			}
 		}
-		
 		
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 

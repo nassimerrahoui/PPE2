@@ -43,7 +43,6 @@ public class Container
 		//tableau des competitions
 		ongletComp.add(new JScrollPane(Comp.getTableau()));
 		ongletComp.add(Comp.getAddCompetition());
-		ongletComp.add(Comp.getUpdateCompetition());
 		
 		//tableau des equipes
 		ongletEqui.add(new JScrollPane(Equi.getTableau()));
@@ -56,8 +55,9 @@ public class Container
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 		f.setResizable(false);
+		
 		return f;
-		}
+	}
 	  
 	public static Inscriptions getInscriptions() throws enEquipeException, addCloseException
 	{
