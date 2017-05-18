@@ -383,7 +383,6 @@ public class SpaceCompet
 					for (Competition c : Competitions) {
 						
 						if(c.getId() == ID) {
-								System.out.println(c.getId());
 								c.setNom(nom);
 								c.setDateCloture(Cloture);
 								c.setEnEquipe(EnEquipe);
@@ -398,7 +397,7 @@ public class SpaceCompet
 			}
 			
 			private boolean isInTeam() {
-				if(fieldAddEnEquipe.isSelected()) {
+				if(fieldUpdateEnEquipe.isSelected()) {
 					return true;
 				}
 				else {
