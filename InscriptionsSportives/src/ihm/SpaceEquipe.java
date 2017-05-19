@@ -1,4 +1,4 @@
- package ihm;
+package ihm;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -121,7 +121,6 @@ public class SpaceEquipe
 				switch (columnIndex) {
 
 				case 0:
-					// Intitulé de la compétition
 					return equipesIHM.get(rowIndex).getNom();
 					
 				case 1:
@@ -226,7 +225,7 @@ public class SpaceEquipe
 			return fieldAddNom.getText().matches("[a-zA-Z0-9 ]{1,}");
 		}
 		
-		/** validation format des champs d'ajout d'une équipe **/
+		/** validation format des champs de modification d'une équipe **/
 		private boolean isValidModify() 
 		{
 			if(nomValidModify() == true)
@@ -260,7 +259,7 @@ public class SpaceEquipe
 		}
 
 		/** écoute les touches **/
-		class fieldAddListener implements KeyListener 
+		class fieldListener implements KeyListener 
 		{
 
 			@Override
@@ -291,6 +290,8 @@ public class SpaceEquipe
 				try 
 				{
 					Container.getInscriptions().createEquipe(nom);
+					fieldAddNom.setText("");
+					verifyField();
 					TableModel.refresh();
 				} 
 				catch (enEquipeException | addCloseException e) 
@@ -367,11 +368,11 @@ public class SpaceEquipe
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
-			fieldAddNom.addKeyListener(new fieldAddListener());
+			fieldAddNom.addKeyListener(new fieldListener());
 			buttonAdd.addActionListener(new buttonAddListener());
 			
 			equipeTable.addMouseListener(new JTableListener());
-			fieldUpdateNom.addKeyListener(new fieldAddListener());
+			fieldUpdateNom.addKeyListener(new fieldListener());
 			buttonUpdate.addActionListener(new buttonUpdateListener());
 
 		}

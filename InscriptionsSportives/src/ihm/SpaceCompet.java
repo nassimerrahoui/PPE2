@@ -135,19 +135,15 @@ public class SpaceCompet
 				switch (columnIndex) {
 
 				case 0:
-					// Intitulé de la compétition
 					return competitionsIHM.get(rowIndex).getNom();
 
 				case 1:
-					// Prenom
 					return competitionsIHM.get(rowIndex).getDateCloture();
 
 				case 2:
-					// Annee
 					return competitionsIHM.get(rowIndex).getEnEquipe();
 					
 				case 3:
-					// ID
 					return competitionsIHM.get(rowIndex).getId();
 							
 				default:
@@ -276,7 +272,7 @@ public class SpaceCompet
 			return test;
 		}
 		
-		/** validation format des champs d'ajout d'une compétition **/
+		/** validation format des champs de modification d'une compétition **/
 		private boolean isValidModify() 
 		{
 			if(nomValidModify() == true && clotureValidModify() == true)
@@ -328,7 +324,7 @@ public class SpaceCompet
 		}
 
 		/** écoute les touches **/
-		class fieldAddListener implements KeyListener 
+		class fieldListener implements KeyListener 
 		{
 
 			@Override
@@ -361,6 +357,10 @@ public class SpaceCompet
 				try 
 				{
 					Container.getInscriptions().createCompetition(nom, Cloture, EnEquipe);
+					fieldAddNom.setText("");
+					fieldAddCloture.setText("");
+					fieldAddEnEquipe.setSelected(false);
+					verifyField();
 					TableModel.refresh();
 				} 
 				catch (enEquipeException | addCloseException e) 
@@ -463,13 +463,13 @@ public class SpaceCompet
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
-			fieldAddNom.addKeyListener(new fieldAddListener());
-			fieldAddCloture.addKeyListener(new fieldAddListener());
+			fieldAddNom.addKeyListener(new fieldListener());
+			fieldAddCloture.addKeyListener(new fieldListener());
 			buttonAdd.addActionListener(new buttonAddListener());
 			
 			competitionTable.addMouseListener(new JTableListener());
-			fieldUpdateNom.addKeyListener(new fieldAddListener());
-			fieldUpdateCloture.addKeyListener(new fieldAddListener());
+			fieldUpdateNom.addKeyListener(new fieldListener());
+			fieldUpdateCloture.addKeyListener(new fieldListener());
 			buttonUpdate.addActionListener(new buttonUpdateListener());
 
 		}

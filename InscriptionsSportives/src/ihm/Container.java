@@ -53,8 +53,9 @@ public class Container
 		ongletEquipe.add("Center",Equipe.getAddEquipe());
 		
 		//tableau des personnes
-		ongletPers.add(new JScrollPane(Pers.getTableau()));
-		ongletPers.add(Pers.getAddPersonne());
+		ongletPers.setLayout(new BorderLayout());
+		ongletPers.add("North",new JScrollPane(Pers.getTableau()));
+		ongletPers.add("Center",Pers.getAddPersonne());
 		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
