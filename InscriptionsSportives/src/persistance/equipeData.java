@@ -88,7 +88,8 @@ public class equipeData
 		{
 			String sql = "{call addMembreEquipe( ? , ? )}";
 			java.sql.CallableStatement cs = AccesBase.getInstance().prepareCall(sql);
-        	cs.setObject(1,membre.getId());
+        	cs.setInt
+        	(1,membre.getId());
         	cs.setInt(2,equipe.getId());
 			AccesBase.executeUpdate(cs);
 		}

@@ -37,10 +37,11 @@ public class Container
 		onglets.addTab("Competition", ongletComp);
 		onglets.addTab("Equipe", ongletEqui);
 		onglets.addTab("Personne", ongletPers);
-		onglets.setOpaque(true);				
+		onglets.setOpaque(true);
 		f.getContentPane().add(onglets);
 
 		//tableau des competitions
+		//ongletComp.setLayout(new );
 		ongletComp.add(new JScrollPane(Comp.getTableau()));
 		ongletComp.add(Comp.getAddCompetition());
 		

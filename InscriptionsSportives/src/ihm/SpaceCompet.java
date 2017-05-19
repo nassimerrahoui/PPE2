@@ -256,7 +256,7 @@ public class SpaceCompet
 		
 		/** contrôle sur l'intitulé de la compétition **/
 		private boolean nomValid() {
-			return fieldAddNom.getText().matches("[a-zA-Z ]{1,}");
+			return fieldAddNom.getText().matches("[a-zA-Z0-9 ]{1,}");
 		}
 		
 		/** contrôle sur la date de clôture de la compétition **/
@@ -274,6 +274,41 @@ public class SpaceCompet
 			
 			return test;
 		}
+		
+		/** validation format des champs d'ajout d'une compétition **/
+		private boolean isValidModify() 
+		{
+			if(nomValidModify() == true && clotureValidModify() == true)
+			{
+				return true;
+			}
+			
+			else
+			{
+				return false;
+			}
+		}
+		
+		/** contrôle sur l'intitulé de la compétition **/
+		private boolean nomValidModify() {
+			return fieldUpdateNom.getText().matches("[a-zA-Z0-9 ]{1,}");
+		}
+		
+		/** contrôle sur la date de clôture de la compétition **/
+		private boolean clotureValidModify() {
+			boolean test = false;
+			try 
+			{
+				LocalDate Cloture = LocalDate.parse(fieldUpdateCloture.getText());
+				test = (Cloture != null);
+			}
+			catch (Exception e) 
+			{
+				
+			}
+			
+			return test;
+		}
 
 		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
 		private void verifyField()
@@ -281,6 +316,14 @@ public class SpaceCompet
 			fieldAddNom.setBorder(BorderFactory.createLineBorder(nomValid() ? Color.GREEN : Color.RED));
 			fieldAddCloture.setBorder(BorderFactory.createLineBorder(clotureValid() ? Color.GREEN : Color.RED));
 			buttonAdd.setEnabled(isValid());
+		}
+		
+		/** bordure verte si le champ est correct et activation du bouton ajouter si tous les champs sont valides **/
+		private void verifyFieldModify()
+		{
+			fieldUpdateNom.setBorder(BorderFactory.createLineBorder(nomValidModify() ? Color.GREEN : Color.RED));
+			fieldUpdateCloture.setBorder(BorderFactory.createLineBorder(clotureValidModify() ? Color.GREEN : Color.RED));
+			buttonUpdate.setEnabled(isValidModify());
 		}
 
 		/** écoute les touches **/
@@ -295,6 +338,7 @@ public class SpaceCompet
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				verifyField();
+				verifyFieldModify();
 			}
 
 			@Override
@@ -349,6 +393,7 @@ public class SpaceCompet
 		    	modifyWindow.setSize(400, 400);
 		    	modifyWindow.add(getUpdateCompetition());
 		    	modifyWindow.setVisible(true);
+		    	verifyFieldModify();
 		    }
 		 
 		    @Override
