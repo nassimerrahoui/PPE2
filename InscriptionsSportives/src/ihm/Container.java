@@ -29,15 +29,15 @@ public class Container
 		SpacePersonne Pers = new SpacePersonne();	
 		JPanel ongletPers = Pers.getOnglet();
 			
-		SpaceEquipe Equi = new SpaceEquipe();	
-		JPanel ongletEqui = Equi.getOnglet();
+		SpaceEquipe Equipe = new SpaceEquipe();	
+		JPanel ongletEquipe = Equipe.getOnglet();
 		
 		SpaceCompet Comp = new SpaceCompet();	
 		JPanel ongletComp = Comp.getOnglet();
 		
 		//les onglets
 		onglets.addTab("Competition", ongletComp);
-		onglets.addTab("Equipe", ongletEqui);
+		onglets.addTab("Equipe", ongletEquipe);
 		onglets.addTab("Personne", ongletPers);
 		onglets.setOpaque(true);
 		f.getContentPane().add(onglets);
@@ -45,11 +45,12 @@ public class Container
 		//tableau des competitions
 		ongletComp.setLayout(new BorderLayout());
 		ongletComp.add("North",new JScrollPane(Comp.getTableau()));
-		ongletComp.add("South",Comp.getAddCompetition());
+		ongletComp.add("Center",Comp.getAddCompetition());
 		
-		//tableau des equipes
-		ongletEqui.add(new JScrollPane(Equi.getTableau()));
-		ongletEqui.add(Equi.getAddEquipe());
+		//tableau des équipes
+		ongletEquipe.setLayout(new BorderLayout());
+		ongletEquipe.add("North",new JScrollPane(Equipe.getTableau()));
+		ongletEquipe.add("Center",Equipe.getAddEquipe());
 		
 		//tableau des personnes
 		ongletPers.add(new JScrollPane(Pers.getTableau()));
