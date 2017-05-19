@@ -1,4 +1,5 @@
  package ihm;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -22,27 +23,27 @@ import metier.Competition.setDateClotureException;
 public class SpaceCompet
 	{
 		private JPanel ongletComp = new JPanel();
-		JPanel addCompetition = new JPanel();
-		JPanel updateCompetition = new JPanel();
+		private JPanel addCompetition = new JPanel();
+		private JPanel updateCompetition = new JPanel();
 		
-		MyTableModel TableModel = new MyTableModel();
+		private MyTableModel TableModel = new MyTableModel();
 		private JTable competitionTable = new JTable(TableModel);
 		
-		JLabel labelIntitule = new JLabel("Intitulé de la compétition : ");
-		JLabel labelCloture = new JLabel("Date de cloture : ");
-		JLabel labelEnEquipe = new JLabel("En Equipe : ");
+		private JLabel labelIntitule = new JLabel("Intitulé de la compétition : ");
+		private JLabel labelCloture = new JLabel("Date de cloture : ");
+		private JLabel labelEnEquipe = new JLabel("En Equipe : ");
 		
-		JTextField fieldAddNom = new JTextField();
-		JTextField fieldAddCloture = new JTextField();
-		JRadioButton fieldAddEnEquipe = new JRadioButton();
-		JButton buttonAdd = new JButton("Ajouter");
+		private JTextField fieldAddNom = new JTextField();
+		private JTextField fieldAddCloture = new JTextField();
+		private JRadioButton fieldAddEnEquipe = new JRadioButton();
+		private JButton buttonAdd = new JButton("Ajouter");
 		
-		JTextField fieldUpdateNom = new JTextField();
-		JTextField fieldUpdateCloture = new JTextField();
-		JRadioButton fieldUpdateEnEquipe = new JRadioButton();
-		JButton buttonUpdate = new JButton("Confirmer");
+		private JTextField fieldUpdateNom = new JTextField();
+		private JTextField fieldUpdateCloture = new JTextField();
+		private JRadioButton fieldUpdateEnEquipe = new JRadioButton();
+		private JButton buttonUpdate = new JButton("Confirmer");
 		
-		JDialog modifyWindow = new JDialog();
+		private JDialog modifyWindow = new JDialog();
 		
 		/** Construteur **/
 		public SpaceCompet()

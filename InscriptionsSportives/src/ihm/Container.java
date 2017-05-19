@@ -1,4 +1,6 @@
 package ihm;
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -41,9 +43,9 @@ public class Container
 		f.getContentPane().add(onglets);
 
 		//tableau des competitions
-		//ongletComp.setLayout(new );
-		ongletComp.add(new JScrollPane(Comp.getTableau()));
-		ongletComp.add(Comp.getAddCompetition());
+		ongletComp.setLayout(new BorderLayout());
+		ongletComp.add("North",new JScrollPane(Comp.getTableau()));
+		ongletComp.add("South",Comp.getAddCompetition());
 		
 		//tableau des equipes
 		ongletEqui.add(new JScrollPane(Equi.getTableau()));
