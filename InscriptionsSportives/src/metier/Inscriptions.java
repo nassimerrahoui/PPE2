@@ -14,7 +14,6 @@ import java.util.TreeSet;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
 import persistance.AccesBase;
-import persistance.candidatData;
 import persistance.competitionData;
 import persistance.equipeData;
 import persistance.personneData;
@@ -40,10 +39,13 @@ public class Inscriptions implements Serializable
 	{
 		AccesBase.setEnChargement(true);
 		
-		candidats = candidatData.select(this);
+		//candidats = candidatData.select(this);
+		personneData.select(this);
+		equipeData.select(this);
+		equipeData.selectMembre(this);
+		
 		competitions = competitionData.select(this);
 		competitionData.selectInscrit(this);
-		equipeData.selectMembre(this);
 		
 		AccesBase.setEnChargement(false);
 	}
@@ -288,7 +290,7 @@ public class Inscriptions implements Serializable
 		inscriptions.reinitialiser();
 		
 		
-		for (Competition c : inscriptions.getCompetitions()) 
+		for (Candidat c : inscriptions.getCandidats()) 
 		{
 			System.out.println(c);
 		}

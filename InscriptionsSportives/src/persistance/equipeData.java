@@ -2,8 +2,8 @@ package persistance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 import metier.Candidat;
 import metier.Equipe;
@@ -13,6 +13,9 @@ import metier.Personne;
 
 public class equipeData
 {
+	private static Map<Integer, Equipe> equipes = new TreeMap<>();	
+	
+	
 	@SuppressWarnings("static-access")
 	public static void create(Equipe obj)
 	{
@@ -100,29 +103,29 @@ public class equipeData
 		}
 	}
 	
-	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
+	public static void select(Inscriptions inscriptions) 
 	{
-		SortedSet<Candidat> Candidats = new TreeSet<>();
 		try 
 		{
 			String sql = "{call getEquipes()}";
 			java.sql.Statement cs = AccesBase.getInstance().createStatement();
 			ResultSet result = cs.executeQuery(sql);
-			//TODO MAP<Integer,Personne> à intégrer pour trier le set et éviter de boucler X fois dans spaceEquipe
-			// boucle pour ajouter une equipe dans la couche métier
+			
+			// MAP<Integer,Personne> à intégrer pour trier le set et éviter de boucler X fois dans spaceEquipe
+			
             while(result.next())
             {
             	Candidat unCandidat = inscriptions.createEquipe(result.getString("nom_candidat"));
     			unCandidat.setId(result.getInt("id_candidat"));
-        		Candidats.add(unCandidat);
+    			 
+    			equipes.put(unCandidat.getId(), (Equipe) unCandidat);
             }    
 		} 
 		catch (SQLException e)
 		{
 			e.printStackTrace();
-			System.out.println("Il n'y a pas de candidats");
+			System.out.println("Il n'y a pas d'équipes");
 		}
-		return Candidats;
 	}
 	
 	/** Charger les membres d'une ou plusieures équipes */

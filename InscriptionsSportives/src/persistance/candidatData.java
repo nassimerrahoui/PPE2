@@ -3,16 +3,13 @@
 package persistance;
 
 import java.sql.SQLException;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import metier.Candidat;
 import metier.Competition;
-import metier.Inscriptions;
+
 
 public class candidatData
 {
-	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
+	/*public static SortedSet<Candidat> select(Inscriptions inscriptions) 
 	{
 		SortedSet<Candidat> Candidats = new TreeSet<>();
 
@@ -27,7 +24,7 @@ public class candidatData
 		}
 		
 		return Candidats;
-	}
+	}*/
 	
 	public static void delete(Candidat obj)
 	{

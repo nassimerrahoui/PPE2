@@ -2,8 +2,8 @@ package persistance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 import metier.Candidat;
 import metier.Inscriptions;
@@ -12,6 +12,9 @@ import metier.Personne;
 
 public class personneData
 {
+	private static Map<Integer, Personne> personnes = new TreeMap<>();	
+	
+	
 	@SuppressWarnings("static-access")
 	public static void create(Personne obj)
 	{
@@ -68,9 +71,8 @@ public class personneData
 	    }
 	}
 	
-	public static SortedSet<Candidat> select(Inscriptions inscriptions) 
+	public static void select(Inscriptions inscriptions) 
 	{
-		SortedSet<Candidat> Candidats = new TreeSet<>();
 		try 
 		{
 			String sql = "{call getPersonnes()}";
@@ -84,7 +86,7 @@ public class personneData
     												result.getString("prenom_personne"),
     												result.getString("mail"));
     			unCandidat.setId(result.getInt("id_candidat"));
-    			Candidats.add(unCandidat);
+    			personnes.put(unCandidat.getId(), (Personne) unCandidat);
             }    
 		} 
 		catch (SQLException e)
@@ -92,6 +94,5 @@ public class personneData
 			e.printStackTrace();
 			System.out.println("Il n'y a pas de personnes");
 		}
-		return Candidats;
 	}
 }
