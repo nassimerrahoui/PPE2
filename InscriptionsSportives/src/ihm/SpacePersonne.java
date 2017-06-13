@@ -31,6 +31,10 @@ public class SpacePersonne
 		private JLabel labelPrenom = new JLabel("Prénom : ");
 		private JLabel labelMail = new JLabel("Mail : ");
 		
+		private JLabel labelNomModify = new JLabel("Nom : ");
+		private JLabel labelPrenomModify = new JLabel("Prénom : ");
+		private JLabel labelMailModify = new JLabel("Mail : ");
+		
 		private JTextField fieldAddNom = new JTextField();
 		private JTextField fieldAddPrenom = new JTextField();
 		private JTextField fieldAddMail = new JTextField();
@@ -40,6 +44,8 @@ public class SpacePersonne
 		private JTextField fieldUpdatePrenom = new JTextField();
 		private JTextField fieldUpdateMail = new JTextField();
 		private JButton buttonUpdate = new JButton("Confirmer");
+		
+		private JButton buttonDelete = new JButton("Supprimer cette personne");
 		
 		private JDialog modifyWindow = new JDialog();
 		
@@ -198,11 +204,11 @@ public class SpacePersonne
 			fieldAddMail.setPreferredSize(new Dimension(130, 20));
 			
 			// Ajout des composants dans le panneau d'ajout de compétition
-			addPersonne.add(labelNom);
+			addPersonne.add(labelNomModify);
 			addPersonne.add(fieldAddNom);
-			addPersonne.add(labelPrenom);
+			addPersonne.add(labelPrenomModify);
 			addPersonne.add(fieldAddPrenom);
-			addPersonne.add(labelMail);
+			addPersonne.add(labelMailModify);
 			addPersonne.add(fieldAddMail);
 			addPersonne.add(Box.createHorizontalStrut(10));
 			addPersonne.add(Box.createHorizontalStrut(10));
@@ -236,6 +242,7 @@ public class SpacePersonne
 			updatePersonne.add(labelMail);
 			updatePersonne.add(fieldUpdateMail);
 			updatePersonne.add(buttonUpdate);
+			updatePersonne.add(buttonDelete);
 			
 			return updatePersonne;
 		}
@@ -436,6 +443,34 @@ public class SpacePersonne
 			}
 		}
 		
+		class buttonDeleteListener implements ActionListener 
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int ID = (int) personneTable.getValueAt(getTableau().getSelectedRow(), 3);
+
+				try 
+				{
+					SortedSet<Personne> Personnes = Container.getInscriptions().getPersonnes();
+					for (Personne p : Personnes) {
+						
+						if(p.getId() == ID) {
+							
+								p.delete();
+								
+								TableModel.refresh();
+						}
+					}
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				
+				modifyWindow.dispose();
+			}
+		}
+		
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
@@ -449,6 +484,8 @@ public class SpacePersonne
 			fieldUpdatePrenom.addKeyListener(new fieldListener());
 			fieldUpdateMail.addKeyListener(new fieldListener());
 			buttonUpdate.addActionListener(new buttonUpdateListener());
+			
+			buttonDelete.addActionListener(new buttonDeleteListener());
 
 		}
 	}

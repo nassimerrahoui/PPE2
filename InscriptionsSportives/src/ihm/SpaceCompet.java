@@ -33,6 +33,10 @@ public class SpaceCompet
 		private JLabel labelCloture = new JLabel("Date de cloture : ");
 		private JLabel labelEnEquipe = new JLabel("En Equipe : ");
 		
+		private JLabel labelIntituleModify = new JLabel("Intitulé de la compétition : ");
+		private JLabel labelClotureModify = new JLabel("Date de cloture : ");
+		private JLabel labelEnEquipeModify = new JLabel("En Equipe : ");
+		
 		private JTextField fieldAddNom = new JTextField();
 		private JTextField fieldAddCloture = new JTextField();
 		private JRadioButton fieldAddEnEquipe = new JRadioButton();
@@ -41,7 +45,9 @@ public class SpaceCompet
 		private JTextField fieldUpdateNom = new JTextField();
 		private JTextField fieldUpdateCloture = new JTextField();
 		private JRadioButton fieldUpdateEnEquipe = new JRadioButton();
-		private JButton buttonUpdate = new JButton("Confirmer");
+		private JButton buttonUpdate = new JButton("Modifier");
+		
+		private JButton buttonDelete = new JButton("Supprimer cette compétition");
 		
 		private JDialog modifyWindow = new JDialog();
 		
@@ -119,7 +125,7 @@ public class SpaceCompet
 				case 0: return "Nom";
 				case 1: return "Date de clôture";
 				case 2: return "En equipe ";
-				case 3: return "ID";
+				case 3: return "N°Compétition";
 				default:
 					break;
 				}
@@ -226,13 +232,14 @@ public class SpaceCompet
 			fieldUpdateCloture.setPreferredSize(new Dimension(130, 20));
 			
 			// Ajout des composants dans le panneau d'ajout de compétition
-			updateCompetition.add(labelIntitule);
+			updateCompetition.add(labelIntituleModify);
 			updateCompetition.add(fieldUpdateNom);
-			updateCompetition.add(labelCloture);
+			updateCompetition.add(labelClotureModify);
 			updateCompetition.add(fieldUpdateCloture);
-			updateCompetition.add(labelEnEquipe);
+			updateCompetition.add(labelEnEquipeModify);
 			updateCompetition.add(fieldUpdateEnEquipe);
 			updateCompetition.add(buttonUpdate);
+			updateCompetition.add(buttonDelete);
 			
 			return updateCompetition;
 		}
@@ -460,6 +467,33 @@ public class SpaceCompet
 			}
 		}
 		
+		class buttonDeleteListener implements ActionListener 
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int ID = (int) competitionTable.getValueAt(getTableau().getSelectedRow(), 3);
+
+				try 
+				{
+					SortedSet<Competition> Competitions = Container.getInscriptions().getCompetitions();
+					for (Competition c : Competitions) {
+						
+						if(c.getId() == ID) {
+								c.delete();
+								TableModel.refresh();
+						}
+					}
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				
+				modifyWindow.dispose();
+			}
+		}
+		
+		
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
@@ -471,6 +505,8 @@ public class SpaceCompet
 			fieldUpdateNom.addKeyListener(new fieldListener());
 			fieldUpdateCloture.addKeyListener(new fieldListener());
 			buttonUpdate.addActionListener(new buttonUpdateListener());
+			
+			buttonDelete.addActionListener(new buttonDeleteListener());
 
 		}
 	}

@@ -29,12 +29,15 @@ public class SpaceEquipe
 		private JTable equipeTable = new JTable(TableModel);
 		
 		private JLabel labelEquipe = new JLabel("Nom de l'équipe : ");
+		private JLabel labelEquipeModify = new JLabel("Nom de l'équipe : ");
 		
 		private JTextField fieldAddNom = new JTextField();
 		private JButton buttonAdd = new JButton("Ajouter");
 		
 		private JTextField fieldUpdateNom = new JTextField();
-		private JButton buttonUpdate = new JButton("Confirmer");
+		private JButton buttonUpdate = new JButton("Modifier");
+		
+		private JButton buttonDelete = new JButton("Supprimer cette équipe");
 		
 		private JDialog modifyWindow = new JDialog();
 		
@@ -199,9 +202,10 @@ public class SpaceEquipe
 			fieldUpdateNom.setPreferredSize(new Dimension(130, 20));
 			
 			// Ajout des composants dans le panneau d'ajout des équipes
-			updateEquipe.add(labelEquipe);
+			updateEquipe.add(labelEquipeModify);
 			updateEquipe.add(fieldUpdateNom);
 			updateEquipe.add(buttonUpdate);
+			updateEquipe.add(buttonDelete);
 			
 			return updateEquipe;
 		}
@@ -338,6 +342,7 @@ public class SpaceEquipe
 		    }
 		}
 		
+		/** écouteur pour le boutton update **/
 		class buttonUpdateListener implements ActionListener 
 		{
 			@Override
@@ -365,6 +370,33 @@ public class SpaceEquipe
 			}
 		}
 		
+		/** écouteur pour le boutton update **/
+		class buttonDeleteListener implements ActionListener 
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int ID = (int) equipeTable.getValueAt(getTableau().getSelectedRow(), 1);
+
+				try 
+				{
+					SortedSet<Equipe> Equipes = Container.getInscriptions().getEquipes();
+					for (Equipe e : Equipes) {
+						
+						if(e.getId() == ID) {
+								e.delete();
+								TableModel.refresh();
+						}
+					}
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				
+				modifyWindow.dispose();
+			}
+		}
+		
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
 		{
@@ -374,6 +406,8 @@ public class SpaceEquipe
 			equipeTable.addMouseListener(new JTableListener());
 			fieldUpdateNom.addKeyListener(new fieldListener());
 			buttonUpdate.addActionListener(new buttonUpdateListener());
+			
+			buttonDelete.addActionListener(new buttonDeleteListener());
 
 		}
 	}
