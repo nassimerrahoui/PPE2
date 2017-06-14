@@ -10,11 +10,9 @@ import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.SortedSet;
-
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-
 import metier.Competition;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
@@ -51,6 +49,8 @@ public class SpaceCompet
 		
 		private JDialog modifyWindow = new JDialog();
 		
+		private static int IDcompetition = -1;
+		
 		/** Construteur **/
 		public SpaceCompet()
 		{
@@ -59,6 +59,11 @@ public class SpaceCompet
 			
 			// active l'écoute sur les champs
 			setListener();
+		}
+		
+		/** page onglet **/
+		public static int getIdCompetition(){
+			return IDcompetition;
 		}
 		
 		/** page onglet **/
@@ -220,6 +225,8 @@ public class SpaceCompet
 		
 		public JPanel getUpdateCompetition() 
 		{
+			updateCompetition.removeAll();
+			
 			// fond du panneau ajouter
 			updateCompetition.setBackground(Color.WHITE);
 			
@@ -240,6 +247,9 @@ public class SpaceCompet
 			updateCompetition.add(fieldUpdateEnEquipe);
 			updateCompetition.add(buttonUpdate);
 			updateCompetition.add(buttonDelete);
+			
+			SpaceInscriptionCompet listeCandidat = new SpaceInscriptionCompet();
+			updateCompetition.add(new JScrollPane(listeCandidat.getCandidatsInscrit()));
 			
 			return updateCompetition;
 		}
@@ -393,12 +403,13 @@ public class SpaceCompet
 		    	String nom = (String) competitionTable.getValueAt(getTableau().getSelectedRow(), 0);
 		    	LocalDate Cloture = (LocalDate) competitionTable.getValueAt(getTableau().getSelectedRow(), 1);
 		    	boolean enEquipe = (boolean) competitionTable.getValueAt(getTableau().getSelectedRow(), 2);
+		    	IDcompetition = (int) competitionTable.getValueAt(getTableau().getSelectedRow(), 3);
 		    	
 		    	fieldUpdateNom.setText(nom);
 		    	fieldUpdateCloture.setText(Cloture.toString());
 		    	fieldUpdateEnEquipe.setSelected(enEquipe);
 		    	
-		    	modifyWindow.setSize(400, 400);
+		    	modifyWindow.setSize(650, 550);
 		    	modifyWindow.add(getUpdateCompetition());
 		    	modifyWindow.setVisible(true);
 		    	verifyFieldModify();
@@ -434,14 +445,13 @@ public class SpaceCompet
 				String nom = fieldUpdateNom.getText();
 				LocalDate Cloture = LocalDate.parse(fieldUpdateCloture.getText());
 				boolean EnEquipe = isInTeam();
-				int ID = (int) competitionTable.getValueAt(getTableau().getSelectedRow(), 3);
 
 				try 
 				{
 					SortedSet<Competition> Competitions = Container.getInscriptions().getCompetitions();
 					for (Competition c : Competitions) {
 						
-						if(c.getId() == ID) {
+						if(c.getId() == IDcompetition) {
 								c.setNom(nom);
 								c.setDateCloture(Cloture);
 								c.setEnEquipe(EnEquipe);
@@ -471,14 +481,13 @@ public class SpaceCompet
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int ID = (int) competitionTable.getValueAt(getTableau().getSelectedRow(), 3);
 
 				try 
 				{
 					SortedSet<Competition> Competitions = Container.getInscriptions().getCompetitions();
 					for (Competition c : Competitions) {
 						
-						if(c.getId() == ID) {
+						if(c.getId() == IDcompetition) {
 								c.delete();
 								TableModel.refresh();
 						}

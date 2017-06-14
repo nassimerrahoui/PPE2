@@ -43,7 +43,7 @@ public class SpacePersonne
 		private JTextField fieldUpdateNom = new JTextField();
 		private JTextField fieldUpdatePrenom = new JTextField();
 		private JTextField fieldUpdateMail = new JTextField();
-		private JButton buttonUpdate = new JButton("Confirmer");
+		private JButton buttonUpdate = new JButton("Modifier");
 		
 		private JButton buttonDelete = new JButton("Supprimer cette personne");
 		
