@@ -9,23 +9,6 @@ import metier.Competition;
 
 public class candidatData
 {
-	/*public static SortedSet<Candidat> select(Inscriptions inscriptions) 
-	{
-		SortedSet<Candidat> Candidats = new TreeSet<>();
-
-		for (Candidat p : personneData.select(inscriptions))
-		{
-			Candidats.add(p);
-		}
-		
-		for (Candidat p : equipeData.select(inscriptions))
-		{
-			Candidats.add(p);
-		}
-		
-		return Candidats;
-	}*/
-	
 	public static void delete(Candidat obj)
 	{
 		try 

@@ -108,7 +108,7 @@ public class SpaceEquipe
 			public String getColumnName(int columnIndex) {
 				switch (columnIndex) {
 				case 0: return "Nom de l'équipe";
-				case 1: return "ID";
+				case 1: return "N° Candidat";
 				default:
 					break;
 				}

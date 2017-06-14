@@ -9,14 +9,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.SortedSet;
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+
+import metier.Candidat;
 import metier.Competition;
 import metier.Competition.addCloseException;
 import metier.Competition.enEquipeException;
 import metier.Competition.setDateClotureException;
+import metier.Equipe;
+import metier.Personne;
 
 public class SpaceCompet
 	{
@@ -47,6 +52,10 @@ public class SpaceCompet
 		
 		private JButton buttonDelete = new JButton("Supprimer cette compétition");
 		
+		Candidat[] elements = getAllCandidats().toArray((new Candidat[getAllCandidats().size()]));
+		JComboBox<Candidat> listCandidat = new JComboBox<Candidat>(elements);
+		private JButton buttonInscription = new JButton("Inscrire ce candidat");
+		
 		private JDialog modifyWindow = new JDialog();
 		
 		private static int IDcompetition = -1;
@@ -66,9 +75,34 @@ public class SpaceCompet
 			return IDcompetition;
 		}
 		
+		public Set<Candidat> getAllCandidats()
+		{
+			Set<Candidat> allCandidat = null;
+			try 
+			{
+				allCandidat = Container.getInscriptions().getCandidats();
+			} 
+			catch (enEquipeException | addCloseException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return allCandidat;
+		}
+		
 		/** page onglet **/
 		public JPanel getOnglet(){
 			return this.ongletComp;
+		}
+		
+		// TODO Popup edition
+		/** Liste des compétitions **/
+		public JTable getTableau()
+		{
+		    competitionTable.getTableHeader().setBackground(new Color(0, 149, 182));
+			
+			return competitionTable;
 		}
 		
 		private class MyTableModel extends AbstractTableModel {
@@ -184,15 +218,6 @@ public class SpaceCompet
 			}
 		}
 		
-		// TODO Popup edition
-		/** Liste des compétitions **/
-		public JTable getTableau()
-		{
-		    competitionTable.getTableHeader().setBackground(new Color(0, 149, 182));
-			
-			return competitionTable;
-		}
-		
 		/** Panneau d'ajout de compétition **/
 		public JPanel getAddCompetition() 
 		{
@@ -250,6 +275,9 @@ public class SpaceCompet
 			
 			SpaceInscriptionCompet listeCandidat = new SpaceInscriptionCompet();
 			updateCompetition.add(new JScrollPane(listeCandidat.getCandidatsInscrit()));
+			
+			updateCompetition.add(listCandidat);
+			updateCompetition.add(buttonInscription);
 			
 			return updateCompetition;
 		}
@@ -409,7 +437,7 @@ public class SpaceCompet
 		    	fieldUpdateCloture.setText(Cloture.toString());
 		    	fieldUpdateEnEquipe.setSelected(enEquipe);
 		    	
-		    	modifyWindow.setSize(650, 550);
+		    	modifyWindow.setSize(650, 600);
 		    	modifyWindow.add(getUpdateCompetition());
 		    	modifyWindow.setVisible(true);
 		    	verifyFieldModify();
@@ -502,6 +530,45 @@ public class SpaceCompet
 			}
 		}
 		
+		class buttonInscriptionListener implements ActionListener 
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				try 
+				{
+					SortedSet<Competition> Competitions = Container.getInscriptions().getCompetitions();
+					for (Competition comp : Competitions)
+					{
+						if(comp.getId() == IDcompetition)
+						{
+							for (Equipe e : Container.getInscriptions().getEquipes())
+							{
+								if(e == listCandidat.getSelectedItem())
+								{
+									comp.add(e);
+								}
+							}
+							
+							for (Personne p : Container.getInscriptions().getPersonnes())
+							{
+								if(p == listCandidat.getSelectedItem())
+								{
+									comp.add(p);
+								}
+							}
+						}
+					}
+				} 
+				catch (enEquipeException | addCloseException e) 
+				{
+					e.printStackTrace();
+				}
+				
+				modifyWindow.dispose();
+			}
+		}
+		
 		
 		/** Ajout des écouteurs pour chaque champ **/
 		private void setListener() 
@@ -516,6 +583,8 @@ public class SpaceCompet
 			buttonUpdate.addActionListener(new buttonUpdateListener());
 			
 			buttonDelete.addActionListener(new buttonDeleteListener());
+			
+			buttonInscription.addActionListener(new buttonInscriptionListener());
 
 		}
 	}

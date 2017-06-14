@@ -124,7 +124,7 @@ public class SpacePersonne
 				case 0: return "Nom";
 				case 1: return "Prénom";
 				case 2: return "Mail";
-				case 3: return "ID";
+				case 3: return "N° Candidat";
 				default:
 					break;
 				}
